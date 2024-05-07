@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Employee extends Model
+{
+    use HasFactory;
+    protected $primaryKey = 'employee_id'; // Khai báo khóa chính của bảng
+
+    protected $fillable = [
+        'employee_name',
+        'login_id',
+        'password',
+        'employee_type',
+        'status',
+    ];
+
+}
