@@ -378,7 +378,7 @@
                                     @else
                                         <div class="snipcart-details agileinfo_single_right_details">
                                             <fieldset>
-                                                <input type="button" onclick='window.location=`customerlogin.php`'
+                                                <input type="button" onclick="window.location.href = '{{ route('customer.login') }}'"
                                                        name="submit" value="Login to Bid" class='btn btn-info'
                                                        style="width: 250px;"/>
                                             </fieldset>

@@ -20,7 +20,7 @@ class ProductController extends Controller
         $similarProducts = Product::all();
         $product_images = $product->product_image;
         $category = $product->category->category_name;
-        dd($category);
+//        dd($category);
 // Phân tách chuỗi thành một mảng các đường dẫn
         $images = explode(',', $product_images);
 //        dd($image_paths);

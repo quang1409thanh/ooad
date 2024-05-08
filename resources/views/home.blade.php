@@ -58,10 +58,11 @@
                                                     <div class="product-image box" style="height:350px;width:100%;">
                                                         <a href="{{ route('product.show', $product->product_id) }}">
                                                             <img class="primary-image"
-                                                                 src="{{ $product->image ? asset('imgproduct/' . $product->image) : asset('images/noimage.gif') }}"
+                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('imgproduct/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
                                                                  alt="" style="width:100%; height:100%">
                                                         </a>
-                                                        <div class="label-product">{{ $product->category->category_name}}</div>
+                                                        <div
+                                                            class="label-product">{{ $product->category->category_name}}</div>
                                                     </div>
                                                     <div class="product_desc">
                                                         <div class="product_desc_info">
@@ -83,7 +84,8 @@
                                                             <ul class="add-actions-link">
                                                                 <li class="add-cart"><a
                                                                         href="#"><i
-                                                                            class="ion-android-cart"></i> Click here to
+                                                                            class="ion-android-cart"></i> Click here
+                                                                        to
                                                                         BID</a></li>
                                                             </ul>
                                                         </div>
@@ -132,10 +134,11 @@
                                                     <div class="product-image box" style="height:350px;width:100%;">
                                                         <a href="{{ route('product.show', $product->product_id) }}">
                                                             <img class="primary-image"
-                                                                 src="{{ $product->image ? asset('imgproduct/' . $product->image) : asset('images/noimage.gif') }}"
+                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('imgproduct/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
                                                                  alt="" style="width:100%; height:100%">
                                                         </a>
-                                                        <div class="label-product">{{$product->category->category_name }}</div>
+                                                        <div
+                                                            class="label-product">{{$product->category->category_name }}</div>
                                                     </div>
                                                     <div class="product_desc">
                                                         <div class="product_desc_info">
@@ -158,7 +161,8 @@
                                                             <ul class="add-actions-link">
                                                                 <li class="add-cart"><a
                                                                         href="#"><i
-                                                                            class="ion-android-cart"></i> Click here to
+                                                                            class="ion-android-cart"></i> Click here
+                                                                        to
                                                                         BID</a></li>
                                                             </ul>
                                                         </div>
@@ -209,10 +213,11 @@
                                                     <div class="product-image box" style="height:350px;width:100%;">
                                                         <a href="{{ route('product.show', $product->product_id) }}">
                                                             <img class="primary-image"
-                                                                 src="{{ $product->image ? asset('imgproduct/' . $product->image) : asset('images/noimage.gif') }}"
+                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('imgproduct/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
                                                                  alt="" style="width:100%; height:100%">
                                                         </a>
-                                                        <div class="label-product">{{$product->category->category_name }}</div>
+                                                        <div
+                                                            class="label-product">{{$product->category->category_name }}</div>
                                                     </div>
                                                     <div class="product_desc">
                                                         <div class="product_desc_info">
@@ -235,7 +240,8 @@
                                                             <ul class="add-actions-link">
                                                                 <li class="add-cart"><a
                                                                         href="#"><i
-                                                                            class="ion-android-cart"></i> Click here to
+                                                                            class="ion-android-cart"></i> Click here
+                                                                        to
                                                                         BID</a></li>
                                                             </ul>
                                                         </div>
@@ -286,10 +292,11 @@
                                                     <div class="product-image box" style="height:350px;width:100%;">
                                                         <a href="{{ route('product.show', $product->product_id) }}">
                                                             <img class="primary-image"
-                                                                 src="{{ $product->image ? asset('imgproduct/' . $product->image) : asset('images/noimage.gif') }}"
+                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('imgproduct/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
                                                                  alt="" style="width:100%; height:100%">
                                                         </a>
-                                                        <div class="label-product">{{$product->category->category_name }}</div>
+                                                        <div
+                                                            class="label-product">{{$product->category->category_name }}</div>
                                                     </div>
                                                     <div class="product_desc">
                                                         <div class="product_desc_info">
@@ -312,7 +319,8 @@
                                                             <ul class="add-actions-link">
                                                                 <li class="add-cart"><a
                                                                         href="#"><i
-                                                                            class="ion-android-cart"></i> Click here to
+                                                                            class="ion-android-cart"></i> Click here
+                                                                        to
                                                                         BID</a></li>
                                                             </ul>
                                                         </div>
@@ -363,10 +371,11 @@
                                                     <div class="product-image box" style="height:350px;width:100%;">
                                                         <a href="{{ route('product.show', $product->product_id) }}">
                                                             <img class="primary-image"
-                                                                 src="{{ $product->image ? asset('imgproduct/' . $product->image) : asset('images/noimage.gif') }}"
+                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('imgproduct/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
                                                                  alt="" style="width:100%; height:100%">
                                                         </a>
-                                                        <div class="label-product">{{$product->category->category_name }}</div>
+                                                        <div
+                                                            class="label-product">{{$product->category->category_name }}</div>
                                                     </div>
                                                     <div class="product_desc">
                                                         <div class="product_desc_info">
@@ -389,7 +398,8 @@
                                                             <ul class="add-actions-link">
                                                                 <li class="add-cart"><a
                                                                         href="#"><i
-                                                                            class="ion-android-cart"></i> Click here to
+                                                                            class="ion-android-cart"></i> Click here
+                                                                        to
                                                                         BID</a></li>
                                                             </ul>
                                                         </div>

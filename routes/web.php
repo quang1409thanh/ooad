@@ -27,10 +27,14 @@ Route::get('/employeeviewreverseproduct', 'ProductController@index')->name('view
 Route::get('/employeeaccount', 'ProductController@index')->name('employee.account');
 Route::get('/empprofile', 'ProductController@index')->name('employee.profile');
 Route::get('/empchangepassword', 'ProductController@index')->name('emp.change.password');
-Route::get('/register', 'HomeController@showRegistrationForm')->name('register');
-Route::post('/register', 'ProductController@register');
-Route::get('/customerlogin', 'ProductController@showLoginForm')->name('customer.login');
-Route::post('/customerlogin', 'ProductController@login')->name('customerlogin');
+
+Route::get('/register', [\App\Http\Controllers\HomeController::class, 'showRegistrationForm'])->name('register');
+Route::get('/customer.login', [\App\Http\Controllers\HomeController::class, 'showLoginForm'])->name('customer.login');
+Route::get('/auction/{auctiontype}', [\App\Http\Controllers\HomeController::class, 'showAuction'])->name('auction');
+Route::post('/register', [\App\Http\Controllers\CustomerController::class, 'register']);
+Route::post('/customer.login', [\App\Http\Controllers\CustomerController::class, 'login']);
+
+//Route::get('/customerlogin', 'ProductController@showLoginForm')->name('customer.login');
 Route::post('/logout', 'ProductController@logout')->name('logout');
 Route::get('/searchproduct', 'ProductController@search')->name('searchproduct');
 Route::get('/deposit', 'ProductController@search')->name('searchproduct');

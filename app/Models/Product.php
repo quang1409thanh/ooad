@@ -40,4 +40,35 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'Active');
+    }
+
+    public function scopeByCategoryId($query, $categoryId)
+    {
+        return $query->where('category_id', $categoryId);
+    }
+
+    public function scopeStartingBefore($query, $dateTime)
+    {
+        return $query->where('start_date_time', '<=', $dateTime);
+    }
+
+    public function scopeCustomerNotNull($query)
+    {
+        return $query->whereNotNull('customer_id');
+    }
+
+    public function scopeOrderByLatest($query)
+    {
+        return $query->orderBy('product_id', 'DESC');
+    }
+
+    public function scopeLimit($query, $limit)
+    {
+        return $query->limit($limit);
+    }
+
+
 }

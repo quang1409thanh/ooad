@@ -42,7 +42,8 @@
                                         <nav>
                                             <ul>
                                                 <li><a href="/">Home</a></li>
-                                                <li><a href="{{ route('about') }}">About</a></li> <!-- Đây là liên kết đến trang About -->
+                                                <li><a href="{{ route('about') }}">About</a></li>
+                                                <!-- Đây là liên kết đến trang About -->
                                                 <li><a href="{{ route('contact') }}">Contact</a></li>
                                             </ul>
                                         </nav>
@@ -96,7 +97,7 @@
                                                         @elseif (session()->has('employee_id'))
                                                             <li class="drodown-show">
                                                                 <a href="#">Reverse Product <i
-                                                                        class="fa fa-angle-down"></i></a>
+                                                                            class="fa fa-angle-down"></i></a>
                                                                 <ul class="open-dropdown setting">
                                                                     <li>
                                                                         <a href="{{ route('select.reverse.bid.category') }}">Add
@@ -142,7 +143,7 @@
                                         <option value="">All Categories</option>
                                         @foreach($categories as $category)
                                             <option
-                                                value="{{ $category->category_id }}" {{ $category->category_id == request('searchcategory_id') ? 'selected' : '' }}>
+                                                    value="{{ $category->category_id }}" {{ $category->category_id == request('searchcategory_id') ? 'selected' : '' }}>
                                                 {{ $category->category_name }}
                                             </option>
                                         @endforeach
@@ -168,7 +169,7 @@
                                     </li>
                                 @else
                                     <li>
-                                        <a href="{{ route('customerlogin') }}">
+                                        <a href="{{ route('customer.login') }}">
                                     <span class="item-cart-inner">
                                         Deposit
                                     </span>
@@ -193,22 +194,24 @@
                         <div class="main-menu-area">
                             <nav>
                                 <ul>
-                                    <li><a href="{{ route('view_blockchain') }}" style="color:black;">Winners
+                                    <li><a href="{{ route('auction',['auctiontype' => 'Winners Blockchain'])}}"
+                                           style="color:black;">Winners
                                             Blockchain</a></li>
 
-                                    <li><a href="{{ route('latestauction', ['auctiontype' => 'Latest Auctions']) }}"
+                                    <li><a href="{{ route('auction', ['auctiontype' => 'Latest Auctions']) }}"
                                            style="color:black;">Latest Auctions</a></li>
-                                    <li><a href="{{ route('featured', ['auctiontype' => 'Featured Auctions']) }}"
+                                    <li><a href="{{ route('auction', ['auctiontype' => 'Featured Auctions']) }}"
                                            style="color:black;">Featured Auctions</a></li>
                                     <li>
-                                        <a href="{{ route('upcominauction', ['auctiontype' => 'Upcoming Auctions']) }}"
+                                        <a href="{{ route('auction', ['auctiontype' => 'Upcoming Auctions']) }}"
                                            style="color:black;">Upcoming Auctions</a></li>
                                     <li>
-                                        <a href="{{ route('closingauctions', ['auctiontype' => 'Closing Auctions']) }}"
+                                        <a href="{{ route('auction', ['auctiontype' => 'Closing Auctions']) }}"
                                            style="color:black;">Closing Auctions</a></li>
-                                    <li><a href="{{ route('closed', ['auctiontype' => 'Closed Auctions']) }}"
+                                    <li><a href="{{ route('auction', ['auctiontype' => 'Closed Auctions']) }}"
                                            style="color:black;">Closed Auctions</a></li>
-                                    <li><a href="{{ route('displayreversebid') }}" style="color:black;">Reverse
+                                    <li><a href="{{ route('auction', ['auctiontype' => 'Reverse Bid']) }}"
+                                           style="color:black;">Reverse
                                             Bid</a></li>
 
                                 </ul>
