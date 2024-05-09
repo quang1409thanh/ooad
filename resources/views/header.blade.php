@@ -59,37 +59,39 @@
                                                 <div class="top-dropdown">
                                                     <ul>
                                                         @if (session()->has('customer_id'))
-                                                            <li><a href="{{ route('customer.account') }}">Main</a></li>
-                                                            <li><a href="{{ route('message.box') }}">Message Box</a>
+                                                            <li><a href="{{ route('customeraccount') }}">Main</a></li>
+                                                            <li><a href="{{ route('message_box') }}">Message Box</a>
                                                             </li>
                                                             <li class="drodown-show">
                                                                 <a href="#">View My Bid <i class="fa fa-angle-down"></i></a>
                                                                 <ul class="open-dropdown setting">
-                                                                    <li><a href="{{ route('view.my.bid') }}">My Bid
+                                                                    <li><a href="{{ route('view_my_bid') }}">My Bid
                                                                             ({{ $myBidCount }})</a></li>
-                                                                    <li><a href="{{ route('view.winning.bid') }}">Winning
+                                                                    <li><a href="{{ route('view_winning_bid') }}">Winning
                                                                             Bid ({{ $winningBidCount }})</a></li>
-                                                                    <li><a href="{{ route('reverse.bid.winner') }}">Reverse
+                                                                    <li><a href="{{ route('reverse_bid_winner') }}">Reverse
                                                                             Bid ({{ $reverseBidCount }})</a></li>
-                                                                    <li><a href="{{ route('view.billing.customer') }}">View
+                                                                    <li><a href="{{ route('view_billing_customer') }}">View
                                                                             Transaction</a></li>
                                                                 </ul>
                                                             </li>
                                                             <li class="drodown-show">
                                                                 <a href="#">My Products <i class="fa fa-angle-down"></i></a>
                                                                 <ul class="open-dropdown setting">
-                                                                    <li><a href="{{ route('add.products') }}">Add
+                                                                    <li><a href="{{ route('step_add_product_1') }}">Add
                                                                             Products</a></li>
-                                                                    <li><a href="{{ route('view.products') }}">View
+                                                                    <li><a href="{{ route('products_view') }}">View
                                                                             Products</a></li>
                                                                 </ul>
                                                             </li>
                                                             <li class="drodown-show">
-                                                                <a href="#">My account <i class="fa fa-angle-down"></i></a>
+                                                                <a href="#">{{$customer->customer_name}} <i
+                                                                        class="fa fa-angle-down"></i></a>
                                                                 <ul class="open-dropdown setting">
-                                                                    <li><a href="{{ route('customer.profile') }}">Profile</a>
+                                                                    <li><a href="{{ route('customer_profile') }}">Profile</a>
                                                                     </li>
-                                                                    <li><a href="{{ route('cust.change.password') }}">Change
+                                                                    <li>
+                                                                        <a href="{{ route('customer_change_password') }}">Change
                                                                             password</a></li>
                                                                     <li><a href="{{ route('logout') }}">Logout</a></li>
                                                                 </ul>
@@ -97,7 +99,7 @@
                                                         @elseif (session()->has('employee_id'))
                                                             <li class="drodown-show">
                                                                 <a href="#">Reverse Product <i
-                                                                            class="fa fa-angle-down"></i></a>
+                                                                        class="fa fa-angle-down"></i></a>
                                                                 <ul class="open-dropdown setting">
                                                                     <li>
                                                                         <a href="{{ route('select.reverse.bid.category') }}">Add
@@ -106,10 +108,82 @@
                                                                             Products</a></li>
                                                                 </ul>
                                                             </li>
+
+                                                            <li class="drodown-show"><a href="#"> Users <i
+                                                                        class="fa fa-angle-down"></i></a>
+                                                                <ul class="open-dropdown setting">
+                                                                    {{--                                                                    @if (auth()->user()->employee_type == "Admin")--}}
+                                                                    @if (true)
+                                                                        <li><a href="{{ route('employee') }}">Add
+                                                                                Staff</a></li>
+                                                                        <li><a href="{{ route('viewemployee') }}">View
+                                                                                Staff</a></li>
+                                                                    @endif
+                                                                    <li><a href="{{ route('viewcustomer') }}">View
+                                                                            Customers</a></li>
+                                                                </ul>
+                                                            </li>
+
+                                                            {{--                                                            @if (auth()->user()->employee_type == "Admin")--}}
+                                                            @if (true)
+                                                                <li class="drodown-show"><a href="#"> Auction Settings
+                                                                        <i
+                                                                            class="fa fa-angle-down"></i></a>
+                                                                    <ul class="open-dropdown setting">
+                                                                        <li><a href="{{ route('category') }}">Add
+                                                                                Categories</a></li>
+                                                                        <li><a href="{{ route('viewcategory') }}">View
+                                                                                Categories</a></li>
+                                                                    </ul>
+                                                                </li>
+                                                            @endif
+
+                                                            <li class="drodown-show"><a href="#"> Bidding Report <i
+                                                                        class="fa fa-angle-down"></i></a>
+                                                                <ul class="open-dropdown setting">
+                                                                    <li><a href="{{ route('viewbiddingproduct') }}">Current
+                                                                            Bidding</a></li>
+                                                                    <li><a href="{{ route('closebiddingproduct') }}">Closed
+                                                                            Bidding</a></li>
+                                                                    <li><a href="{{ route('viewwinners') }}">View
+                                                                            Winners List</a></li>
+                                                                </ul>
+                                                            </li>
+
+                                                            <li class="drodown-show"><a href="#"> Report <i
+                                                                        class="fa fa-angle-down"></i></a>
+                                                                <ul class="open-dropdown setting">
+                                                                    <li><a href="{{ route('viewbilling') }}">View
+                                                                            Billing</a></li>
+                                                                    <li><a href="{{ route('viewcustomer') }}">Customer
+                                                                            Report</a></li>
+                                                                    <li><a href="{{ route('viewmessage') }}">View
+                                                                            Messages</a></li>
+                                                                    <li><a href="{{ route('viewpayment') }}">View
+                                                                            Payment</a></li>
+                                                                    <li><a href="{{ route('viewproduct') }}">View
+                                                                            products</a></li>
+                                                                </ul>
+                                                            </li>
+
+                                                            <li class="drodown-show"><a href="#"> My account <i
+                                                                        class="fa fa-angle-down"></i></a>
+                                                                <ul class="open-dropdown setting">
+                                                                    <li><a href="{{ route('employeeaccount') }}">Dashboard</a>
+                                                                    </li>
+                                                                    <li><a href="{{ route('empprofile') }}">My
+                                                                            Profile</a></li>
+                                                                    <li><a href="{{ route('empchangepassword') }}">Change
+                                                                            password</a></li>
+                                                                    <li><a href="{{ route('logout') }}">Logout</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+
                                                             <!-- More Menu Items -->
                                                         @else
                                                             <li><a href="{{ route('register') }}">Register</a></li>
-                                                            <li><a href="{{ route('customer.login') }}">Login</a></li>
+                                                            <li><a href="{{ route('customer_login') }}">Login</a></li>
                                                         @endif
                                                     </ul>
                                                 </div>
@@ -143,7 +217,7 @@
                                         <option value="">All Categories</option>
                                         @foreach($categories as $category)
                                             <option
-                                                    value="{{ $category->category_id }}" {{ $category->category_id == request('searchcategory_id') ? 'selected' : '' }}>
+                                                value="{{ $category->category_id }}" {{ $category->category_id == request('searchcategory_id') ? 'selected' : '' }}>
                                                 {{ $category->category_name }}
                                             </option>
                                         @endforeach
@@ -169,7 +243,7 @@
                                     </li>
                                 @else
                                     <li>
-                                        <a href="{{ route('customer.login') }}">
+                                        <a href="{{ route('customer_login') }}">
                                     <span class="item-cart-inner">
                                         Deposit
                                     </span>

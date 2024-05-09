@@ -302,13 +302,13 @@
                                 <form action="" method="post" onsubmit="return confirmbidding()">
                                     <input type='hidden' name='ending_bid' id='ending_bid'
                                            value='{{ $product->ending_bid }}'>
-                                    @if(isset($_SESSION['customer_id']))
+                                    @if(session()->has('customer_id'))
                                         @php
                                             $currenttime = strtotime(date("Y-m-d H:i:s"));
                                             $endtime = strtotime($product->end_date_time);
                                         @endphp
                                         @if($endtime > $currenttime)
-                                            @if($_SESSION['customer_id'] == $product->customer_id)
+                                            @if(session()->get('customer_id') == $product->customer_id)
                                                 <div id="divbidstatus">
                                                     <div class="w3_agileits_card_number_grid_left">
                                                         <div class="controls">
@@ -352,8 +352,8 @@
                                                     </div>
                                                     <div class="chatdiv">
                                                         <div class="col-md-4">
-                                                            @if($_SESSION['customer_id'] != $product->customer_id)
-                                                                @if(isset($_SESSION['customer_id']))
+                                                            @if(session()->get('customer_id') != $product->customer_id)
+                                                                @if(session()->has('customer_id'))
                                                                     @include("chat")
                                                                 @else
                                                                     <b style='color:red'><a href='login.php'
@@ -371,14 +371,16 @@
                                                 <div class="snipcart-details agileinfo_single_right_details">
                                                     <a href='single.php?productid={{ $product->product_id }}'><input
                                                             type="button" name="submit" value="Closed"
-                                                            class="form-control" style="width: 250px;" disabled/></a>
+                                                            class="form-control" style="width: 250px;"
+                                                            disabled/></a>
                                                 </div>
                                             </fieldset>
                                         @endif
                                     @else
                                         <div class="snipcart-details agileinfo_single_right_details">
                                             <fieldset>
-                                                <input type="button" onclick="window.location.href = '{{ route('customer.login') }}'"
+                                                <input type="button"
+                                                       onclick="window.location.href = '{{ route('customer_login') }}'"
                                                        name="submit" value="Login to Bid" class='btn btn-info'
                                                        style="width: 250px;"/>
                                             </fieldset>

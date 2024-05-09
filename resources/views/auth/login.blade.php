@@ -23,14 +23,14 @@
                 <div class="customer-login-register">
                     <center><h3>Login</h3></center>
                     <div class="login-Register-info">
-                        <form action="{{ url('/customer.login') }}" method="post"
+                        <form action="{{ url('/customer_login') }}" method="post"
                               onsubmit="return validatecustomer();">
                             @csrf
 
                             <p class="coupon-input form-row-first">
                                 <label>Mobile No. or Email <span class="required">*</span> <span class="errormsg"
                                                                                                  id="erremail"></span></label>
-                                <input type="text" name="email" id="email">
+                                <input type="text" name="email_id" id="email">
                             </p>
                             <p class="coupon-input form-row-last">
                                 <label>password <span class="required">*</span> <span class="errormsg"

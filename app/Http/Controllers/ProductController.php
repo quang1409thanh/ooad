@@ -14,7 +14,7 @@ class ProductController extends Controller
         // Lấy sản phẩm từ ID
         $product = Product::find($id);
         $products = Product::all(); // Lấy tất cả sản phẩm từ cơ sở dữ liệu
-//        dd($products);
+        $session = session();
 //        return view('products.index', compact('products')); // Truyền biến $products sang view
         $categories = Category::all();
         $similarProducts = Product::all();
@@ -30,4 +30,23 @@ class ProductController extends Controller
         return view('product_show', ['product' => $product], compact('products', 'categories', 'similarProducts', 'images'));
     }
 
+    public function step_add_product_1()
+    {
+        $categories = Category::all();
+        return view('product.step_add_product_1', compact('categories'));
+    }
+
+    public function step_add_product_2($id)
+    {
+        $category = Category::find($id);
+        $arrimg = Product::all();
+        $product = new Product(); // Lấy sản phẩm đầu tiên trong cơ sở dữ liệu
+        return view('product.step_add_product_2', compact('category', 'arrimg', 'product'));
+    }
+
+    public function products_view()
+    {
+        $products = Product::all();
+        return view('product.products_view', compact('products'));
+    }
 }

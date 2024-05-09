@@ -78,6 +78,19 @@
                 <div class="col-lg-8 col-md-12">
                     <div class="footer-info-inner">
                         <div class="row">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="footer-title">
+                                    <h3>Nhóm X</h3>
+                                </div>
+                                <ul>
+                                    <li><a href="">Lê Anh Đức</a></li>
+                                    <li><a href="">Nguyễn Quang Thành</a></li>
+                                    <li><a href="">Lê Hải Nam</a></li>
+                                    <li><a href="">Hoàng Mạnh Quân</a></li>
+                                    <li><a href="">Lê Hải Lâm</a></li>
+                                </ul>
+                            </div>
+
                             @guest
                                 @if (!isset($_SESSION['employee_id']))
                                     <div class="col-lg-3 col-md-6 col-sm-6">
@@ -85,8 +98,8 @@
                                             <h3>Employee Account</h3>
                                         </div>
                                         <ul>
-                                            <li><a href="employeelogin.php?logintype=Admin">Admin Login</a></li>
-                                            <li><a href="employeelogin.php?logintype=Employee">Employee Login</a></li>
+                                            <li><a href="{{route('employee_login')}}">Admin Login</a></li>
+                                            <li><a href="{{route('employee_login')}}">Employee Login</a></li>
                                         </ul>
                                     </div>
                                 @endif
@@ -125,25 +138,37 @@
                                 <div class="zoomWrapper">
                                     <div id="img-1" class="zoomWrapper single-zoom">
                                         <a href="#">
-                                            <img id="zoom1" src="img/product/1.jpg" data-zoom-image="img/product/1.jpg" alt="big-1">
+                                            <img id="zoom1" src="img/product/1.jpg" data-zoom-image="img/product/1.jpg"
+                                                 alt="big-1">
                                         </a>
                                     </div>
                                     <div class="single-zoom-thumb">
                                         <ul class="s-tab-zoom single-product-active owl-carousel" id="gallery_01">
                                             <li>
-                                                <a href="#" class="elevatezoom-gallery active" data-update="" data-image="img/product/1.jpg" data-zoom-image="img/product/1.jpg"><img src="img/product/1.jpg" alt="zo-th-1" /></a>
+                                                <a href="#" class="elevatezoom-gallery active" data-update=""
+                                                   data-image="img/product/1.jpg"
+                                                   data-zoom-image="img/product/1.jpg"><img src="img/product/1.jpg"
+                                                                                            alt="zo-th-1"/></a>
                                             </li>
                                             <li class="">
-                                                <a href="#" class="elevatezoom-gallery" data-image="img/product/2.jpg" data-zoom-image="img/product/2.jpg"><img src="img/product/2.jpg" alt="zo-th-2"></a>
+                                                <a href="#" class="elevatezoom-gallery" data-image="img/product/2.jpg"
+                                                   data-zoom-image="img/product/2.jpg"><img src="img/product/2.jpg"
+                                                                                            alt="zo-th-2"></a>
                                             </li>
                                             <li class="">
-                                                <a href="#" class="elevatezoom-gallery" data-image="img/product/3.jpg" data-zoom-image="img/product/3.jpg"><img src="img/product/3.jpg" alt="ex-big-3" /></a>
+                                                <a href="#" class="elevatezoom-gallery" data-image="img/product/3.jpg"
+                                                   data-zoom-image="img/product/3.jpg"><img src="img/product/3.jpg"
+                                                                                            alt="ex-big-3"/></a>
                                             </li>
                                             <li class="">
-                                                <a href="#" class="elevatezoom-gallery" data-image="img/product/4.jpg" data-zoom-image="img/product/4.jpg"><img src="img/product/4.jpg" alt="zo-th-4"></a>
+                                                <a href="#" class="elevatezoom-gallery" data-image="img/product/4.jpg"
+                                                   data-zoom-image="img/product/4.jpg"><img src="img/product/4.jpg"
+                                                                                            alt="zo-th-4"></a>
                                             </li>
                                             <li class="">
-                                                <a href="#" class="elevatezoom-gallery" data-image="img/product/5.jpg" data-zoom-image="img/product/5.jpg"><img src="img/product/5.jpg" alt="zo-th-5"></a>
+                                                <a href="#" class="elevatezoom-gallery" data-image="img/product/5.jpg"
+                                                   data-zoom-image="img/product/5.jpg"><img src="img/product/5.jpg"
+                                                                                            alt="zo-th-5"></a>
                                             </li>
                                         </ul>
                                     </div>
@@ -168,7 +193,8 @@
                                         <span class="new-price">$225.00</span>
                                         <span class="old-price">$250.00</span>
                                     </div>
-                                    <p>100% cotton double printed dress. Black and white striped top and orange high waisted skater skirt bottom.</p>
+                                    <p>100% cotton double printed dress. Black and white striped top and orange high
+                                        waisted skater skirt bottom.</p>
                                     <div class="modal-size">
                                         <h4>Size</h4>
                                         <select>
@@ -224,7 +250,7 @@
 <script src="{{ url('js/main.js') }}"></script>
 <script src="{{ url('js/jquery.dataTables.min.js') }}"></script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#datatable').DataTable();
     });
 </script>

@@ -2296,6 +2296,7 @@ body {
 }
 .breadcrumb-list li a {
     color: #333;
+    font-size: 14px;
 }
 .breadcrumb-list li a:hover {
     color: #EB3E32;

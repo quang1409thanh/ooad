@@ -7,4 +7,9 @@ use Illuminate\Http\Request;
 class BiddingController extends Controller
 {
     //
+    public function index()
+    {
+
+    }
+
 }
