@@ -17,6 +17,7 @@
 <div class="banner">
     <div class="privacy about">
         <h3>View Product</h3>
+        <h3>View Product</h3>
         <div class="checkout-left">
             <div class="col-md-12">
                 <table id="datatable" class="table table-striped table-bordered dataTable" cellspacing="0" width="100%"

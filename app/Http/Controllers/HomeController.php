@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Blockchain\Blockchain;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -67,7 +68,9 @@ class HomeController extends Controller
         switch ($auctiontype) {
             case 'Winners Blockchain':
                 // Xử lý cho trường hợp Winners Blockchain
-                $products = Product::where('status', 'Active')->get();
+                $data = \App\Models\Blockchain::all();
+                return view('customer.view_block_chain', compact('data', 'categories'));
+//                $products = Product::where('status', 'Active')->get();
                 break;
             case 'Latest Auctions':
                 $products = [];

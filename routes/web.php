@@ -69,6 +69,7 @@ Route::get('/view_category', [\App\Http\Controllers\CategoryController::class, '
 // tiếp
 //thêm chức năng
 
+Route::post('/post_bidding', [BiddingController::class, 'submitBidding'])->name('post_bidding');
 
 Route::post('/store_category', [\App\Http\Controllers\CategoryController::class, 'store'])->name('store_category');
 Route::post('/product_store', [\App\Http\Controllers\ProductController::class, 'store'])->name('product_store');

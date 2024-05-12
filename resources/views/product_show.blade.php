@@ -106,6 +106,7 @@
 
 <!-- breadcrumb-area start -->
 <div class="breadcrumb-area bg-gray">
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
@@ -128,6 +129,15 @@
             <div class="col-lg-12">
                 <div class="card mb-10">
                     <div class="card-header">
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+
                         <nav class="header-navigation">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
@@ -167,7 +177,7 @@
                                                                                   class="active show">Description</a>
                                                             </li>
                                                             <li><a href="#review" data-toggle="tab">Bidders list
-                                                                    ()</a></li>
+                                                                    ({{count($bidder_list)}})</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -219,19 +229,20 @@
                                                         <div id="review" class="tab-pane fade">
                                                             <div class="description-content">
                                                                 <p>
-                                                                @if (true)
+                                                                @if ($bidder_list->isEmpty())
                                                                     <center><b style="color: red;">No biddings done
                                                                             yet..</b></center>
                                                                 @else
-                                                                    {{--                                                                    @foreach ($biddings as $bidding)--}}
-                                                                    {{--                                                                        {{ $bidding->customer_name }} bidded--}}
-                                                                    {{--                                                                        PKR{{ $bidding->bidding_amount }}--}}
-                                                                    {{--                                                                        on {{ $bidding->bidding_date_time }}--}}
-                                                                    {{--                                                                        <hr>--}}
-                                                                    {{--                                                                        @endforeach--}}
-                                                                @endif
-                                                                {{--                                                                        </p>--}}
+                                                                    @foreach ($bidder_list as $bidder)
+                                                                        {{ $bidder->customer->customer_name }} bidded
+                                                                        PKR{{ $bidder->bidding_amount }}
+                                                                        on {{ $bidder->bidding_date_time }}
+                                                                        <hr>
+                                                                        @endforeach
+                                                                        @endif
+                                                                        </p>
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -299,9 +310,14 @@
                                 <input type='hidden' name='max_bid_amt' id='max_bid_amt'
                                        value='{{ $product->ending_bid + 5000 }}'>
 
-                                <form action="" method="post" onsubmit="return confirmbidding()">
+                                <form action="{{route('post_bidding')}}" method="post"
+                                      onsubmit="return confirmbidding()">
+                                    @csrf
                                     <input type='hidden' name='ending_bid' id='ending_bid'
                                            value='{{ $product->ending_bid }}'>
+
+                                    <input type='hidden' name='product_id' id='product_id'
+                                           value='{{ $product->product_id }}'>
                                     @if(session()->has('customer_id'))
                                         @php
                                             $currenttime = strtotime(date("Y-m-d H:i:s"));
@@ -467,7 +483,7 @@
 <!-- JavaScript code here -->
 <script>
     function confirmbidding() {
-        if (document.getElementById("purchase_amount").value == "") {
+        if (document.getElementById("purchase_amount").value === "") {
             alert('Bidding amount not entered..');
             return false;
         }
@@ -478,12 +494,10 @@
             alert('Bidding amount should be lesser than PKR' + document.getElementById("max_bid_amt").value);
             return false;
         } else {
-            if (confirm("confrim to bid!!") == true) {
-                return true;
-            } else {
-                return false;
-            }
+            return confirm("confrim to bid!!") === true;
         }
     }
 </script>
+
+
 @include('footer')

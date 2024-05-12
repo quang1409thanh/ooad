@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bidding;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -25,9 +26,13 @@ class ProductController extends Controller
         $images = explode(',', $product_images);
 //        dd($image_paths);
 
+        $bidder_list = Bidding::with('customer')
+            ->where('product_id', $id)
+            ->orderBy('bidding_id', 'DESC')
+            ->get();
 
         // Trả về view và truyền sản phẩm vào view
-        return view('product_show', ['product' => $product], compact('products', 'categories', 'similarProducts', 'images'));
+        return view('product_show', ['product' => $product], compact('products', 'categories', 'similarProducts', 'images', 'bidder_list'));
     }
 
 //    public function store(Request $request)
