@@ -10,7 +10,7 @@
     }
 
     .header-navigation a {
-        font-size: .80rem;
+        /*font-size: .80rem;*/
     }
 
     .header-navigation .breadcrumb {
@@ -442,7 +442,7 @@
                                         </a>
                                     </div>
                                 </a>
-                                <div class="label-product">{{ $similarProduct->category_name }}</div>
+                                <div class="label-product">{{ $similarProduct->category->category_name }}</div>
                             </div>
                             <div class="product_desc">
                                 <div class="add-actions">

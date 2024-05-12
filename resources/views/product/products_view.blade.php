@@ -40,13 +40,10 @@
                     <tbody>
                     @foreach ($products as $product)
                         <tr>
-                            <td>
                                 <div class="w3-content w3-section" style="max-width:500px">
-                                    @if (is_array($product->product_image))
-                                        @foreach ($product->product_image as $image)
-                                            <img class="mySlides{{ $product->id }} w3-animate-fading"
-                                                 src="{{ asset('imgproduct/' . $image) }}" style="width:100%">
-                                        @endforeach
+                                    @if (true)
+                                    <td><img src='imgproduct/{{ $product->product_image }}' width='200px;'
+                                             style='height:120px;'></td>
                                     @else
                                         No images available
                                     @endif
@@ -70,7 +67,6 @@
                                         setTimeout(carousel, 9000);
                                     }
                                 </script>
-                            </td>
                             @if (session()->has('employee_id'))
                                 <td>{{ $product->customer_name }}</td>
                             @endif
@@ -89,20 +85,27 @@
                             <td>{{ date("d/m/Y h:i A", strtotime($product->start_date_time)) . " -" .  date("d/m/Y h:i A", strtotime($product->end_date_time)) }}</td>
                             <td>PKR{{ $product->product_cost }}</td>
                             <td>{{ $product->status }}</td>
-                            <td>
-                                <a href='{{ url("product/edit/{$product->id}") }}' class='btn btn-warning'>Edit</a> <br>
-                                @if (!session()->has('customer_id'))
-                                    @if (session('employee_type') == "Admin")
-                                        <a href='{{ url("delete-product/{$product->id}") }}'
-                                           onclick='return deleteconfirm()' class='btn btn-danger'>Delete</a> <br>
-                                    @endif
-                                @endif
-                                <a href='{{ url("single/{$product->id}") }}' target='_blank'
-                                   class='btn btn-info'>View</a>
-                                <hr>
-                                <a href='{{ url("billingreceipt/{$product->id}") }}' target='_blank'
-                                   class='btn btn-success'>Receipt</a>
+                            <td style="white-space: nowrap;">
+                                <div class="row" style="margin-right: -75px; margin-left: -5px;">
+                                    <div class="col-6 mb-2" style="padding-right: 5px; padding-left: 5px;">
+                                        <a href='{{ url("product/edit/{$product->id}") }}' class='btn btn-warning btn-block'>Edit</a>
+                                    </div>
+                                    <div class="col-6 mb-2" style="padding-right: 5px; padding-left: 5px;">
+                                        @if (!session()->has('customer_id'))
+                                            @if (session()->has("employee_id"))
+                                                <a href='{{ url("delete-product/{$product->id}") }}' onclick='return deleteconfirm()' class='btn btn-danger btn-block'>Delete</a>
+                                            @endif
+                                        @endif
+                                    </div>
+                                    <div class="col-6 mb-2" style="padding-right: 5px; padding-left: 5px;">
+                                        <a href='{{ url("single/{$product->id}") }}' target='_blank' class='btn btn-info btn-block'>View</a>
+                                    </div>
+                                    <div class="col-6 mb-2" style="padding-right: 5px; padding-left: 5px;">
+                                        <a href='{{ url("billingreceipt/{$product->id}") }}' target='_blank' class='btn btn-success btn-block'>Receipt</a>
+                                    </div>
+                                </div>
                             </td>
+
                         </tr>
                     @endforeach
                     </tbody>

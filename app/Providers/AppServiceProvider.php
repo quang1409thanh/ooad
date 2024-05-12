@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Employee;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
             $categories = Category::all();
             $cur = session()->get('customer_id');
             $customer = Customer::find($cur);
+            $cure = session()->get('employee_id');
+            $employee = Employee::find($cure);
             // Truyền các giá trị vào view
             $view->with('myBidCount', $myBidCount);
             $view->with('winningBidCount', $winningBidCount);
@@ -38,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('accbalamt', $accbalamt);
             $view->with('categories', $categories);
             $view->with('customer', $customer);
+            $view->with('employee', $employee);
 
             // tại sao lấy được các giá trị này đúng là ??? vô lý vl/ ko có nó thi ko được khi ở trang đăng nhập.
         });

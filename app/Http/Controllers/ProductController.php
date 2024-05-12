@@ -49,4 +49,24 @@ class ProductController extends Controller
         $products = Product::all();
         return view('product.products_view', compact('products'));
     }
+
+    public function selectReverseBidCategory()
+    {
+        $categories = Category::all();
+        return view('product.selectReverseBidCategory', compact('categories'));
+    }
+
+    public function reverse_product($id)
+    {
+        $category = Category::find($id);
+        $arrimg = Product::all();
+        $product = new Product(); // Lấy sản phẩm đầu tiên trong cơ sở dữ liệu
+        return view('product.reverse_product', compact('category', 'arrimg', 'product'));
+    }
+
+    public function view_reverse_product()
+    {
+        $products = Product::all();
+        return view('product.view_reverse_product',compact('products'));
+    }
 }

@@ -102,7 +102,7 @@
                                                                         class="fa fa-angle-down"></i></a>
                                                                 <ul class="open-dropdown setting">
                                                                     <li>
-                                                                        <a href="{{ route('select.reverse.bid.category') }}">Add
+                                                                            <a href="{{ route('select.reverse.bid.category') }}">Add
                                                                             Product</a></li>
                                                                     <li><a href="{{ route('view.reverse.product') }}">View
                                                                             Products</a></li>
@@ -114,12 +114,12 @@
                                                                 <ul class="open-dropdown setting">
                                                                     {{--                                                                    @if (auth()->user()->employee_type == "Admin")--}}
                                                                     @if (true)
-                                                                        <li><a href="{{ route('employee') }}">Add
+                                                                        <li><a href="{{ route('add_employee') }}">Add
                                                                                 Staff</a></li>
-                                                                        <li><a href="{{ route('viewemployee') }}">View
+                                                                        <li><a href="{{ route('view_employee') }}">View
                                                                                 Staff</a></li>
                                                                     @endif
-                                                                    <li><a href="{{ route('viewcustomer') }}">View
+                                                                    <li><a href="{{ route('view_customer') }}">View
                                                                             Customers</a></li>
                                                                 </ul>
                                                             </li>
@@ -132,7 +132,7 @@
                                                                     <ul class="open-dropdown setting">
                                                                         <li><a href="{{ route('category') }}">Add
                                                                                 Categories</a></li>
-                                                                        <li><a href="{{ route('viewcategory') }}">View
+                                                                        <li><a href="{{ route('view_category') }}">View
                                                                                 Categories</a></li>
                                                                     </ul>
                                                                 </li>
@@ -141,11 +141,11 @@
                                                             <li class="drodown-show"><a href="#"> Bidding Report <i
                                                                         class="fa fa-angle-down"></i></a>
                                                                 <ul class="open-dropdown setting">
-                                                                    <li><a href="{{ route('viewbiddingproduct') }}">Current
+                                                                    <li><a href="{{ route('view_bidding_product') }}">Current
                                                                             Bidding</a></li>
-                                                                    <li><a href="{{ route('closebiddingproduct') }}">Closed
+                                                                    <li><a href="{{ route('close_bidding_product') }}">Closed
                                                                             Bidding</a></li>
-                                                                    <li><a href="{{ route('viewwinners') }}">View
+                                                                    <li><a href="{{ route('view_winners') }}">View
                                                                             Winners List</a></li>
                                                                 </ul>
                                                             </li>
@@ -153,27 +153,27 @@
                                                             <li class="drodown-show"><a href="#"> Report <i
                                                                         class="fa fa-angle-down"></i></a>
                                                                 <ul class="open-dropdown setting">
-                                                                    <li><a href="{{ route('viewbilling') }}">View
+                                                                    <li><a href="{{ route('view_billing') }}">View
                                                                             Billing</a></li>
-                                                                    <li><a href="{{ route('viewcustomer') }}">Customer
+                                                                    <li><a href="{{ route('view_customer_report') }}">Customer
                                                                             Report</a></li>
-                                                                    <li><a href="{{ route('viewmessage') }}">View
+                                                                    <li><a href="{{ route('view_message') }}">View
                                                                             Messages</a></li>
-                                                                    <li><a href="{{ route('viewpayment') }}">View
+                                                                    <li><a href="{{ route('view_payment') }}">View
                                                                             Payment</a></li>
-                                                                    <li><a href="{{ route('viewproduct') }}">View
+                                                                    <li><a href="{{ route('products_view') }}">View
                                                                             products</a></li>
                                                                 </ul>
                                                             </li>
 
-                                                            <li class="drodown-show"><a href="#"> My account <i
+                                                            <li class="drodown-show"><a href="#"> {{$employee->employee_name}} <i
                                                                         class="fa fa-angle-down"></i></a>
                                                                 <ul class="open-dropdown setting">
-                                                                    <li><a href="{{ route('employeeaccount') }}">Dashboard</a>
+                                                                    <li><a href="{{ route('employee_account') }}">Dashboard</a>
                                                                     </li>
-                                                                    <li><a href="{{ route('empprofile') }}">My
+                                                                    <li><a href="{{ route('employee_profile') }}">My
                                                                             Profile</a></li>
-                                                                    <li><a href="{{ route('empchangepassword') }}">Change
+                                                                    <li><a href="{{ route('employee_change_password') }}">Change
                                                                             password</a></li>
                                                                     <li><a href="{{ route('logout') }}">Logout</a>
                                                                     </li>

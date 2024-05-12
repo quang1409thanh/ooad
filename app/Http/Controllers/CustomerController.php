@@ -106,4 +106,31 @@ class CustomerController extends Controller
         return view('customer.view_billing_customer', compact('transactions'));
 
     }
+
+    public function logout()
+    {
+        // Hủy phiên làm việc của người dùng
+        auth()->logout();
+
+        // Xóa tất cả các phiên làm việc của người dùng
+        session()->flush();
+
+        // Xóa phiên làm việc hiện tại của người dùng
+        session()->regenerate();
+        $products = Product::all(); // Lấy tất cả sản phẩm từ cơ sở dữ liệu
+//        dd($products);
+//        return view('products.index', compact('products')); // Truyền biến $products sang view
+        $categories = Category::all();
+
+        // Chuyển hướng về trang index
+        return redirect()->route('home', compact('products', 'categories'));
+    }
+
+    public function viewCustomer()
+    {
+        $customers = Customer::all();
+        return view('customer.view_customer', compact('customers'));
+
+    }
+
 }

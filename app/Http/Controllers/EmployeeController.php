@@ -23,7 +23,7 @@ class EmployeeController extends Controller
         $employee = Employee::where('login_id', $credentials['email'])->first();
 
         if (!$employee || !Hash::check($credentials['password'], $employee->password)) {
-            return redirect()->route('login')->with('error', 'Invalid credentials');
+            return redirect()->route('employee_login')->with('error', 'Invalid credentials');
             // define router login after.
         }
         session(['employee_id' => $employee->employee_id]);
@@ -55,4 +55,31 @@ class EmployeeController extends Controller
 
     }
 
+    public function employee_profile()
+    {
+        return view('employee.employee_profile');
+    }
+
+    public function update_employee()
+    {
+
+    }
+
+    public function change_password()
+    {
+        return view('employee.change_password');
+    }
+
+    public function viewEmployee()
+    {
+        $employees = Employee::all();
+        return view('employee.view_employee', compact('employees'));
+    }
+
+    public function addEmployee()
+    {
+        $employee_types = Employee::all();
+        $statuses = Customer::all();
+        return view('employee.add_employee', compact('employee_types','statuses'));
+    }
 }

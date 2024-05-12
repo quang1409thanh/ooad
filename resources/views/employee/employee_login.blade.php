@@ -1,11 +1,5 @@
 @include('header')
 
-@if (isset($login_error))
-    <script>
-        alert('{{ $login_error }}');
-    </script>
-@endif
-
 <!-- breadcrumb-area start -->
 <div class="breadcrumb-area bg-gray">
     <div class="container-fluid">
@@ -31,6 +25,12 @@
                     <center>
                         <h3>Employee Login</h3>
                     </center>
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                        
                     <div class="login-Register-info">
                         <form action="{{ url('/employee_login') }}" method="post">
                             @csrf

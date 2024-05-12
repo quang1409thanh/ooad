@@ -157,10 +157,12 @@
                                 <span id='idproduct_delivery' style="color:red;"></span>
                                 <select name="product_delivery" id="product_delivery" class="form-control">
                                     <option value=''>Select Product delivery</option>
-                                    @foreach ($arrimg as $val)
-                                        <option
-                                            {{ $val == $product->product_delivery ? 'selected' : '' }} value='{{ $val }}'>{{ $val }}</option>
-                                    @endforeach
+                                    <?php
+                                    $arrimg = array("3-4 Days", "4-5 days", "5-7 days", "7-10 days", "10-14 days");
+                                    foreach ($arrimg as $val): ?>
+                                    <option <?php echo $val == $product->product_delivery ? 'selected' : ''; ?> value='<?php echo $val; ?>'><?php echo $val; ?></option>
+                                    <?php endforeach; ?>
+                                    ?>
                                 </select>
                             </div>
                             <div class="col-md-6 col-lg-6">
