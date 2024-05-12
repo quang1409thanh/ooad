@@ -48,7 +48,7 @@ class CustomerController extends Controller
 
         if (!$customer || !Hash::check($credentials['password'], $customer->password)) {
             // Xác thực thất bại
-            return redirect()->route('login')->with('error', 'Invalid credentials');
+            return redirect()->route('customer_login')->with('error', 'Invalid credentials');
         }
         session(['customer_id' => $customer->customer_id]);
         // Xác thực thành công, đăng nhập người dùng

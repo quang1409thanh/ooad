@@ -1,37 +1,37 @@
 @include('header')
 
 @if (isset($submit))
-{{--    @php--}}
-{{--        $filename = rand() . $category_icon->getClientOriginalName();--}}
-{{--        $category_icon->move(public_path('imgcategory'), $filename);--}}
-{{--    @endphp--}}
-{{--    @if (isset($editid))--}}
-{{--        @php--}}
-{{--            $sql = "UPDATE category SET category_name='$category_name', category_icon='$filename', description='$description', status='$status' WHERE category_id='$editid'";--}}
-{{--            $success_message = 'Category record updated successfully..';--}}
-{{--        @endphp--}}
-{{--    @else--}}
-{{--        @php--}}
-{{--            $sql = "INSERT INTO category(category_name, category_icon, description, status) VALUES('$category_name', '$filename', '$description', '$status')";--}}
-{{--            $success_message = 'Category record inserted successfully..';--}}
-{{--        @endphp--}}
-{{--    @endif--}}
-{{--    @php--}}
-{{--        $qsql = mysqli_query($con, $sql);--}}
-{{--        if (mysqli_affected_rows($con) == 1) {--}}
-{{--            echo "<script>alert('$success_message');</script>";--}}
-{{--            echo "<script>window.location='category.php';</script>";--}}
-{{--        } else {--}}
-{{--            echo mysqli_error($con);--}}
-{{--        }--}}
-{{--    @endif--}}
-{{--    --}}
-{{--    @if (isset($editid))--}}
-{{--        @php--}}
-{{--        $sqledit = "SELECT * FROM category WHERE category_id='$editid'";--}}
-{{--        $qsqledit = mysqli_query($con, $sqledit);--}}
-{{--        $rsedit = mysqli_fetch_array($qsqledit);--}}
-{{--    @endphp--}}
+    {{--    @php--}}
+    {{--        $filename = rand() . $category_icon->getClientOriginalName();--}}
+    {{--        $category_icon->move(public_path('imgcategory'), $filename);--}}
+    {{--    @endphp--}}
+    {{--    @if (isset($editid))--}}
+    {{--        @php--}}
+    {{--            $sql = "UPDATE category SET category_name='$category_name', category_icon='$filename', description='$description', status='$status' WHERE category_id='$editid'";--}}
+    {{--            $success_message = 'Category record updated successfully..';--}}
+    {{--        @endphp--}}
+    {{--    @else--}}
+    {{--        @php--}}
+    {{--            $sql = "INSERT INTO category(category_name, category_icon, description, status) VALUES('$category_name', '$filename', '$description', '$status')";--}}
+    {{--            $success_message = 'Category record inserted successfully..';--}}
+    {{--        @endphp--}}
+    {{--    @endif--}}
+    {{--    @php--}}
+    {{--        $qsql = mysqli_query($con, $sql);--}}
+    {{--        if (mysqli_affected_rows($con) == 1) {--}}
+    {{--            echo "<script>alert('$success_message');</script>";--}}
+    {{--            echo "<script>window.location='category.php';</script>";--}}
+    {{--        } else {--}}
+    {{--            echo mysqli_error($con);--}}
+    {{--        }--}}
+    {{--    @endif--}}
+    {{--    --}}
+    {{--    @if (isset($editid))--}}
+    {{--        @php--}}
+    {{--        $sqledit = "SELECT * FROM category WHERE category_id='$editid'";--}}
+    {{--        $qsqledit = mysqli_query($con, $sqledit);--}}
+    {{--        $rsedit = mysqli_fetch_array($qsqledit);--}}
+    {{--    @endphp--}}
 @endif
 
 <div class="breadcrumb-area bg-gray">
@@ -54,16 +54,25 @@
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12 offset-xl-2 col-xl-8 col-sm-12">
-                            <form action="" method="post" enctype="multipart/form-data" onsubmit="return validateform()">
+                            <form action="{{ route('store_category') }}" method="post" enctype="multipart/form-data"
+                                  onsubmit="return validateform()">
+                                @csrf
                                 <div class="checkbox-form checkout-review-order">
-                                    <h3 class="shoping-checkboxt-title">Category</h3>
+                                    @if (session('success'))
+                                        <div class="alert alert-success">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
+                                        <h3 class="shoping-checkboxt-title">Category</h3>
+
+
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <p class="single-form-row">
                                                 <label>Category Name</label><span class="required">*</span><span
                                                     class="errormsg" id="errcategory_name"></span></label>
                                                 <input type="text" name="category_name" id="category_name"
-                                                       class="form-control" value="{{ isset($rsedit) ? $rsedit['category_name'] : '' }}">
+                                                       class="form-control"">
                                             </p>
                                         </div>
 
@@ -73,10 +82,11 @@
                                                     class="errormsg" id="errcategory_icon"></span></label>
                                                 <input type="file" name="category_icon" id="category_icon"
                                                        class="form-control" accept="image/*">
-                                                @if (isset($rsedit))
-                                                    @if (!empty($rsedit['category_icon']))
-                                                        <img src="{{ asset('imgcategory/' . $rsedit['category_icon']) }}"
-                                                             style="width: 200px;height:250px;">
+                                                @if (isset($category))
+                                                    @if (!empty($category->category_icon))
+                                                        <img
+                                                            src="{{ asset('imgcategory/' . $category->category_icon) }}"
+                                                            style="width: 200px;height:250px;">
                                                     @else
                                                         <img src="{{ asset('img/No-Image-Available.png') }}"
                                                              style="width: 200px;height:250px;">
@@ -90,22 +100,23 @@
                                                 <label>Description</label><span class="errormsg"
                                                                                 id="errdescription"></span></label>
                                                 <textarea name="description" id="description"
-                                                          class="form-control">{{ isset($rsedit) ? $rsedit['description'] : '' }}</textarea>
+                                                          class="form-control"></textarea>
                                             </p>
                                         </div>
                                         <div class="col-lg-12">
                                             <p class="single-form-row">
-                                                <label>Status<span class="required">*</span> <span
-                                                        class="errormsg" id="errstatus"></span></label>
+                                                <label>Status<span class="required">*</span> <span class="errormsg"
+                                                                                                   id="errstatus"></span></label>
                                                 <select name="status" id="status" class="form-control">
                                                     <option value=''>Select Status</option>
                                                     @php
                                                         $statuses = ['Active', 'Inactive'];
                                                     @endphp
                                                     @foreach ($statuses as $status)
-                                                        <option value='{{ $status }}'
-                                                            {{ isset($rsedit) && $rsedit['status'] == $status ? 'selected' : '' }}>
-                                                            {{ $status }}</option>
+                                                        <option
+                                                            value='{{ $status }}' {{ old('status', isset($category) ? $category->status : '') == $status ? 'selected' : '' }}>
+                                                            {{ $status }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </p>
@@ -114,8 +125,8 @@
                                         <div class="col-lg-12">
                                             <p class="single-form-row">
                                             <hr>
-                                            <center><input type="submit" name="submit" id="submit"
-                                                           class="form-control" style="width: 200px;"></center>
+                                            <center><input type="submit" name="submit" id="submit" class="form-control"
+                                                           style="width: 200px;"></center>
                                             </p>
                                         </div>
                                     </div>

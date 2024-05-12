@@ -13,6 +13,8 @@ Route::get('/product/{id}', [\App\Http\Controllers\ProductController::class, 'sh
 
 //Route::get('/product/{id}', 'ProductController@show')->name('product.show')/;
 Route::get('/about-us', [HomeController::class, 'about'])->name('about');
+
+
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
 
@@ -49,7 +51,8 @@ Route::get('/view_billing_customer', [\App\Http\Controllers\CustomerController::
 Route::get('/step_add_product_1', [\App\Http\Controllers\ProductController::class, 'step_add_product_1'])->name('step_add_product_1');
 Route::get('/product_store', [\App\Http\Controllers\ProductController::class, 'step_add_product_1'])->name('product.store');
 Route::get('/products_view', [\App\Http\Controllers\ProductController::class, 'products_view'])->name('products_view');
-Route::get('/step_add_product_2/{categoryid}', [ProductController::class, 'step_add_product_2'])->name('step_add_product_2');
+Route::get('/my_products', [\App\Http\Controllers\ProductController::class, 'my_products'])->name('my_products');
+Route::get('/step_add_product_2/{category_id}', [ProductController::class, 'step_add_product_2'])->name('step_add_product_2');
 Route::get('/reverse_product/{categoryid}', [ProductController::class, 'reverse_product'])->name('reverse_product');
 Route::get('/message_box', [\App\Http\Controllers\MessageController::class, 'message_box'])->name('message_box');
 Route::get('/deposit', [\App\Http\Controllers\BillingController::class, 'deposit'])->name('deposit');
@@ -64,6 +67,13 @@ Route::get('/category', [\App\Http\Controllers\CategoryController::class, 'addCa
 Route::get('/view_category', [\App\Http\Controllers\CategoryController::class, 'viewCategory'])->name('view_category');
 
 // tiếp
+//thêm chức năng
+
+
+Route::post('/store_category', [\App\Http\Controllers\CategoryController::class, 'store'])->name('store_category');
+Route::post('/product_store', [\App\Http\Controllers\ProductController::class, 'store'])->name('product_store');
+Route::get('delete_category/{id}', [\App\Http\Controllers\CategoryController::class, 'destroy'])->name('delete_category');
+
 Route::get('/view_bidding_product', [BiddingController::class, 'viewBiddingProduct'])->name('view_bidding_product');
 Route::get('/close_bidding_product', [BiddingController::class, 'closeBiddingProduct'])->name('close_bidding_product');
 Route::get('/view_winners', [WinnerController::class, 'viewWinners'])->name('view_winners');

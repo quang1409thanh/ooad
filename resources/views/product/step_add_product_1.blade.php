@@ -18,7 +18,7 @@
                 @endphp
                 <div class="col-md-4 w3l_banner_nav_right_banner3_btml">
                     <div class="view view-tenth"
-                         onclick="window.location='{{ route("step_add_product_2", ["categoryid" => $category->category_id]) }}'"
+                         onclick="window.location='{{ route("step_add_product_2", ["category_id" => $category->category_id]) }}'"
                          style="cursor:pointer;">
                         <img src="{{ asset($imgname) }}" style="height:280px;width: 100%;" class="img-responsive"/>
                         <div class="mask">

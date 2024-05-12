@@ -11,8 +11,7 @@
                 </ul>
             </div>
         </div>
-    </div>
-</div>
+    </div></div>
 <!-- breadcrumb-area end -->
 
 <!-- content-wraper start -->

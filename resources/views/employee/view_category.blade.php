@@ -2,12 +2,12 @@
 
 @if (isset($delid))
     @php
-//        $sql = "DELETE FROM category WHERE category_id='$delid'";
-//        $qsql = mysqli_query($con, $sql);
-//        if (mysqli_affected_rows($con) == 1) {
-//            echo "<script>alert('Category record deleted successfully...');</script>";
-//            echo "<script>window.location='viewcategory.php';</script>";
-//        }
+        //        $sql = "DELETE FROM category WHERE category_id='$delid'";
+        //        $qsql = mysqli_query($con, $sql);
+        //        if (mysqli_affected_rows($con) == 1) {
+        //            echo "<script>alert('Category record deleted successfully...');</script>";
+        //            echo "<script>window.location='viewcategory.php';</script>";
+        //        }
     @endphp
 @endif
 
@@ -33,6 +33,12 @@
                         <div class="col-lg-12 col-xl-12 col-sm-12">
                             <form action="" method="post">
                                 <div class="checkbox-form checkout-review-order">
+                                    @if (session('success'))
+                                        <div class="alert alert-success">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
+
                                     <h3 class="shoping-checkboxt-title">View Category</h3>
                                     <div class="row">
                                         <div class="col-lg-12">
@@ -68,9 +74,7 @@
                                                         <td>
                                                             <a href='category.php?editid={{ $category->category_id }}'
                                                                class='btn btn-info'>Edit</a>
-                                                            <a href='viewcategory.php?delid={{ $category->category_id }}'
-                                                               class='btn btn-danger'
-                                                               onclick='return confirmdelete()'>Delete</a>
+                                                            <a href='{{ route("delete_category", $category->category_id) }}' class='btn btn-danger' onclick='return confirmdelete()'>Delete</a>
                                                         </td>
                                                     </tr>
                                                 @endforeach

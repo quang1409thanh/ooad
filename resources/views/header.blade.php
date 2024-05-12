@@ -80,7 +80,7 @@
                                                                 <ul class="open-dropdown setting">
                                                                     <li><a href="{{ route('step_add_product_1') }}">Add
                                                                             Products</a></li>
-                                                                    <li><a href="{{ route('products_view') }}">View
+                                                                    <li><a href="{{ route('my_products') }}">View
                                                                             Products</a></li>
                                                                 </ul>
                                                             </li>
