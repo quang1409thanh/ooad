@@ -21,10 +21,11 @@
             <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
                 <div class="contact-form-inner">
                     <h2>Product Entry</h2>
-                    <form action="{{ route('product.store') }}" method="post" class="creditly-card-form agileinfo_form"
+                    <form action="{{ route('product_store') }}" method="post" class="creditly-card-form agileinfo_form"
                           enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="category_id" value="{{ request()->input('categoryid') }}">
+                        <input type="hidden" name="category_id" value="{{$id}}">
+
                         <div class="row">
                             <div class="col-md-6 col-lg-6">
                                 <div class="controls">
@@ -52,7 +53,8 @@
                             </div>
                         </div>
 
-                        <div class="row ">&nbsp;<br>
+                        <div class="row ">
+                            &nbsp;<br>
                             <div class="col-md-12 col-lg-12 table table-bordered">
                                 <div class="row ">
                                     <div class="col-md-3 col-lg-3">
@@ -62,26 +64,11 @@
                                             <span id='idproduct_image' style="color:red;"></span>
                                             <input name="product_image[]" id="product_image" class="form-control"
                                                    type="file" placeholder="product images" accept="image/*" required
-                                                   onchange="document.getElementById('img0').src = window.URL.createObjectURL(this.files[0])">
-                                            <?php
-                                            if (isset($_GET['editid'])) {
-                                            foreach ($arrimg as $imgnm) {
-                                                ?>
-                                            <center><img src='imgproduct/<?php echo $imgnm; ?>' style="width:100%;">
-                                            </center>
-                                                <?php
-                                            }
-                                            } else {
-                                                ?>
+                                                   multiple>
                                             <center><img src='images/upload.png' style="width:125px;height: 100px;"
                                                          id="img0"></center>
-                                                <?php
-                                            }
-                                            ?>
                                         </div>
                                     </div>
-
-
                                     <hr id="divafterimg">
                                 </div>
                                 <center>
@@ -94,9 +81,8 @@
                         </div>
                         <script>
                             function addmoreimage() {
-                                //divafterimg
                                 var x = 'a' + Math.floor((Math.random() * 1000000000) + 1);
-                                $('<div class="col-md-3 col-lg-3" id="' + x + '" ><div class="table table-bordered"><label class="control-label" style="width: 100%;"> &nbsp; <b>Upload image</b> <span style="float: right;cursor: pointer;" class="btn-danger" onclick="removediv(`' + x + '`)">&nbsp;X&nbsp;</span></label><input name="product_image[]" id="product_image" class="form-control" type="file" placeholder="product images" accept="image/*" required multiple    onchange="document.getElementById(`b' + x + '`).src = window.URL.createObjectURL(this.files[0])"><center><img src="images/upload.png" id="b' + x + '" style="width:125px;height: 100px;"></center></div></div>').insertBefore("#divafterimg");
+                                $('<div class="col-md-3 col-lg-3" id="' + x + '" ><div class="table table-bordered"><label class="control-label" style="width: 100%;"> &nbsp; <b>Upload image</b> <span style="float: right;cursor: pointer;" class="btn-danger" onclick="removediv(`' + x + '`)">&nbsp;X&nbsp;</span></label><input name="product_image[]" id="product_image" class="form-control" type="file" placeholder="product images" accept="image/*" required multiple><center><img src="images/upload.png" id="b' + x + '" style="width:125px;height: 100px;"></center></div></div>').insertBefore("#divafterimg");
                             }
 
                             function removediv(x) {
@@ -124,13 +110,13 @@
                                 <input name="start_date_time" class="form-control" type="date"
                                        placeholder="start date and time" min="{{ date('Y-m-d') }}"
                                        value="{{ isset($_GET['editid']) ? date('Y-m-d', strtotime($product->start_date_time)) : date('Y-m-d') }}"
-                                    {{ isset($_GET['editid']) ? 'readonly style=background-color:#fcf8e3;' : '' }}>
+                                        {{ isset($_GET['editid']) ? 'readonly style=background-color:#fcf8e3;' : '' }}>
                             </div>
                             <div class="col-md-6 col-lg-6">
                                 <label class="control-label">Start time</label>
                                 <input class="form-control" name="start_time" type="time" placeholder="Start time"
                                        value="{{ isset($_GET['editid']) ? date('H:i', strtotime($product->start_date_time)) : date('H:i') }}"
-                                    {{ isset($_GET['editid']) ? 'readonly style=background-color:#fcf8e3;' : '' }}>
+                                        {{ isset($_GET['editid']) ? 'readonly style=background-color:#fcf8e3;' : '' }}>
                             </div>
                         </div>
 

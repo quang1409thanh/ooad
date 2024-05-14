@@ -3,6 +3,7 @@
 use App\Http\Controllers\BiddingController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\SSEController;
 use App\Http\Controllers\WinnerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
@@ -13,6 +14,8 @@ Route::get('/product/{id}', [\App\Http\Controllers\ProductController::class, 'sh
 
 //Route::get('/product/{id}', 'ProductController@show')->name('product.show')/;
 Route::get('/about-us', [HomeController::class, 'about'])->name('about');
+
+
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
 
@@ -49,10 +52,16 @@ Route::get('/view_billing_customer', [\App\Http\Controllers\CustomerController::
 Route::get('/step_add_product_1', [\App\Http\Controllers\ProductController::class, 'step_add_product_1'])->name('step_add_product_1');
 Route::get('/product_store', [\App\Http\Controllers\ProductController::class, 'step_add_product_1'])->name('product.store');
 Route::get('/products_view', [\App\Http\Controllers\ProductController::class, 'products_view'])->name('products_view');
-Route::get('/step_add_product_2/{categoryid}', [ProductController::class, 'step_add_product_2'])->name('step_add_product_2');
+Route::get('/my_products', [\App\Http\Controllers\ProductController::class, 'my_products'])->name('my_products');
+Route::get('/step_add_product_2/{category_id}', [ProductController::class, 'step_add_product_2'])->name('step_add_product_2');
 Route::get('/reverse_product/{categoryid}', [ProductController::class, 'reverse_product'])->name('reverse_product');
 Route::get('/message_box', [\App\Http\Controllers\MessageController::class, 'message_box'])->name('message_box');
 Route::get('/deposit', [\App\Http\Controllers\BillingController::class, 'deposit'])->name('deposit');
+Route::post('/depositing', [\App\Http\Controllers\BillingController::class, 'store'])->name('depositing');
+Route::get('/payment_receipt/{payment_id}', [\App\Http\Controllers\PaymentController::class, 'showReceipt'])->name('payment_receipt');
+//Route::get('/receipt', [\App\Http\Controllers\PaymentController::class, 'showReceipt'])->name('payment_receipt');
+
+
 Route::get('/employee_login', [\App\Http\Controllers\EmployeeController::class, 'employee_login'])->name('employee_login');
 
 // quản lý nhân viên
@@ -64,6 +73,14 @@ Route::get('/category', [\App\Http\Controllers\CategoryController::class, 'addCa
 Route::get('/view_category', [\App\Http\Controllers\CategoryController::class, 'viewCategory'])->name('view_category');
 
 // tiếp
+//thêm chức năng
+
+Route::post('/post_bidding', [BiddingController::class, 'submitBidding'])->name('post_bidding');
+
+Route::post('/store_category', [\App\Http\Controllers\CategoryController::class, 'store'])->name('store_category');
+Route::post('/product_store', [\App\Http\Controllers\ProductController::class, 'store'])->name('product_store');
+Route::get('delete_category/{id}', [\App\Http\Controllers\CategoryController::class, 'destroy'])->name('delete_category');
+
 Route::get('/view_bidding_product', [BiddingController::class, 'viewBiddingProduct'])->name('view_bidding_product');
 Route::get('/close_bidding_product', [BiddingController::class, 'closeBiddingProduct'])->name('close_bidding_product');
 Route::get('/view_winners', [WinnerController::class, 'viewWinners'])->name('view_winners');
@@ -82,6 +99,7 @@ Route::get('/employeeaccount', [EmployeeController::class, 'employeeDashboard'])
 Route::get('/employee_profile', [EmployeeController::class, 'employee_profile'])->name('employee_profile');
 Route::get('/update_employee', [EmployeeController::class, 'update_employee'])->name('update_employee');
 Route::post('/update_password', [EmployeeController::class, 'update_password'])->name('update_password');
+Route::get('/sse/{product_id}', [SSEController::class, 'stream']);
 Route::get('/change_password', [EmployeeController::class, 'change_password'])->name('employee_change_password');
 //Route::get('/logout', [\App\Models\Message::class, 'logout'])->name('logout');
 
@@ -100,3 +118,5 @@ Route::get('/displayreversebid', 'ProductController@search')->name('displayrever
 Route::get('/token', function () {
     return csrf_token();
 });
+Route::get('/sse', [SSEController::class, 'stream'])->name('see');
+Route::get('/sse-updates', [SSEController::class, 'sendSSE'])->name('sse-updates');

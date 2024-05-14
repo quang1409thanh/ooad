@@ -41,7 +41,7 @@
                             <p class="coupon-input form-row-first">
                                 <label>Mobile No. <span class="required">*</span> <span class="errormsg"
                                                                                         id="errmobile_no"></span></label>
-                                <input type="text" name="mobile_no" id="mobile_no" value="+92"
+                                <input type="text" name="mobile_no" id="mobile_no" value="+84"
                                        onkeypress="return isNumber(event)">
                             </p>
                             <p class="coupon-input form-row-last">
@@ -205,7 +205,7 @@
         var oldvalue = $(this).val();
         var field = this;
         setTimeout(function () {
-            if (field.value.indexOf('+92') !== 0) {
+            if (field.value.indexOf('+84') !== 0) {
                 $(field).val(oldvalue);
             }
         }, 1);

@@ -17,7 +17,6 @@
 <div class="banner">
     <div class="privacy about">
         <h3>View Product</h3>
-        <h3>View Product</h3>
         <div class="checkout-left">
             <div class="col-md-12">
                 <table id="datatable" class="table table-striped table-bordered dataTable" cellspacing="0" width="100%"
@@ -41,33 +40,33 @@
                     <tbody>
                     @foreach ($products as $product)
                         <tr>
-                                <div class="w3-content w3-section" style="max-width:500px">
-                                    @if (true)
+                            <div class="w3-content w3-section" style="max-width:500px">
+                                @if (true)
                                     <td><img src='imgproduct/{{ $product->product_image }}' width='200px;'
                                              style='height:120px;'></td>
-                                    @else
-                                        No images available
-                                    @endif
-                                </div>
+                                @else
+                                    No images available
+                                @endif
+                            </div>
 
-                                <script>
-                                    var myIndex = 0;
-                                    carousel();
+                            <script>
+                                var myIndex = 0;
+                                carousel();
 
-                                    function carousel() {
-                                        var i;
-                                        var x = document.getElementsByClassName("mySlides{{ $product->id }}");
-                                        for (i = 0; i < x.length; i++) {
-                                            x[i].style.display = "none";
-                                        }
-                                        myIndex++;
-                                        if (myIndex > x.length) {
-                                            myIndex = 1
-                                        }
-                                        x[myIndex - 1].style.display = "block";
-                                        setTimeout(carousel, 9000);
+                                function carousel() {
+                                    var i;
+                                    var x = document.getElementsByClassName("mySlides{{ $product->id }}");
+                                    for (i = 0; i < x.length; i++) {
+                                        x[i].style.display = "none";
                                     }
-                                </script>
+                                    myIndex++;
+                                    if (myIndex > x.length) {
+                                        myIndex = 1
+                                    }
+                                    x[myIndex - 1].style.display = "block";
+                                    setTimeout(carousel, 9000);
+                                }
+                            </script>
                             @if (session()->has('employee_id'))
                                 <td>{{ $product->customer_name }}</td>
                             @endif

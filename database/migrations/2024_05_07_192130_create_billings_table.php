@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('billings', function (Blueprint $table) {
             $table->id('billing_id');
             $table->foreignId('customer_id')->constrained('customers', 'customer_id');
-            $table->foreignId('product_id')->constrained('products', 'product_id');
             $table->date('purchase_date');
             $table->float('purchase_amount', 10);
             $table->string('payment_type', 20);
@@ -28,13 +27,20 @@ return new class extends Migration
             $table->string('status', 10);
             $table->timestamps();
         });
+
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('billings');
+        Schema::table('billings', function (Blueprint $table) {
+            $table->dropForeign(['product_id']);
+            $table->dropColumn('product_id');
+        });
+
+//        Schema::dropIfExists('billings');
     }
 };

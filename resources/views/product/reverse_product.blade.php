@@ -53,7 +53,7 @@
                                 <div class="checkout-left">
 
                                     <div class="col-md-8 ">
-                                        <form action="" method="post" onsubmit="return validateform()"
+                                        <form action="{{route('add_reserve_product')}}" method="post" onsubmit="return validateform()"
                                               class="creditly-card-form agileinfo_form" enctype="multipart/form-data">
                                             <input type='hidden' name='category_id'
                                                    value="{{ $category->category_name ?? '' }}" readonly
