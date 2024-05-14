@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Billing extends Model
 {
     use HasFactory;
+
     protected $primaryKey = 'billing_id'; // Khai báo khóa chính của bảng
 
     protected $fillable = [
         'customer_id',
-        'product_id',
         'purchase_date',
         'purchase_amount',
         'payment_type',

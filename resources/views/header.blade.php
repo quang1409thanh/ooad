@@ -27,7 +27,7 @@
 
 <div class="wrapper home-3">
     <header>
-        <div class="header-top bg-black">
+        <div class="header-top bg-gradient">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-2 col-md-3 md-custom-12">
@@ -42,7 +42,7 @@
                                         <nav>
                                             <ul>
                                                 <li><a href="/">Home</a></li>
-                                                <li><a href="{{ route('about') }}">About</a></li>
+                                                <li><a href="{{ route('see') }}">About</a></li>
                                                 <!-- Đây là liên kết đến trang About -->
                                                 <li><a href="{{ route('contact') }}">Contact</a></li>
                                             </ul>
@@ -197,7 +197,7 @@
         </div>
         <!-- More Header Content -->
         <!-- header-mid-area start -->
-        <div class="header-mid-area header-mid-style-3 bg-black">
+        <div class="header-mid-area header-mid-style-3 bg-gradient">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">

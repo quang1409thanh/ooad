@@ -3,6 +3,7 @@
 use App\Http\Controllers\BiddingController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\SSEController;
 use App\Http\Controllers\WinnerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
@@ -56,6 +57,11 @@ Route::get('/step_add_product_2/{category_id}', [ProductController::class, 'step
 Route::get('/reverse_product/{categoryid}', [ProductController::class, 'reverse_product'])->name('reverse_product');
 Route::get('/message_box', [\App\Http\Controllers\MessageController::class, 'message_box'])->name('message_box');
 Route::get('/deposit', [\App\Http\Controllers\BillingController::class, 'deposit'])->name('deposit');
+Route::post('/depositing', [\App\Http\Controllers\BillingController::class, 'store'])->name('depositing');
+Route::get('/payment_receipt/{payment_id}', [\App\Http\Controllers\PaymentController::class, 'showReceipt'])->name('payment_receipt');
+//Route::get('/receipt', [\App\Http\Controllers\PaymentController::class, 'showReceipt'])->name('payment_receipt');
+
+
 Route::get('/employee_login', [\App\Http\Controllers\EmployeeController::class, 'employee_login'])->name('employee_login');
 
 // quản lý nhân viên
@@ -93,6 +99,7 @@ Route::get('/employeeaccount', [EmployeeController::class, 'employeeDashboard'])
 Route::get('/employee_profile', [EmployeeController::class, 'employee_profile'])->name('employee_profile');
 Route::get('/update_employee', [EmployeeController::class, 'update_employee'])->name('update_employee');
 Route::post('/update_password', [EmployeeController::class, 'update_password'])->name('update_password');
+Route::get('/sse/{product_id}', [SSEController::class, 'stream']);
 Route::get('/change_password', [EmployeeController::class, 'change_password'])->name('employee_change_password');
 //Route::get('/logout', [\App\Models\Message::class, 'logout'])->name('logout');
 
@@ -111,3 +118,5 @@ Route::get('/displayreversebid', 'ProductController@search')->name('displayrever
 Route::get('/token', function () {
     return csrf_token();
 });
+Route::get('/sse', [SSEController::class, 'stream'])->name('see');
+Route::get('/sse-updates', [SSEController::class, 'sendSSE'])->name('sse-updates');

@@ -6,6 +6,7 @@ use App\Models\Bidding;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ProductController extends Controller
 {
@@ -16,15 +17,12 @@ class ProductController extends Controller
         $product = Product::find($id);
         $products = Product::all(); // Lấy tất cả sản phẩm từ cơ sở dữ liệu
         $session = session();
-//        return view('products.index', compact('products')); // Truyền biến $products sang view
         $categories = Category::all();
         $similarProducts = Product::all();
         $product_images = $product->product_image;
         $category = $product->category->category_name;
-//        dd($category);
 // Phân tách chuỗi thành một mảng các đường dẫn
         $images = explode(',', $product_images);
-//        dd($image_paths);
 
         $bidder_list = Bidding::with('customer')
             ->where('product_id', $id)
@@ -35,11 +33,6 @@ class ProductController extends Controller
         return view('product_show', ['product' => $product], compact('products', 'categories', 'similarProducts', 'images', 'bidder_list'));
     }
 
-//    public function store(Request $request)
-//    {
-//        dd("test");
-//
-//    }
     public function store(Request $request)
     {
 //        dd("test");
@@ -125,4 +118,33 @@ class ProductController extends Controller
         $products = Product::all();
         return view('product.view_reverse_product', compact('products'));
     }
+
+    public function updatePriceSSE($id)
+    {
+        $productId = request()->query('product_id');
+
+        $product = Product::find($productId);
+        // Code để lấy và gửi giá trị cập nhật tới client sử dụng SSE
+        $response = new StreamedResponse(function () use ($product) {
+            while (true) {
+                // Lấy giá trị cập nhật (ví dụ: giá mới)
+                $newPrice = $product->ending_bid;// Logic để lấy giá mới từ database hoặc bất kỳ nguồn dữ liệu nào khác
+
+                // Gửi dữ liệu cập nhật tới client
+                echo "data: $newPrice\n\n";
+                ob_flush();
+                flush();
+                // Chờ một khoảng thời gian trước khi gửi giá trị tiếp theo (ví dụ: 1 giây)
+                sleep(1);
+            }
+        });
+
+        // Thiết lập header cho SSE
+        $response->headers->set('Content-Type', 'text/event-stream');
+        $response->headers->set('Cache-Control', 'no-cache');
+        $response->headers->set('Connection', 'keep-alive');
+
+        return $response;
+    }
+
 }

@@ -65,6 +65,26 @@ class EmployeeController extends Controller
 
     }
 
+    public function updatePriceSSE(Request $request)
+    {
+        dd($request);
+        header('Content-Type: text/event-stream');
+        header('Cache-Control: no-cache');
+
+        while (true) {
+            // Lấy giá mới từ cơ sở dữ liệu
+            $newPrice = $this->getNewPrice(); // Viết hàm này để lấy giá mới từ cơ sở dữ liệu của bạn
+
+            // Gửi giá mới tới máy khách
+            echo "data: $newPrice\n\n";
+            flush();
+
+            // Chờ một khoảng thời gian trước khi lấy giá mới
+            sleep(5); // Ví dụ: chờ 5 giây trước khi lấy giá mới
+        }
+    }
+
+
     public function change_password()
     {
         return view('employee.change_password');
@@ -80,6 +100,6 @@ class EmployeeController extends Controller
     {
         $employee_types = Employee::all();
         $statuses = Customer::all();
-        return view('employee.add_employee', compact('employee_types','statuses'));
+        return view('employee.add_employee', compact('employee_types', 'statuses'));
     }
 }

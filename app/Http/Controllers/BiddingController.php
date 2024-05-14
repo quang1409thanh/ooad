@@ -73,7 +73,7 @@ class BiddingController extends Controller
             $bidding->save();
 
             // Lấy ID của đấu giá vừa được thêm
-            $biddingid = $bidding->id;
+            $biddingid = $bidding->bidding_id;
 
             // Cập nhật giá cuối cùng của sản phẩm
             $product = Product::find($request->input('product_id'));

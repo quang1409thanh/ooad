@@ -1683,7 +1683,7 @@
                         <div class="col-md-4 col-sm-4 ">
                             <div class="product-grid8 border">
                                 <div class="product-image8">
-                                    <a href="{{ route('product.single', $winner->proid) }}">
+                                    <a href="{{ route('product.show', $winner->proid) }}">
                                         <img class="pic-1" src="{{ $winner->product_image }}">
                                         <img class="pic-2" src="{{ $winner->winners_image }}">
                                     </a>

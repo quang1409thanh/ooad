@@ -306,7 +306,8 @@
 
                             <div class="price-box">
                                 <p><b>Actual product cost</b>: PKR{{ $product->product_cost }}</p>
-                                <h4>Current Bid Amount:<br>PKR{{ $product->ending_bid }}</h4>
+                                <h4>Current Bid Amount:<br>PKR<span id="currentBid">{{ $product->ending_bid }}</span>
+                                </h4>
                                 <input type='hidden' name='max_bid_amt' id='max_bid_amt'
                                        value='{{ $product->ending_bid + 5000 }}'>
 
@@ -345,11 +346,29 @@
                                                         </div>
                                                     </div>
                                                     <script>
+                                                        document.addEventListener('DOMContentLoaded', function () {
+                                                            const productId = {{ $product->id }};
+                                                            const eventSource = new EventSource(`/sse/${productId}`);
+
+                                                            eventSource.onmessage = function (event) {
+                                                                const data = JSON.parse(event.data);
+                                                                document.getElementById('currentBid').innerText = data.ending_bid;
+                                                            };
+
+                                                            eventSource.onerror = function () {
+                                                                console.error('Error receiving SSE.');
+                                                                eventSource.close();
+                                                            };
+                                                        });
+
                                                         function enableBidForm() {
-                                                            var startingTime = new Date("{{ date("M d, Y H:i:s", strtotime($product->start_date_time)) }}").getTime();
+                                                            var startingTime = new
+                                                            Date("{{ date("M d, Y H:i:s", strtotime($product->start_date_time)) }}
+                                                                ").getTime();
                                                             var currentTime = new Date().getTime();
                                                             var bidAmountDiv = document.getElementById("bidAmountDiv");
-                                                            var purchaseAmountInput = document.getElementById("purchase_amount");
+                                                            var purchaseAmountInput =
+                                                                document.getElementById("purchase_amount");
                                                             if (startingTime === currentTime) {
                                                                 bidAmountDiv.style.display = "block";
                                                                 purchaseAmountInput.removeAttribute("disabled");
