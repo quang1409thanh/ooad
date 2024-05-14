@@ -35,9 +35,6 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-//        dd("test");
-
-//        dd(request()->all());
         // Validate form data
 
         $validatedData = $request;
@@ -69,7 +66,8 @@ class ProductController extends Controller
             'product_image' => json_encode($imagePaths), // Store image paths as JSON array
         ]);
 
-        return redirect()->route('product.step_add_product_2')->with('success', 'Product created successfully!');
+        alert()->success('Thành Công', 'Bạn đã thêm sản phẩm thành công');
+        return redirect()->back()->with('success', 'Product created successfully!');
     }
 
     public function my_products()

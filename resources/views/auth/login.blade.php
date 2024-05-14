@@ -1,4 +1,6 @@
 @include('header')
+@include('sweetalert::alert')
+
 <!-- breadcrumb-area start -->
 <div class="breadcrumb-area bg-gray">
     <div class="container-fluid">
@@ -23,6 +25,15 @@
                 <div class="customer-login-register">
                     <center><h3>Login</h3></center>
                     <div class="login-Register-info">
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+
                         <form action="{{ url('/customer_login') }}" method="post"
                               onsubmit="return validatecustomer();">
                             @csrf

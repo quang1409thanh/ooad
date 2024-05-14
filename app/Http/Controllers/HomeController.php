@@ -16,6 +16,7 @@ class HomeController extends Controller
 //        dd($products);
 //        return view('products.index', compact('products')); // Truyền biến $products sang view
         $categories = Category::all();
+//        dd();
         return view('home', compact('products', 'categories'));
     }
 

@@ -32,16 +32,19 @@ Route::get('/employeeaccount', 'ProductController@index')->name('employee.accoun
 Route::get('/empprofile', 'ProductController@index')->name('employee.profile');
 Route::get('/empchangepassword', 'ProductController@index')->name('emp.change.password');
 
+
+//customer.
 Route::get('/register', [\App\Http\Controllers\HomeController::class, 'showRegistrationForm'])->name('register');
 Route::get('/customer_login', [\App\Http\Controllers\HomeController::class, 'showLoginForm'])->name('customer_login');
-Route::get('/auction/{auctiontype}', [\App\Http\Controllers\HomeController::class, 'showAuction'])->name('auction');
 Route::post('/register', [\App\Http\Controllers\CustomerController::class, 'register']);
+Route::post('/customer_login', [\App\Http\Controllers\CustomerController::class, 'login']);
+Route::get('/customer_account', [\App\Http\Controllers\CustomerController::class, 'customerAccount'])->name('customer_account');
+
+Route::get('/auction/{auctiontype}', [\App\Http\Controllers\HomeController::class, 'showAuction'])->name('auction');
 Route::get('/register_lock', [\App\Http\Controllers\EmployeeController::class, 'register_lock'])->name('register_lock');
 
-Route::post('/customer_login', [\App\Http\Controllers\CustomerController::class, 'login']);
 Route::post('/employee_login', [\App\Http\Controllers\EmployeeController::class, 'login']);
 Route::get('/logout', [\App\Http\Controllers\CustomerController::class, 'logout'])->name('logout');
-Route::get('/customeraccount', [\App\Http\Controllers\CustomerController::class, 'customeraccount'])->name('customeraccount');
 Route::get('/employee_account', [\App\Http\Controllers\EmployeeController::class, 'employee_account'])->name('employee_account');
 Route::get('/customer_profile', [\App\Http\Controllers\CustomerController::class, 'customer_profile'])->name('customer_profile');
 Route::get('/customer_change_password', [\App\Http\Controllers\CustomerController::class, 'customer_change_password'])->name('customer_change_password');

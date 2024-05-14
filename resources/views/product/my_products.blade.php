@@ -9,8 +9,12 @@
 @if (session('error'))
     <div class="alert alert-danger">
         {{ session('error') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 @endif
+
 
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 

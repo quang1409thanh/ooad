@@ -1,11 +1,20 @@
 @include('header')
-
 <!-- banner -->
 <div class="banner">
     {{--    @include('sidebar')--}}
     <div class="w3l_banner_nav_right">
         <div class="w3ls_w3l_banner_nav_right_grid w3ls_w3l_banner_nav_right_grid_sub">
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
             <h3 class="w3l_fruit">Customer Panel</h3>
+
             <div class="row">
                 <!-- Phần Deposit Amount -->
                 <div class="col-md-3 w3ls_w3l_banner_left w3ls_w3l_banner_left_asdfdfd">

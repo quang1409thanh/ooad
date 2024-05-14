@@ -58,7 +58,7 @@
                                                     <div class="product-image box" style="height:350px;width:100%;">
                                                         <a href="{{ route('product.show', $product->product_id) }}">
                                                             <img class="primary-image"
-                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('imgproduct/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
+                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('product_images/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
                                                                  alt="" style="width:100%; height:100%">
                                                         </a>
                                                         <div
@@ -128,13 +128,23 @@
                                     <div class="product-active-3 owl-carousel">
 
                                         @foreach($products as $product)
+
                                             <div class="col">
                                                 <!-- single-product-wrap start -->
                                                 <div class="single-product-wrap">
                                                     <div class="product-image box" style="height:350px;width:100%;">
                                                         <a href="{{ route('product.show', $product->product_id) }}">
+                                                            @php
+                                                                if (is_string($product->product_image)) {
+                                                                    $firstImage = json_decode($product->product_image, true)[0] ?? 'noimage.gif';
+                                                                } else if (is_array($product->product_image)) {
+                                                                    $firstImage = $product->product_image[0] ?? 'noimage.gif';
+                                                                } else {
+                                                                    $firstImage = 'noimage.gif';
+                                                                }                                                            @endphp
+
                                                             <img class="primary-image"
-                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('imgproduct/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
+                                                                 src="{{ asset('product_images/' . $firstImage) }}"
                                                                  alt="" style="width:100%; height:100%">
                                                         </a>
                                                         <div
@@ -213,7 +223,7 @@
                                                     <div class="product-image box" style="height:350px;width:100%;">
                                                         <a href="{{ route('product.show', $product->product_id) }}">
                                                             <img class="primary-image"
-                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('imgproduct/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
+                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('product_images/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
                                                                  alt="" style="width:100%; height:100%">
                                                         </a>
                                                         <div
@@ -292,7 +302,7 @@
                                                     <div class="product-image box" style="height:350px;width:100%;">
                                                         <a href="{{ route('product.show', $product->product_id) }}">
                                                             <img class="primary-image"
-                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('imgproduct/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
+                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('product_images/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
                                                                  alt="" style="width:100%; height:100%">
                                                         </a>
                                                         <div
@@ -371,7 +381,7 @@
                                                     <div class="product-image box" style="height:350px;width:100%;">
                                                         <a href="{{ route('product.show', $product->product_id) }}">
                                                             <img class="primary-image"
-                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('imgproduct/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
+                                                                 src="{{ explode(',',$product->product_image)[0] ? asset('product_images/' . explode(',',$product->product_image)[0]) : asset('images/noimage.gif') }}"
                                                                  alt="" style="width:100%; height:100%">
                                                         </a>
                                                         <div

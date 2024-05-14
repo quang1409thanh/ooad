@@ -24,6 +24,7 @@
     </style>
 </head>
 <body style="overflow-x: hidden">
+@include('sweetalert::alert')
 
 <div class="wrapper home-3">
     <header>
@@ -42,7 +43,7 @@
                                         <nav>
                                             <ul>
                                                 <li><a href="/">Home</a></li>
-                                                <li><a href="{{ route('see') }}">About</a></li>
+                                                <li><a href="{{ route('about') }}">About</a></li>
                                                 <!-- Đây là liên kết đến trang About -->
                                                 <li><a href="{{ route('contact') }}">Contact</a></li>
                                             </ul>
@@ -59,7 +60,7 @@
                                                 <div class="top-dropdown">
                                                     <ul>
                                                         @if (session()->has('customer_id'))
-                                                            <li><a href="{{ route('customeraccount') }}">Main</a></li>
+                                                            <li><a href="{{ route('customer_account') }}">Main</a></li>
                                                             <li><a href="{{ route('message_box') }}">Message Box</a>
                                                             </li>
                                                             <li class="drodown-show">
@@ -307,11 +308,11 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col">
-                                <div class="slider-text-info style-2 text-center slider-text-animation">
-                                    <h1 class="title1"><span class="text">Online Auction..</span></h1>
-                                    <p>Pakistan's top rated auction platform..</p>
-                                    <div class="slier-btn-1">
-                                        <a title="Bid now"
+                                <div class="slider-text-info style-2 text-center slider-text-animation" >
+                                    <h1 class="title1" style="color: black"><span class="text">Online Auction..</span></h1>
+                                    <p style="color: black">VietNam's top rated auction platform..</p>
+                                    <div class="slier-btn-1" >
+                                        <a title="Bid now" style="color: black"
                                            href="{{ url('latestauction', ['auctiontype' => 'Latest Auctions']) }}"
                                            class="shop-btn">View Latest Auctions</a>
                                     </div>
@@ -328,7 +329,7 @@
                             <div class="col">
                                 <div class="slider-text-info style-2 text-center slider-text-animation">
                                     <h1 class="title1"><span class="text">Online Auction.. </span></h1>
-                                    <p>Pakistan's top rated auction platform..</p>
+                                    <p>VietNam's top rated auction platform..</p>
                                     <div class="slier-btn-1">
                                         <a title="Bid now"
                                            href="{{ url('featured', ['auctiontype' => 'featured Auctions']) }}"
@@ -347,7 +348,7 @@
                             <div class="col">
                                 <div class="slider-text-info style-2 text-center slider-text-animation">
                                     <h1 class="title1"><span class="text">Online Auction.. </span></h1>
-                                    <p>Pakistan's top rated auction platform..</p>
+                                    <p>VietNam's top rated auction platform..</p>
                                     <div class="slier-btn-1">
                                         <a title="Bid now"
                                            href="{{ url('upcominauction', ['auctiontype' => 'Upcoming Auctions']) }}"

@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CustomerController extends Controller
 {
@@ -34,6 +35,8 @@ class CustomerController extends Controller
         $customer->status = 'Active';
         $customer->save();
 
+        alert()->success('Đăng Ký Thành Công', 'Chúc mừng bạn đã đăng ký thành công');
+
         // Redirect the user after successful registration
         return redirect()->route('customer_login')->with('success', 'Customer Registration done successfully.');
     }
@@ -48,22 +51,23 @@ class CustomerController extends Controller
 
         if (!$customer || !Hash::check($credentials['password'], $customer->password)) {
             // Xác thực thất bại
-            return redirect()->route('customer_login')->with('error', 'Invalid credentials');
+            alert()->error('Đăng nhập Thất bại', 'Vui lòng kiểm tra lại thông tin đăng nhập');
+            return redirect()->route('customer_login');
         }
         session(['customer_id' => $customer->customer_id]);
         // Xác thực thành công, đăng nhập người dùng
 //        Auth::login($customer);
-
-
+        alert()->success('Đăng nhập Thành công', 'Chúc mừng bạn đã đăng nhập thành công');
+//        Alert::success('Success Title', 'Success Message');
         // Redirect sau khi đăng nhập thành công
-        return redirect()->route('customeraccount'); // Redirect to customer account page
+        return redirect()->route('customer_account'); // Redirect to customer account page
 
     }
 
-    public function customeraccount()
+    public function customerAccount()
     {
         $categories = Category::all();
-        return view('customer.customeraccount', compact('categories'));
+        return view('customer.customer_account', compact('categories'));
     }
 
     public function customer_profile()

@@ -39,6 +39,16 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
+    public function getFirstImageAttribute()
+    {
+        if (is_string($this->product_image)) {
+            return json_decode($this->product_image, true)[0] ?? 'noimage.gif';
+        } else if (is_array($this->product_image)) {
+            return $this->product_image[0] ?? 'noimage.gif';
+        } else {
+            return 'noimage.gif';
+        }
+    }
 
     public function scopeActive($query)
     {
