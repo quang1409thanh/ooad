@@ -25,7 +25,7 @@
                                                     </tr>
                                                     <tr>
                                                         <th colspan="3">
-                                                            <center>Islamabad</center>
+                                                            <center>HÀ NỘI</center>
                                                         </th>
                                                     </tr>
                                                     <tr>

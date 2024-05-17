@@ -24,4 +24,30 @@ class MessageController extends Controller
         $messages = Message::all();
         return view('message.view_messages',compact('messages'));
     }
+
+    public function getMessages($productId)
+    {
+        $product = Product::with('customer')->find($productId);
+        return view('chat', compact('product'));
+    }
+
+    public function sendMessage(Request $request)
+    {
+        $chatMessage = new Message();
+        $chatMessage->message = $request->message;
+        $chatMessage->product_id = $request->product_id;
+        $chatMessage->sender_id = $request->senderid;
+        $chatMessage->receiver_id = $request->receiverid;
+        $chatMessage->save();
+
+        $messages = Message::where('product_id', $request->product_id)->get();
+        return view('chatmessages', compact('messages'));
+    }
+
+    public function loadMessages($productId)
+    {
+        $messages = Message::where('product_id', $productId)->get();
+        return view('chatmessages', compact('messages'));
+    }
+
 }

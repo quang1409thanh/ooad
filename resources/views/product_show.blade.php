@@ -1,4 +1,7 @@
 @include('header')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style>
     .header-navigation {
@@ -137,7 +140,6 @@
                                 </button>
                             </div>
                         @endif
-
                         <nav class="header-navigation">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
@@ -151,15 +153,15 @@
                             <div class="product-gallery">
                                 <div class="product-gallery-thumbnails">
                                     <ol class="thumbnails-list list-unstyled">
-                                        @if(is_array($images))
-                                            @foreach($images as $image)
-                                                <li><img src="{{ asset('imgproduct/' . $image) }}" alt=""></li>
+                                        @if(is_array($product->all_image_paths))
+                                            @foreach($product->all_image_paths as $image)
+                                                <li><img src="{{ asset('product_images/' . $image) }}" alt=""></li>
                                             @endforeach
                                         @endif
                                     </ol>
                                 </div>
                                 <div class="product-gallery-featured">
-                                    <img src="{{ asset('imgproduct/' . $images[0]) }}" alt="">
+                                    <img src="{{ asset('product_images/' . $product->all_image_paths[0]) }}" alt="">
                                 </div>
                             </div>
 
@@ -192,15 +194,11 @@
                                                                             <tbody>
                                                                             <tr>
                                                                                 <th>Uploaded by :</th>
-                                                                                <td>{{ $product->customer_name }}</td>
+                                                                                <td>{{ $product->customer->customer_name }}</td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <th>Product Code :</th>
                                                                                 <td>{{ $product->product_id }}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <th>Product warranty :</th>
-                                                                                <td>{{ $product->product_warranty }}</td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <th>Company :</th>
@@ -235,7 +233,7 @@
                                                                 @else
                                                                     @foreach ($bidder_list as $bidder)
                                                                         {{ $bidder->customer->customer_name }} bidded
-                                                                        PKR{{ $bidder->bidding_amount }}
+                                                                        VND{{ $bidder->bidding_amount }}
                                                                         on {{ $bidder->bidding_date_time }}
                                                                         <hr>
                                                                         @endforeach
@@ -258,61 +256,25 @@
                                 <h2>{{ $product->product_name }}</h2>
                                 <div class="rating-box">
                                     <ul class="rating">
-                                        <li><i class="fa fa-star"><b>{{ $product->category_name }}</b></i></li>
+                                        <li><i class="fa fa-star"><b>{{ $product->category->category_name }}</b></i>
+                                        </li>
                                     </ul>
                                 </div>
                                 <p>
                                 <h4>Time Remaining<p id="demo{{ $product->product_id }}" style="color: red;"></p></h4>
                                 </p>
-                                <script>
-                                    var countDownDate = new Date("{{ date("M d, Y H:i:s", strtotime($product->end_date_time)) }}").getTime();
 
-                                    var x = setInterval(function () {
-                                        var now = new Date().getTime();
-                                        var distance = countDownDate - now;
-                                        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                                        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                                        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                                        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                                        document.getElementById("demo{{ $product->product_id }}").innerHTML = days + "days " + hours + "hrs " +
-                                            minutes + "min " + seconds + "sec ";
-                                        if (distance < 0) {
-                                            clearInterval(x);
-                                            document.getElementById("demo{{ $product->product_id }}").innerHTML = "EXPIRED";
-                                            document.getElementById("divbidstatus").innerHTML = '<div class="snipcart-details agileinfo_single_right_details"><input type="button" name="submit" value="Closed" class="button" disabled /></div>';
-                                        }
-                                    }, 1000);
-                                </script>
-
-                                <script>
-                                    function countdowntimer(id, time) {
-                                        var countDownDate = new Date(time).getTime();
-                                        var x = setInterval(function () {
-                                            var now = new Date().getTime();
-                                            var distance = countDownDate - now;
-                                            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                                            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                                            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                                            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                                            document.getElementById("countdowntime" + id).innerHTML = "<b  style='color: red;'>Time Remaining</b> <br><b>" + days + "Days " + hours + "hrs " + minutes + "min " + seconds + "sec</b>";
-                                            if (distance < 0) {
-                                                clearInterval(x);
-                                                document.getElementById("countdowntime" + id).innerHTML = "<center><b  style='color: red;'>EXPIRED</b></center>";
-                                            }
-                                        }, 1000);
-                                    }
-                                </script>
                             </div>
 
                             <div class="price-box">
-                                <p><b>Actual product cost</b>: PKR{{ $product->product_cost }}</p>
-                                <h4>Current Bid Amount:<br>PKR<span id="currentBid">{{ $product->ending_bid }}</span>
+                                <p><b>Actual product cost</b>: VND{{ $product->product_cost }}</p>
+                                <h4>Current Bid Amount:<br>VND<span id="currentBid">{{ $product->ending_bid }}</span>
                                 </h4>
                                 <input type='hidden' name='max_bid_amt' id='max_bid_amt'
                                        value='{{ $product->ending_bid + 5000 }}'>
 
-                                <form action="{{route('post_bidding')}}" method="post"
-                                      onsubmit="return confirmbidding()">
+                                <form id="biddingForm" action="{{ route('post_bidding') }}" method="post"
+                                      onsubmit="return confirmBidding(event)">
                                     @csrf
                                     <input type='hidden' name='ending_bid' id='ending_bid'
                                            value='{{ $product->ending_bid }}'>
@@ -337,74 +299,38 @@
                                             @else
                                                 <div id="divbidstatus">
                                                     <div class="w3_agileits_card_number_grid_left" id="bidAmountDiv">
-                                                        <div class="controls">
-                                                            <label class="control-label"><b>Enter Bid Amount</b></label>
+                                                        <label class="control-label"><b>Enter Bid Amount</b></label>
+                                                        <div class="controls"
+                                                             style="display: flex; align-items: center; flex-wrap: wrap;">
                                                             <input name="purchase_amount" id="purchase_amount"
                                                                    class="form-control" type="text"
-                                                                   placeholder="Enter amount" style="width:200px;"
+                                                                   placeholder="Enter amount"
+                                                                   style="flex: 1; margin-right: 10px;"
                                                                    autocomplete="off">
+                                                            <button type="button"
+                                                                    onclick="refreshPage({{ $product->id }})"
+                                                                    class="form-control"
+                                                                    style="flex: 0 0 100px; color: green;">Refresh
+                                                            </button>
                                                         </div>
                                                     </div>
-                                                    <script>
-                                                        document.addEventListener('DOMContentLoaded', function () {
-                                                            const productId = {{ $product->id }};
-                                                            const eventSource = new EventSource(`/sse/${productId}`);
-
-                                                            eventSource.onmessage = function (event) {
-                                                                const data = JSON.parse(event.data);
-                                                                document.getElementById('currentBid').innerText = data.ending_bid;
-                                                            };
-
-                                                            eventSource.onerror = function () {
-                                                                console.error('Error receiving SSE.');
-                                                                eventSource.close();
-                                                            };
-                                                        });
-
-                                                        function enableBidForm() {
-                                                            var startingTime = new
-                                                            Date("{{ date("M d, Y H:i:s", strtotime($product->start_date_time)) }}
-                                                                ").getTime();
-                                                            var currentTime = new Date().getTime();
-                                                            var bidAmountDiv = document.getElementById("bidAmountDiv");
-                                                            var purchaseAmountInput =
-                                                                document.getElementById("purchase_amount");
-                                                            if (startingTime === currentTime) {
-                                                                bidAmountDiv.style.display = "block";
-                                                                purchaseAmountInput.removeAttribute("disabled");
-                                                            } else {
-                                                                bidAmountDiv.style.display = "none";
-                                                                purchaseAmountInput.setAttribute("disabled", "disabled");
-                                                            }
-                                                        }
-                                                    </script>
                                                     <br>
                                                     <div class="snipcart-details agileinfo_single_right_details">
-                                                        <fieldset>
-                                                            <input type="submit" name="submit" value="Bid Now"
-                                                                   class="form-control" style="width: 250px;"/>
+                                                        <fieldset style="width: 100%; max-width: 300px;">
+                                                            <button type="button" onclick="confirmBidding(event)"
+                                                                    class="form-control">Bid Now
+                                                            </button>
                                                         </fieldset>
                                                     </div>
-                                                    <div class="chatdiv">
-                                                        <div class="col-md-4">
-                                                            @if(session()->get('customer_id') != $product->customer_id)
-                                                                @if(session()->has('customer_id'))
-                                                                    @include("chat")
-                                                                @else
-                                                                    <b style='color:red'><a href='login.php'
-                                                                                            class='btn btn-info'>Login
-                                                                            to chat..</a></b>
-                                                                    <hr>
-                                                                @endif
-                                                            @endif
-                                                        </div>
-                                                    </div>
+                                                    @include('chat')
+
                                                 </div>
                                             @endif
                                         @else
                                             <fieldset>
                                                 <div class="snipcart-details agileinfo_single_right_details">
-                                                    <a href='single.php?productid={{ $product->product_id }}'><input
+                                                    <a href="{{ route('product.show', $product->product_id) }}"
+                                                       type="button" name="submit" value="Closed"><input
                                                             type="button" name="submit" value="Closed"
                                                             class="form-control" style="width: 250px;"
                                                             disabled/></a>
@@ -423,6 +349,7 @@
                                     @endif
                                 </form>
                             </div>
+
                         </div>
 
                     </div>
@@ -430,7 +357,28 @@
             </div>
         </div>
     </div>
+
 </main>
+<script>
+    var countDownDate = new Date("{{ date("M d, Y H:i:s", strtotime($product->end_date_time)) }}").getTime();
+
+    var x = setInterval(function () {
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        document.getElementById("demo{{ $product->product_id }}").innerHTML = days + "days " + hours + "hrs " +
+            minutes + "min " + seconds + "sec ";
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("demo{{ $product->product_id }}").innerHTML = "EXPIRED";
+            document.getElementById("divbidstatus").innerHTML = '<div class="snipcart-details agileinfo_single_right_details"><input type="button" name="submit" value="Closed" class="button" disabled /></div>';
+        }
+    }, 1000);
+</script>
+
 <script>
     // select all thumbnails
     const galleryThumbnail = document.querySelectorAll(".thumbnails-list li");
@@ -471,8 +419,8 @@
                                     <div id="img-1" class="zoomWrapper single-zoom" style="background-color: #f8f8f8;">
                                         <a href="{{ route('product.show', ['id' => $similarProduct->product_id]) }}">
                                             <center><img id="zoom1"
-                                                         src="{{ asset('imgproduct/' . explode(',',$similarProduct->product_image)[0]) }}"
-                                                         data-zoom-image="{{ asset('imgproduct/' . explode(',',$similarProduct->product_image)[0]) }}"
+                                                         src="{{ asset('product_images/' . $similarProduct->first_image_path) }}"
+                                                         data-zoom-image="{{ asset('product_images/' . $similarProduct->first_image_path) }}"
                                                          alt="big-1" style="width: 100%;height: 100%;"></center>
                                         </a>
                                     </div>
@@ -501,22 +449,133 @@
 
 <!-- JavaScript code here -->
 <script>
-    function confirmbidding() {
-        if (document.getElementById("purchase_amount").value === "") {
-            alert('Bidding amount not entered..');
+    function confirmBidding(ev) {
+        ev.preventDefault();
+
+        var biddingAmount = parseFloat(document.getElementById("purchase_amount").value);
+        var endingBid = parseFloat(document.getElementById("ending_bid").value);
+        var maxBidAmount = parseFloat(document.getElementById("max_bid_amt").value);
+
+        if (isNaN(biddingAmount) || biddingAmount === "") {
+            swal({
+                title: "Bidding amount not entered..",
+                icon: "error"
+            });
             return false;
         }
-        if (parseFloat(document.getElementById("ending_bid").value) > parseFloat(document.getElementById("purchase_amount").value)) {
-            alert('Bidding amount must be greater than PKR' + document.getElementById("ending_bid").value);
+
+        if (endingBid > biddingAmount) {
+            swal({
+                title: "Bidding amount must be greater than VND " + endingBid,
+                icon: "error"
+            });
             return false;
-        } else if (parseFloat(document.getElementById("purchase_amount").value) > parseFloat(document.getElementById("max_bid_amt").value)) {
-            alert('Bidding amount should be lesser than PKR' + document.getElementById("max_bid_amt").value);
-            return false;
-        } else {
-            return confirm("confrim to bid!!") === true;
         }
+
+        if (biddingAmount > maxBidAmount) {
+            swal({
+                title: "Bidding amount should be lesser than VND " + maxBidAmount,
+                icon: "error"
+            });
+            return false;
+        }
+
+        swal({
+            title: "Confirm to bid!!",
+            text: "Are you sure you want to bid?",
+            icon: "warning",
+            buttons: ["Cancel", "OK"],
+            dangerMode: true
+        })
+            .then((willConfirm) => {
+                if (willConfirm) {
+                    document.getElementById("biddingForm").submit();
+                }
+            });
     }
 </script>
 
 
 @include('footer')
+<style>
+    /* Phần Chat */
+    .chatdiv {
+        margin-top: 20px;
+    }
+
+    .chatdiv .col-md-4 {
+        background-color: #f9f9f9;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .chat-login {
+        text-align: center;
+    }
+
+    .login-title {
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .chat-login .btn {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .chat-login .btn:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const productId = {{ $product->id }};
+        const eventSource = new EventSource(`/sse/${productId}`);
+
+        eventSource.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+            document.getElementById('currentBid').innerText = data.ending_bid;
+        };
+
+        eventSource.onerror = function () {
+            console.error('Error receiving SSE.');
+            eventSource.close();
+        };
+    });
+
+    function enableBidForm() {
+        var startingTime = new
+        Date("{{ date("M d, Y H:i:s", strtotime($product->start_date_time)) }}
+            ").getTime();
+        var currentTime = new Date().getTime();
+        var bidAmountDiv = document.getElementById("bidAmountDiv");
+        var purchaseAmountInput =
+            document.getElementById("purchase_amount");
+        if (startingTime === currentTime) {
+            bidAmountDiv.style.display = "block";
+            purchaseAmountInput.removeAttribute("disabled");
+        } else {
+            bidAmountDiv.style.display = "none";
+            purchaseAmountInput.setAttribute("disabled", "disabled");
+        }
+    }
+</script>
+
+<script>
+    function refreshPage(productId) {
+        fetch(`/update_price/${productId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('currentBid').innerText = data.currentBid;
+                } else {
+                    console.error('Failed to update the bid amount:', data.message);
+                }
+            })
+            .catch(error => console.error('Error fetching bid amount:', error));
+    }
+</script>
+

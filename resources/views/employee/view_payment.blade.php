@@ -27,9 +27,9 @@
                                 <td>{{ $payment->customer->customer_name }}</td>
                                 <td>{{ $payment->paid_date->format('d-M-Y') }}</td>
                                 <td>{{ $payment->product->product_name }}</td>
-                                <td>PKR{{ $payment->bidding->bidding_amount }}</td>
+                                <td>VND{{ $payment->bidding->bidding_amount }}</td>
                                 <td>{{ $payment->payment_type }}</td>
-                                <td>PKR{{ $payment->paid_amount }}</td>
+                                <td>VND{{ $payment->paid_amount }}</td>
                             </tr>
                         @endforeach
                         </tbody>

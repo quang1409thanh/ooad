@@ -80,5 +80,30 @@ class Product extends Model
         return $query->limit($limit);
     }
 
-
+    public function getFirstImagePathAttribute()
+    {
+        if (is_string($this->product_image)) {
+            $images = json_decode($this->product_image, true);
+            return isset($images[0]) ? $images[0] : 'noimage.gif';
+        } else if (is_array($this->product_image)) {
+            return isset($this->product_image[0]) ? $this->product_image[0] : 'noimage.gif';
+        } else {
+            return 'noimage.gif';
+        }
+    }
+    public function getAllImagePathsAttribute()
+    {
+        if (is_string($this->product_image)) {
+            $images = json_decode($this->product_image, true);
+            return is_array($images) ? $images : ['noimage.gif'];
+        } else if (is_array($this->product_image)) {
+            return $this->product_image;
+        } else {
+            return ['noimage.gif'];
+        }
+    }
+    public function product()
+    {
+        return $this->hasMany(Bidding::class, 'product_id', 'product_id');
+    }
 }

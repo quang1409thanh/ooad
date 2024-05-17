@@ -6,6 +6,7 @@ use App\Models\Bidding;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ProductController extends Controller
@@ -16,58 +17,80 @@ class ProductController extends Controller
         // Lấy sản phẩm từ ID
         $product = Product::find($id);
         $products = Product::all(); // Lấy tất cả sản phẩm từ cơ sở dữ liệu
-        $session = session();
         $categories = Category::all();
         $similarProducts = Product::all();
-        $product_images = $product->product_image;
-        $category = $product->category->category_name;
-// Phân tách chuỗi thành một mảng các đường dẫn
-        $images = explode(',', $product_images);
-
         $bidder_list = Bidding::with('customer')
             ->where('product_id', $id)
             ->orderBy('bidding_id', 'DESC')
             ->get();
 
         // Trả về view và truyền sản phẩm vào view
-        return view('product_show', ['product' => $product], compact('products', 'categories', 'similarProducts', 'images', 'bidder_list'));
+        return view('product_show', ['product' => $product], compact('products', 'categories', 'similarProducts', 'bidder_list'));
     }
 
     public function store(Request $request)
     {
-        // Validate form data
+        // Start a transaction
+        DB::beginTransaction();
 
-        $validatedData = $request;
-        // Process product image upload
-        $imagePaths = [];
-        if ($request->hasFile('product_image')) {
-            foreach ($request->file('product_image') as $image) {
-                $imageName = time() . '_' . $image->getClientOriginalName();
-                $image->move(public_path('product_images'), $imageName);
-                $imagePaths[] = $imageName;
+        try {
+            // Validate form data
+            $validatedData = $request->validate([
+                'product_name' => 'required|string|max:255',
+                'category_id' => 'required|exists:categories,category_id',
+                'product_description' => 'nullable|string',
+                'starting_bid' => 'required|numeric',
+                'start_date_time' => 'required|date',
+                'end_date_time' => 'required|date|after:start_date_time',
+                'product_cost' => 'required|numeric',
+                'product_delivery' => 'required|string|max:255',
+                'company_name' => 'required|string|max:255',
+                'status' => 'required|in:Active,Inactive',
+                'product_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            // Process product image upload
+            $imagePaths = [];
+            if ($request->hasFile('product_image')) {
+                foreach ($request->file('product_image') as $image) {
+                    $imageName = time() . '_' . $image->getClientOriginalName();
+                    $image->move(public_path('product_images'), $imageName);
+                    $imagePaths[] = $imageName;
+                }
             }
+
+            // Create new product
+            $product = Product::create([
+                'customer_id' => session('customer_id'),
+                'product_name' => $validatedData['product_name'],
+                'category_id' => $validatedData['category_id'],
+                'product_description' => $validatedData['product_description'],
+                'starting_bid' => $validatedData['starting_bid'],
+                'ending_bid' => 0,
+                'start_date_time' => $validatedData['start_date_time'],
+                'end_date_time' => $validatedData['end_date_time'],
+                'product_cost' => $validatedData['product_cost'],
+                'product_warranty' => null,
+                'product_delivery' => $validatedData['product_delivery'],
+                'company_name' => $validatedData['company_name'],
+                'status' => $validatedData['status'],
+                'product_image' => json_encode($imagePaths), // Store image paths as JSON array
+            ]);
+
+            // Commit the transaction if all operations are successful
+            DB::commit();
+
+            // Display success message
+            alert()->success('Thành Công', 'Bạn đã thêm sản phẩm thành công');
+            return redirect()->back()->with('success', 'Product created successfully!');
+        } catch (\Exception $e) {
+            // Rollback the transaction if an exception occurs
+            DB::rollback();
+
+            // Display error message
+            alert()->error('Lỗi', 'Đã xảy ra lỗi khi thêm sản phẩm. Vui lòng thử lại sau.');
+            return redirect()->back()->with('error', 'Error occurred while creating the product. Please try again later.');
         }
-
-        // Create new product
-        Product::create([
-            'customer_id' => session('customer_id'),
-            'product_name' => $validatedData['product_name'],
-            'category_id' => $validatedData['category_id'],
-            'product_description' => $validatedData['product_description'],
-            'starting_bid' => $validatedData['starting_bid'],
-            'ending_bid' => 0,
-            'start_date_time' => $validatedData['start_date_time'],
-            'end_date_time' => $validatedData['end_date_time'],
-            'product_cost' => $validatedData['product_cost'],
-            'product_warranty' => "null",
-            'product_delivery' => $validatedData['product_delivery'],
-            'company_name' => $validatedData['company_name'],
-            'status' => $validatedData['status'],
-            'product_image' => json_encode($imagePaths), // Store image paths as JSON array
-        ]);
-
-        alert()->success('Thành Công', 'Bạn đã thêm sản phẩm thành công');
-        return redirect()->back()->with('success', 'Product created successfully!');
     }
 
     public function my_products()

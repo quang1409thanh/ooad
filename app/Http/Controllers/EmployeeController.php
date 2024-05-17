@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Employee;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
@@ -23,10 +25,13 @@ class EmployeeController extends Controller
         $employee = Employee::where('login_id', $credentials['email'])->first();
 
         if (!$employee || !Hash::check($credentials['password'], $employee->password)) {
+
+            alert()->error('Đăng nhập Thất bại', 'Vui lòng kiểm tra lại thông tin đăng nhập');
             return redirect()->route('employee_login')->with('error', 'Invalid credentials');
             // define router login after.
         }
         session(['employee_id' => $employee->employee_id]);
+        alert()->success('Đăng nhập Thành công', 'Chúc mừng bạn đã đăng nhập thành công');
 
         // Redirect sau khi đăng nhập thành công
         return redirect()->route('employee_account'); // Redirect to customer account page
@@ -65,26 +70,6 @@ class EmployeeController extends Controller
 
     }
 
-    public function updatePriceSSE(Request $request)
-    {
-        dd($request);
-        header('Content-Type: text/event-stream');
-        header('Cache-Control: no-cache');
-
-        while (true) {
-            // Lấy giá mới từ cơ sở dữ liệu
-            $newPrice = $this->getNewPrice(); // Viết hàm này để lấy giá mới từ cơ sở dữ liệu của bạn
-
-            // Gửi giá mới tới máy khách
-            echo "data: $newPrice\n\n";
-            flush();
-
-            // Chờ một khoảng thời gian trước khi lấy giá mới
-            sleep(5); // Ví dụ: chờ 5 giây trước khi lấy giá mới
-        }
-    }
-
-
     public function change_password()
     {
         return view('employee.change_password');
@@ -101,5 +86,32 @@ class EmployeeController extends Controller
         $employee_types = Employee::all();
         $statuses = Customer::all();
         return view('employee.add_employee', compact('employee_types', 'statuses'));
+    }
+
+    public function accept_product($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            // Find the product by ID, or fail
+            $product = Product::findOrFail($id);
+
+            // Update the status field to 'Active'
+            $product->status = 'Active';
+
+            // Save the changes
+            $product->save();
+
+            DB::commit();
+
+            alert()->success('Thành công', 'Sản phẩm đã được lên sàn đấu giá');
+            return redirect()->route('products_view');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Optionally, log the error or handle it
+            alert()->error('Lỗi', 'Đã có lỗi trong quá trình thực hiện');
+            return redirect()->route('products_view');
+        }
     }
 }

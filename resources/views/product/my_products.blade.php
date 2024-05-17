@@ -1,5 +1,30 @@
 @include('header')
+<style>
+    .w3-content {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px; /* Optional, to match the img border-radius */
+    }
 
+    .w3-content img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px; /* To match the container's border-radius */
+    }
+
+    .w3-content span {
+        display: block;
+        padding: 20px;
+        font-size: 16px;
+        color: #333;
+        background-color: rgba(234, 68, 68, 0.49);
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+</style>
 @if (session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
@@ -44,14 +69,16 @@
                     <tbody>
                     @foreach ($products as $product)
                         <tr>
-                            <div class="w3-content w3-section" style="max-width:500px">
-                                @if (true)
-                                    <td><img src='imgproduct/{{ $product->product_image }}' width='200px;'
-                                             style='height:120px;'></td>
-                                @else
-                                    No images available
-                                @endif
-                            </div>
+                            <td>
+                                <div class="w3-content w3-section" style="max-width: 500px; text-align: center;">
+                                    @if ($product->first_image_path)
+                                        <img src="{{ asset('product_images/' . $product->first_image_path) }}"
+                                             style="width: 200px; height: 120px; object-fit: cover; border-radius: 8px;">
+                                    @else
+                                        <span>No images available</span>
+                                    @endif
+                                </div>
+                            </td>
 
                             <script>
                                 var myIndex = 0;
@@ -76,36 +103,40 @@
                             @endif
                             <td>{{ $product->category->category_name }}</td>
                             <td>{{ $product->product_name }}<br>
-                                <b>Company:</b> {{ $product->company_name }}
+{{--                                <b>Company:</b> {{ $product->company_name }}--}}
                             </td>
-                            <td>PKR{{ $product->starting_bid }}</td>
+                            <td>VND{{ $product->starting_bid }}</td>
                             <td>
-                                @if ($product->current_bid == 0)
+                                @if ($product->ending_bid == 0)
                                     No bidding done yet..
                                 @else
-                                    PKR{{ $product->ending_bid }}
+                                    VND{{ $product->ending_bid }}
                                 @endif
                             </td>
                             <td>{{ date("d/m/Y h:i A", strtotime($product->start_date_time)) . " -" .  date("d/m/Y h:i A", strtotime($product->end_date_time)) }}</td>
-                            <td>PKR{{ $product->product_cost }}</td>
+                            <td>VND{{ $product->product_cost }}</td>
                             <td>{{ $product->status }}</td>
                             <td style="white-space: nowrap;">
                                 <div class="row" style="margin-right: -75px; margin-left: -5px;">
                                     <div class="col-6 mb-2" style="padding-right: 5px; padding-left: 5px;">
-                                        <a href='{{ url("product/edit/{$product->id}") }}' class='btn btn-warning btn-block'>Edit</a>
+                                        <a href='{{ url("product/edit/{$product->id}") }}'
+                                           class='btn btn-warning btn-block'>Edit</a>
                                     </div>
                                     <div class="col-6 mb-2" style="padding-right: 5px; padding-left: 5px;">
                                         @if (!session()->has('customer_id'))
                                             @if (session()->has("employee_id"))
-                                                <a href='{{ url("delete-product/{$product->id}") }}' onclick='return deleteconfirm()' class='btn btn-danger btn-block'>Delete</a>
+                                                <a href='{{ url("delete-product/{$product->id}") }}'
+                                                   onclick='return deleteconfirm()' class='btn btn-danger btn-block'>Delete</a>
                                             @endif
                                         @endif
                                     </div>
                                     <div class="col-6 mb-2" style="padding-right: 5px; padding-left: 5px;">
-                                        <a href='{{ url("single/{$product->id}") }}' target='_blank' class='btn btn-info btn-block'>View</a>
+                                        <a href='{{ url("product/{$product->product_id}") }}' target='_blank'
+                                           class='btn btn-info btn-block'>View</a>
                                     </div>
                                     <div class="col-6 mb-2" style="padding-right: 5px; padding-left: 5px;">
-                                        <a href='{{ url("billingreceipt/{$product->id}") }}' target='_blank' class='btn btn-success btn-block'>Receipt</a>
+                                        <a href='{{ url("billingreceipt/{$product->id}") }}' target='_blank'
+                                           class='btn btn-success btn-block'>Receipt</a>
                                     </div>
                                 </div>
                             </td>

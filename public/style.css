@@ -129,8 +129,9 @@ ul {
 }
 
 body {
+    /*background-color: ;*/
     font-family: 'Rubik', sans-serif;
-    font-size: 14px;
+    /*background-color: #0c0c0c;*/
     font-weight: 400;
     font-size: 16px;
     line-height: 1.5;
@@ -369,7 +370,8 @@ body {
 }
 
 .bg-gradient {
-    background: linear-gradient(135deg, #306c56, #ff7e5f, #6a82fb, #ffb997);
+    /*background: linear-gradient(135deg, #306c56, #ff7e5f, #6a82fb, #ffb997);*/
+    background-color: #0f1a2a;
 }
 
 #scrollUp {

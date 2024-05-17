@@ -34,14 +34,14 @@
                             <td><img src='imgproduct/{{ $product->product_image }}' width='100px;'></td>
 {{--                            <td>{{ $product->winning_customer->customer_name }}<br>--}}
                             <td>{{ 4444 }}<br>
-{{--                                <b>(won for PKR{{ $product->winning_bid->bidding_amount }})</b>--}}
-                                <b>(won for PKR{{ 333 }})</b>
-                                <b>(won for PKR{{ 555 }})</b>
+{{--                                <b>(won for VND{{ $product->winning_bid->bidding_amount }})</b>--}}
+                                <b>(won for VND{ 333 }})</b>
+                                <b>(won for VND{{ 555 }})</b>
                             </td>
                             <td>{{ $product->product_name }}<br><font color='red'>[Product category-{{ $product->category->category_name }}]</font></td>
                             <td>{{ $product->customer->customer_name }}</td>
-                            <td>PKR{{ $product->starting_bid }}</td>
-                            <td>PKR{{ $product->ending_bid }}</td>
+                            <td>VND{{ $product->starting_bid }}</td>
+                            <td>VND{{ $product->ending_bid }}</td>
                             <td>{{ date("d-M-Y h:i A", strtotime($product->start_date_time)) }} -<br>{{ date("d-M-Y h:i A", strtotime($product->end_date_time)) }}</td>
                         </tr>
                     @endforeach

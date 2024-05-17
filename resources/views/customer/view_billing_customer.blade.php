@@ -28,7 +28,7 @@
                                 <td>{{ $transaction->purchase_date }}</td>
                                 <td>{{ $transaction->purchase_amount }}</td>
                                 <td>{{ $transaction->payment_type }}</td>
-                                <td><a href="{{ route('payment.receipt', $transaction->billing_id) }}">Print</a></td>
+                                <td><a href="{{ route('payment_receipt', $transaction->billing_id) }}">VIEW</a></td>
                             </tr>
                         @endforeach
                         </tbody>

@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Billing;
+use App\Models\Customer;
 use App\Models\Payment;
+use App\Models\Winner;
+use Dotenv\Validator;
+use Illuminate\Console\View\Components\Alert;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -22,27 +27,102 @@ class PaymentController extends Controller
 
     public function showReceipt($paymentId)
     {
-        // Lấy thông tin thanh toán từ cơ sở dữ liệu
-        $rspayment = Billing::with('customer')->where('billing_id', $paymentId)->first();
+        // Retrieve payment information with customer relationship
+        $rspayment = Billing::with('customer')
+            ->where('billing_id', $paymentId)
+            ->first();
 
+        // If payment information is not found, handle the error
+        if (!$rspayment) {
+            return redirect()->back()->with('error', 'Payment not found.');
+        }
+
+        // Retrieve the current customer's ID from session
         $customerId = session('customer_id');
+
+        // Calculate the total deposit amount for the current customer
         $depamt = Billing::where('customer_id', $customerId)
             ->where('status', 'Active')
             ->where('payment_type', 'Deposit')
             ->sum('purchase_amount');
 
+        // Calculate the total bidding amount for the current customer
         $widamt = Payment::where('customer_id', $customerId)
             ->where('status', 'Active')
             ->where('payment_type', 'Bid')
             ->sum('paid_amount');
-        // Kiểm tra xem có thanh toán nào được tìm thấy hay không
-        if (!$rspayment) {
-            // Xử lý khi không tìm thấy thanh toán, ví dụ: redirect về trang trước đó hoặc hiển thị thông báo lỗi
-            return redirect()->back()->with('error', 'Payment not found.');
+
+        // Return the receipt view with payment information and calculated amounts
+        return view('receipt', compact('rspayment', 'depamt', 'widamt'));
+    }
+
+    public function claimWinningBid($id)
+    {
+        $winner = Winner::find($id);
+
+        return view('customer.claim_winning_bid', compact('winner'));
+    }
+
+    public function submitWinner(Request $request)
+    {
+
+        try {
+            DB::beginTransaction();
+
+            // Handle file upload
+            $image = $request->file('file');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('imgwinner'), $imageName);
+
+            // Update customer
+            $customer = Customer::find($request->customer_id);
+            $customer->update([
+                'address' => $request->address,
+                'state' => $request->state,
+                'city' => $request->city,
+                'landmark' => $request->landmark,
+                'pincode' => $request->pincode,
+                'mobile_no' => $request->mobile_no,
+            ]);
+
+            // Update winner
+            $winner = Winner::where('product_id', $request->product_id)->first();
+            // fixme: cho nay xac dinh dung chua ??
+            if ($winner) {
+                $winner->update([
+                    'winners_image' => $imageName,
+                    'status' => 'Active',
+                ]);
+            }
+
+            $billing = Billing::create([
+                'delivery_date' => date('Y-m-d'),
+                'note' => "null",
+                'purchase_date' => now(),
+                'product_id' => $request->product_id,
+                'purchase_amount' => $request->paid_amount,
+                'payment_type' => 'Winners',
+                'card_type' => $request->card_type,
+                'card_number' => $request->card_number,
+                'expire_date' => $request->expire_date . '-01',
+                'cvv_number' => $request->cvv_number,
+                'card_holder' => $request->card_holder,
+                'status' => 'Active',
+                'customer_id' => $request->customer_id,
+            ]);
+
+            DB::commit();
+
+            alert()->info("You have paid Rs. {$request->paid_amount} successfully for winning bid...");
+
+            return redirect()->route('payment_receipt', ['payment_id' => $billing->billing_id]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Log the error or handle it as necessary
+            return redirect()->back()->with('error', 'Payment failed. Please try again.');
         }
 
-        // Trả về view receipt và truyền dữ liệu của thanh toán
-        return view('receipt', compact('rspayment', 'depamt', 'widamt'));
     }
 
 }

@@ -26,28 +26,23 @@
     <br>
     <h3>{{ $auctiontype}}</h3>
     <hr>
-    @foreach ($categories as $category)
-        @if ($products->count()  >= 1)
+    @foreach ($categoriesWithProductCount  as $category)
+        @if ($category['active_product_count'] >= 1)
             <h2 class="border" style="padding: 10px;">
-                <a href='allproducts.php?category_id={{ $category->category_id }}'>{{ $category->category_name }}</a>
+                <a href='#?category_id={{ $category['category_id'] }}'>{{ $category['category_name'] }}</a>
             </h2>
             <div class="row">
-                @foreach ($products as $product)
-                    @php
-                        $arr_pro_img = explode(',',$product->product_image);
-                        $imgname = url("images/noimage.gif"); // Default image
-                        if (!empty($product->product_image)) {
-                            $imgname = url("imgproduct/" . explode(',',$product->product_image)[0]);
-                        }
-                    @endphp
+                @foreach ($category['products']  as $product)
                     <div class="col-md-4">
                         <figure class="card card-product">
                             <div class="img-wrap">
                                 <center>
-                                    <a href="{{ route('product.show', $product->product_id) }}"><img src="{{ $imgname }}"
-                                                                                                   alt=""
-                                                                                                   class="img-responsive"
-                                                                                                   style="height: 250px;"/></a>
+                                    <a href="{{ route('product.show', $product->product_id) }}">
+                                        <img
+                                            src="{{ asset('product_images/' . $product->first_image_path) }}"
+                                            alt=""
+                                            class="img-responsive"
+                                            style="height: 250px;"/></a>
                                 </center>
                             </div>
                             <figcaption class="info-wrap">
@@ -69,7 +64,7 @@
                                    class="btn btn-sm btn-primary float-right">Click to Bid</a>
                                 <div class="price-wrap h5">
                                     <span
-                                        class="price-new">Current Bid : PKR{{ $product->ending_bid > $product->starting_bid ? $product->ending_bid : $product->starting_bid }}</span>
+                                        class="price-new">Current Bid : VND{{ $product->ending_bid > $product->starting_bid ? $product->ending_bid : $product->starting_bid }}</span>
                                 </div>
                             </div>
                         </figure>

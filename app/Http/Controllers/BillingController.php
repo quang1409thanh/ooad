@@ -52,9 +52,11 @@ class BillingController extends Controller
 
         // Kiểm tra xem việc thêm dữ liệu đã thành công hay không
         if ($billing) {
+            alert()->success('Thành Công', 'Bạn đã nạp tiền thành công');
+
             return redirect()->route('payment_receipt', ['payment_id' => $paymentId])->with('success', 'You have deposited Rs. ' . $request->input('paid_amount') . ' successfully...');
         } else {
-            return back()->with('error', 'Error occurred: ' . mysqli_error($con)); // Nếu sử dụng Laravel, thì không cần gọi hàm mysqli_error
+            return back()->with('error', 'Error occurred: '); // Nếu sử dụng Laravel, thì không cần gọi hàm mysqli_error
         }
     }
 

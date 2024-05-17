@@ -36,15 +36,6 @@
     <h3>{{ ucfirst(Request::get('auctiontype')) }}</h3>
     <hr>
     @foreach($categories as $category)
-{{--        @php--}}
-{{--            $sqlproduct = "select * from product WHERE status='Active' AND category_id='$category->category_id' AND product.customer_id!='0' AND end_date_time>'$dt $tim' ";--}}
-{{--            if(Request::get('auctiontype') == "featured Auctions") {--}}
-{{--            $sqlproduct = $sqlproduct . " order by product_id DESC limit 0,3";--}}
-{{--            } else {--}}
-{{--            $sqlproduct = $sqlproduct . " order by product_id DESC limit 0,3";--}}
-{{--            }--}}
-{{--            $qsqlproduct = mysqli_query($con, $sqlproduct);--}}
-{{--        @endphp--}}
         @if($products->count() >= 1)
             <h2 class="border" style="padding: 10px;"><a
                     href='allproducts.php?category_id={{ $category->category_id }}'>{{ $category->category_name }}</a>
@@ -52,11 +43,6 @@
             <div class="row">
                 @foreach($products as $product)
                     @php
-                        $arr_pro_img = explode(',',$product->product_image);
-                        $imgname = url("images/noimage.gif"); // Default image
-                        if (!empty($product->product_image)) {
-                            $imgname = url("imgproduct/" . explode(',',$product->product_image)[0]);
-                        }
                     @endphp
                         <div class="col-md-4">
                         <figure class="card card-product">
@@ -84,7 +70,7 @@
                                    class="btn btn-sm btn-primary float-right">Click to Bid</a>
                                 <div class="price-wrap h5">
                                     <span
-                                        class="price-new">Current Bid : PKR {{ $product->ending_bid > $product->starting_bid ? $product->ending_bid : $product->starting_bid }}</span>
+                                        class="price-new">Current Bid : VND {{ $product->ending_bid > $product->starting_bid ? $product->ending_bid : $product->starting_bid }}</span>
                                 </div>
                             </div>
                         </figure>

@@ -1,16 +1,16 @@
 @include('header')
+<style>
+    .table img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+    }
 
-@if (isset($delid))
-    @php
-        //        $sql = "DELETE FROM category WHERE category_id='$delid'";
-        //        $qsql = mysqli_query($con, $sql);
-        //        if (mysqli_affected_rows($con) == 1) {
-        //            echo "<script>alert('Category record deleted successfully...');</script>";
-        //            echo "<script>window.location='viewcategory.php';</script>";
-        //        }
-    @endphp
-@endif
-
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <div class="breadcrumb-area bg-gray">
     <div class="container-fluid">
         <div class="row">
@@ -57,16 +57,14 @@
                                                 @foreach ($categories as $category)
                                                     <tr>
                                                         <td>
-                                                            @if ($category->category_icon == "")
-                                                                <img src='img/No-Image-Available.png'
-                                                                     style='width: 200px;height:175px;'>
-                                                            @elseif (file_exists(public_path("imgcategory/{$category->category_icon}")))
-                                                                <img src='imgcategory/{{ $category->category_icon }}'
-                                                                     style='width: 200px;height:175px;'>
-                                                            @else
-                                                                <img src='img/No-Image-Available.png'
-                                                                     style='width: 200px;height:175px;'>
-                                                            @endif
+                                                            @php
+                                                                $iconPath = 'img/No-Image-Available.png'; // Default image path
+                                                                if ($category->category_icon && file_exists(public_path("imgcategory/{$category->category_icon}"))) {
+                                                                    $iconPath = "imgcategory/{$category->category_icon}";
+                                                                }
+                                                            @endphp
+                                                            <img src="{{ asset($iconPath) }}"
+                                                                 style="width: 200px; height: 175px; object-fit: cover; border-radius: 8px;">
                                                         </td>
                                                         <td>{{ $category->category_name }}</td>
                                                         <td>{{ $category->description }}</td>
@@ -74,7 +72,8 @@
                                                         <td>
                                                             <a href='category.php?editid={{ $category->category_id }}'
                                                                class='btn btn-info'>Edit</a>
-                                                            <a href='{{ route("delete_category", $category->category_id) }}' class='btn btn-danger' onclick='return confirmdelete()'>Delete</a>
+                                                            <a href='{{ route("delete_category", $category->category_id) }}'
+                                                               class='btn btn-danger' onclick="confirmation(event)">Delete</a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -96,6 +95,24 @@
 @include('footer')
 
 <script>
+    function confirmation(ev) {
+        ev.preventDefault();
+        var urlToRedirect = ev.currentTarget.getAttribute('href');
+        console.log(urlToRedirect);
+        swal({
+            title: "Are you sure to cancel this category",
+            text: "You will not be able to revert this!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willCancel) => {
+                if (willCancel) {
+                    window.location.href = urlToRedirect;
+                }
+            });
+    }
+
     function confirmdelete() {
         if (confirm("Are you sure want to delete this record?") == true) {
             return true;

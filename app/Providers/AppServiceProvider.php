@@ -4,11 +4,15 @@ namespace App\Providers;
 
 use App\Blockchain\Block;
 use App\Blockchain\Blockchain;
+use App\Models\Bidding;
+use App\Models\Billing;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Employee;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Winner;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,16 +35,35 @@ class AppServiceProvider extends ServiceProvider
         $this->handleWinningBids();
 
         View::composer('header', function ($view) {
+            // Lấy tổng số tiền đã nạp của người dùng
+            $depamt = Billing::where('customer_id', session()->get('customer_id'))
+                ->where('status', 'Active')
+                ->where('payment_type', 'Deposit')
+                ->sum('purchase_amount');
+
+            // Lấy tổng số tiền đã chi tiêu của người dùng cho đấu giá
+            $widamt = Payment::where('customer_id', session()->get('customer_id'))
+                ->where('status', 'Active')
+                ->where('payment_type', 'Bid')
+                ->sum('paid_amount');
             // Thực hiện bất kỳ logic nào để truyền các giá trị cần thiết vào header ở đây
-            $myBidCount = 1; // Lấy giá trị $myBidCount từ database hoặc bất kỳ nguồn dữ liệu nào khác
-            $winningBidCount = 2; // Lấy giá trị $winningBidCount từ database hoặc bất kỳ nguồn dữ liệu nào khác
+            $myBidCount = Bidding::where('customer_id', session()->get('customer_id'))->count();
+            $winningBidCount = Winner::select('winners.*')
+                ->join('products', 'winners.product_id', '=', 'products.product_id')
+                ->where('products.customer_id', '!=', '0')
+                ->where('winners.customer_id', '=', session()->get('customer_id'))
+                ->count();
+            // đang có vấn đề với giá trị này ?
             $reverseBidCount = 3; // Lấy giá trị $reverseBidCount từ database hoặc bất kỳ nguồn dữ liệu nào khác
-            $accbalamt = 100;
+            $accbalamt = $depamt - $widamt;
+
             $categories = Category::all();
             $cur = session()->get('customer_id');
             $customer = Customer::find($cur);
             $cure = session()->get('employee_id');
             $employee = Employee::find($cure);
+
+
             // Truyền các giá trị vào view
             $view->with('myBidCount', $myBidCount);
             $view->with('winningBidCount', $winningBidCount);
@@ -49,7 +72,6 @@ class AppServiceProvider extends ServiceProvider
             $view->with('categories', $categories);
             $view->with('customer', $customer);
             $view->with('employee', $employee);
-
             // tại sao lấy được các giá trị này đúng là ??? vô lý vl/ ko có nó thi ko được khi ở trang đăng nhập.
         });
     }
@@ -76,33 +98,45 @@ class AppServiceProvider extends ServiceProvider
             ->where('products.end_date_time', '<', $currentDateTime)
             ->whereNull('winners.product_id')
             ->get();
-        foreach ($winningBids as $winningBid) {
-            $cid = $winningBid->cid;
-            $cname = $winningBid->cname;
-            $bidding_amount = $winningBid->bidding_amount;
-            $product_id = $winningBid->product_id;
-            $product_name = $winningBid->product_name;
-            $starting_bid = $winningBid->starting_bid;
-            $ending_bid = $winningBid->ending_bid;
-            $end_date_time = $winningBid->end_date_time;
 
-            $data = "Cutomer with ID [$cid] Named $cname has won bidding on amount: [$bidding_amount] for Product named $product_name and Product ID [$product_id] with bidding starting from $starting_bid and ending on $ending_bid ";
 
-            // Ghi vào blockchain
-            $blockchainService = Blockchain::getInstance();
-            $currentTimestamp = now()->format('Y-m-d H:i:s');
-            $blockchainService->addBlock(new Block($currentTimestamp, json_encode($data)));
+        DB::beginTransaction();
 
-            $customer = Customer::find($cid);
-            // Tạo bản ghi Winner mới
-            Winner::create([
-                'product_id' => $product_id,
-                'customer_id' => $cid,
-                'winners_image' => $customer->customer_image ? $customer->customer_image : 'default_image.jpg',
-                'winning_bid' => $bidding_amount,
-                'end_date' => $end_date_time,
-                'status' => 'Pending'
-            ]);
+        try {
+            foreach ($winningBids as $winningBid) {
+                $cid = $winningBid->cid;
+                $cname = $winningBid->cname;
+                $bidding_amount = $winningBid->bidding_amount;
+                $product_id = $winningBid->product_id;
+                $product_name = $winningBid->product_name;
+                $starting_bid = $winningBid->starting_bid;
+                $ending_bid = $winningBid->ending_bid;
+                $end_date_time = $winningBid->end_date_time;
+
+                $data = "Customer with ID [$cid] Named $cname has won bidding on amount: [$bidding_amount] for Product named $product_name and Product ID [$product_id] with bidding starting from $starting_bid and ending on $ending_bid ";
+
+                // Ghi vào blockchain
+                $blockchainService = Blockchain::getInstance();
+                $currentTimestamp = now()->format('Y-m-d H:i:s');
+                $blockchainService->addBlock(new Block($currentTimestamp, json_encode($data)));
+
+                $customer = Customer::find($cid);
+
+                // Tạo bản ghi Winner mới
+                Winner::create([
+                    'product_id' => $product_id,
+                    'customer_id' => $cid,
+                    'winners_image' => $customer->customer_image ? $customer->customer_image : 'default_image.jpg',
+                    'winning_bid' => $bidding_amount,
+                    'end_date' => $end_date_time,
+                    'status' => 'Pending'
+                ]);
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e; // or handle the error in another way
         }
     }
 

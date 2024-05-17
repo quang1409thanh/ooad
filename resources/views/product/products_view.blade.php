@@ -21,7 +21,6 @@
 <div class="banner">
     <div class="privacy about">
         <h3>View Product</h3>
-        <h3>View Product</h3>
         <div class="checkout-left">
             <div class="col-md-12">
                 <table id="datatable" class="table table-striped table-bordered dataTable" cellspacing="0" width="100%"
@@ -45,68 +44,81 @@
                     <tbody>
                     @foreach ($products as $product)
                         <tr>
-                                <div class="w3-content w3-section" style="max-width:500px">
-                                    @if (true)
-                                    <td><img src='imgproduct/{{ $product->product_image }}' width='200px;'
-                                             style='height:120px;'></td>
+                            <td>
+                                <div class="w3-content w3-section" style="max-width: 500px; text-align: center;">
+                                    @if ($product->first_image_path)
+                                        <img src="{{ asset('product_images/' . $product->first_image_path) }}"
+                                             style="width: 200px; height: 120px; object-fit: cover; border-radius: 8px;">
                                     @else
-                                        No images available
+                                        <span>No images available</span>
                                     @endif
                                 </div>
+                            </td>
 
-                                <script>
-                                    var myIndex = 0;
-                                    carousel();
+                            <script>
+                                var myIndex = 0;
+                                carousel();
 
-                                    function carousel() {
-                                        var i;
-                                        var x = document.getElementsByClassName("mySlides{{ $product->id }}");
-                                        for (i = 0; i < x.length; i++) {
-                                            x[i].style.display = "none";
-                                        }
-                                        myIndex++;
-                                        if (myIndex > x.length) {
-                                            myIndex = 1
-                                        }
-                                        x[myIndex - 1].style.display = "block";
-                                        setTimeout(carousel, 9000);
+                                function carousel() {
+                                    var i;
+                                    var x = document.getElementsByClassName("mySlides{{ $product->product_id }}");
+                                    for (i = 0; i < x.length; i++) {
+                                        x[i].style.display = "none";
                                     }
-                                </script>
+                                    myIndex++;
+                                    if (myIndex > x.length) {
+                                        myIndex = 1
+                                    }
+                                    x[myIndex - 1].style.display = "block";
+                                    setTimeout(carousel, 9000);
+                                }
+                            </script>
                             @if (session()->has('employee_id'))
-                                <td>{{ $product->customer_name }}</td>
+                                <td>{{ $product->customer->customer_name }}</td>
                             @endif
                             <td>{{ $product->category->category_name }}</td>
                             <td>{{ $product->product_name }}<br>
-                                <b>Company:</b> {{ $product->company_name }}
+{{--                                <b>Company:</b> {{ $product->company_name }}--}}
                             </td>
-                            <td>PKR{{ $product->starting_bid }}</td>
+                            <td>VND{{ $product->starting_bid }}</td>
                             <td>
-                                @if ($product->current_bid == 0)
+                                @if ($product->ending_bid == 0)
                                     No bidding done yet..
                                 @else
-                                    PKR{{ $product->ending_bid }}
+                                    VND{{ $product->ending_bid }}
                                 @endif
                             </td>
                             <td>{{ date("d/m/Y h:i A", strtotime($product->start_date_time)) . " -" .  date("d/m/Y h:i A", strtotime($product->end_date_time)) }}</td>
-                            <td>PKR{{ $product->product_cost }}</td>
+                            <td>VND{{ $product->product_cost }}</td>
                             <td>{{ $product->status }}</td>
                             <td style="white-space: nowrap;">
                                 <div class="row" style="margin-right: -75px; margin-left: -5px;">
                                     <div class="col-6 mb-2" style="padding-right: 5px; padding-left: 5px;">
-                                        <a href='{{ url("product/edit/{$product->id}") }}' class='btn btn-warning btn-block'>Edit</a>
+                                        <a href='{{ url("product/edit/{$product->product_id}") }}'
+                                           class='btn btn-warning btn-block'>Reject</a>
                                     </div>
                                     <div class="col-6 mb-2" style="padding-right: 5px; padding-left: 5px;">
                                         @if (!session()->has('customer_id'))
                                             @if (session()->has("employee_id"))
-                                                <a href='{{ url("delete-product/{$product->id}") }}' onclick='return deleteconfirm()' class='btn btn-danger btn-block'>Delete</a>
+                                                <a href='{{ url("delete-product/{$product->product_id}") }}'
+                                                   onclick='return deleteconfirm()' class='btn btn-danger btn-block'>Delete</a>
                                             @endif
                                         @endif
                                     </div>
                                     <div class="col-6 mb-2" style="padding-right: 5px; padding-left: 5px;">
-                                        <a href='{{ url("single/{$product->id}") }}' target='_blank' class='btn btn-info btn-block'>View</a>
+                                        <a href='{{ url("product/{$product->product_id}") }}' target='_blank'
+                                           class='btn btn-info btn-block'>View</a>
                                     </div>
                                     <div class="col-6 mb-2" style="padding-right: 5px; padding-left: 5px;">
-                                        <a href='{{ url("billingreceipt/{$product->id}") }}' target='_blank' class='btn btn-success btn-block'>Receipt</a>
+                                        <form id="accept-product-form-{{ $product->product_id }}" method="POST"
+                                              action="{{ url('accept_product/' . $product->product_id) }}"
+                                              style="display: none;">
+                                            @csrf
+                                        </form>
+
+                                        <a href="javascript:void(0);"
+                                           onclick="document.getElementById('accept-product-form-{{ $product->product_id }}').submit();"
+                                           class='btn btn-success btn-block'>Accept</a>
                                     </div>
                                 </div>
                             </td>
