@@ -322,6 +322,8 @@
                                                             </button>
                                                         </fieldset>
                                                     </div>
+                                                    <br>
+                                                    <br>
                                                     @include('chat')
 
                                                 </div>

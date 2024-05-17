@@ -85,7 +85,6 @@ Route::get('/category', [\App\Http\Controllers\CategoryController::class, 'addCa
 Route::get('/view_category', [\App\Http\Controllers\CategoryController::class, 'viewCategory'])->name('view_category');
 
 
-
 Route::get('/employee_account', [\App\Http\Controllers\EmployeeController::class, 'employee_account'])->name('employee_account');
 
 Route::get('/selectreversebidcategory', [ProductController::class, 'selectReverseBidCategory'])->name('select.reverse.bid.category');
@@ -96,7 +95,7 @@ Route::get('/employeeaccount', [EmployeeController::class, 'employeeDashboard'])
 Route::get('/employee_profile', [EmployeeController::class, 'employee_profile'])->name('employee_profile');
 Route::get('/update_employee', [EmployeeController::class, 'update_employee'])->name('update_employee');
 Route::post('/update_password', [EmployeeController::class, 'update_password'])->name('update_password');
-    Route::get('/update_price/{product_id}', [SSEController::class, 'stream'])->name('update_price');
+Route::get('/update_price/{product_id}', [SSEController::class, 'stream'])->name('update_price');
 Route::get('/change_password', [EmployeeController::class, 'change_password'])->name('employee_change_password');
 
 Route::get('/view_bidding_product', [BiddingController::class, 'viewBiddingProduct'])->name('view_bidding_product');
@@ -110,21 +109,16 @@ Route::get('/products_view', [\App\Http\Controllers\ProductController::class, 'p
 
 Route::get('/chat/{productid}', [\App\Http\Controllers\MessageController::class, 'getMessages'])->name('chat');
 Route::post('/send-message', [\App\Http\Controllers\MessageController::class, 'sendMessage'])->name('send-message');
-Route::post('/load-messages/{productid}', [\App\Http\Controllers\MessageController::class, 'loadMessages'])->name('load-messages');
+Route::get('/load-messages/{productid}', [\App\Http\Controllers\MessageController::class, 'loadMessages'])->name('load-messages');
+Route::get('/loadmessages/{productid}', [\App\Http\Controllers\MessageController::class, 'loadBoxMessages'])->name('loadmessages');
+Route::post('/chatmessage', [\App\Http\Controllers\MessageController::class, 'store'])->name('chatmessage.store');
 
 
 //customer.
 
 
-
-
-
-
 // tiếp
 //thêm chức năng
-
-
-
 
 
 //Route::get('/logout', [\App\Models\Message::class, 'logout'])->name('logout');

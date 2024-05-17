@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bidding;
 use App\Models\Category;
+use App\Models\Message;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,10 @@ class ProductController extends Controller
     //
     public function show($id)
     {
+        $messages = Message::where('product_id', $id)
+            ->where('sender_id',session('customer_id'))
+            ->get();
+//        dd($messages);
         // Lấy sản phẩm từ ID
         $product = Product::find($id);
         $products = Product::all(); // Lấy tất cả sản phẩm từ cơ sở dữ liệu
@@ -25,7 +30,7 @@ class ProductController extends Controller
             ->get();
 
         // Trả về view và truyền sản phẩm vào view
-        return view('product_show', ['product' => $product], compact('products', 'categories', 'similarProducts', 'bidder_list'));
+        return view('product_show', ['product' => $product], compact('products', 'categories', 'similarProducts', 'bidder_list','messages'));
     }
 
     public function store(Request $request)
