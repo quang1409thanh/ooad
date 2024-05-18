@@ -122,8 +122,7 @@ class CustomerController extends Controller
             ->where('products.customer_id', '!=', '0')
             ->orderByDesc('winners.winner_id')
             ->get();
-
-
+//        dd($winners);
         // lấy thêm hình ảnh ra nữa là được.
         return view('customer.view_winning_bid', compact('winners'));
     }

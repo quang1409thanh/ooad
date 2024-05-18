@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ul class="breadcrumb-list">
-                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
                     <li class="breadcrumb-item active">Register</li>
                 </ul>
             </div>

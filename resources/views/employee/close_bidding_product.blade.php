@@ -31,7 +31,7 @@
                     <tbody>
                     @foreach ($products as $product)
                         <tr>
-                            <td><img src='imgproduct/{{ $product->product_image }}' width='100px;'></td>
+                            <td><img src='product_images/{{ $product->product_image }}' width='100px;'></td>
 {{--                            <td>{{ $product->winning_customer->customer_name }}<br>--}}
                             <td>{{ 4444 }}<br>
 {{--                                <b>(won for VND{{ $product->winning_bid->bidding_amount }})</b>--}}

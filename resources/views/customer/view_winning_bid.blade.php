@@ -76,6 +76,21 @@
     .all-deals:hover {
         background-color: #00796b;
     }
+    .product-image8 {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px; /* Optional, to match the img border-radius */
+    }
+
+    .product-image8 img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px; /* To match the container's border-radius */
+    }
+
+
 
 </style>
 <!-- banner -->
@@ -91,10 +106,9 @@
                             <div class="product-grid8 border">
                                 <div class="product-image8">
                                     <a href="{{ route('product.show', $winner->product_id) }}">
-                                        <img class="pic-1"
+                                        <img class="pic-1" style="width: 400px; height: 300px"
                                              src="{{ asset('product_images/' . $winner->product->first_image_path) }}"
                                              alt="">
-                                        {{--                                        <img class="pic-2" src="{{ $winner->winners_image }}" alt="">--}}
                                     </a>
                                 </div>
                                 <div class="product-content">
@@ -110,8 +124,8 @@
                                         <span class="product-shipping"
                                               style="color: green;"><b>Winner : {{ $winner->customer_name }}</b></span>
                                     </div>
-                                    <span class="product-shipping"
-                                          style="color: green;"><b>From : {{ $winner->city }}</b></span>
+{{--                                    <span class="product-shipping"--}}
+{{--                                          style="color: green;"><b>From : {{ $winner->city }}</b></span>--}}
                                     <span class="product-shipping"
                                           style="color: green;"><b>Amount payable: Rs. {{ $winner->winning_bid }}</b></span>
                                     @if ($winner->winner_status == "Pending")

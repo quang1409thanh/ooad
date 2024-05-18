@@ -374,6 +374,7 @@ body {
     background-color: #0f1a2a;
 }
 
+
 #scrollUp {
     background: #333333 none repeat scroll 0 0;
     bottom: 30px;
@@ -381,11 +382,13 @@ body {
     font-size: 22px;
     height: 40px;
     line-height: 38px;
-    right: 20px;
+    right: 20px; /* Điều chỉnh vị trí từ phải sang trái */
     text-align: center;
     -webkit-transition: all 0.4s ease-in-out 0s;
     transition: all 0.4s ease-in-out 0s;
     width: 40px;
+    position: absolute; /* Sử dụng absolute để đặt nút ở vị trí cố định trong phạm vi của popup-box */
+    z-index: 99999999; /* Thiết lập z-index cao hơn để nút hiển thị trên hộp thoại chat */
 }
 
 #scrollUp:hover {
@@ -2263,7 +2266,9 @@ body {
     14. footer-area css
 -------------------------------*/
 .footer-area {
-    background: linear-gradient(135deg, #306c56, #ff7e5f, #6a82fb, #ffb997);
+    background-color: #0f1a2a;
+
+    /*background: linear-gradient(135deg, #306c56, #ff7e5f, #6a82fb, #ffb997);*/
 }
 
 .footer-top {

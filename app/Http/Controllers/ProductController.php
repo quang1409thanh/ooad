@@ -15,10 +15,15 @@ class ProductController extends Controller
     //
     public function show($id)
     {
-        $messages = Message::where('product_id', $id)
-            ->where('sender_id',session('customer_id'))
+        $messages_send = Message::where('product_id', $id)
+            ->where('sender_id', session('customer_id'))
             ->get();
-//        dd($messages);
+
+        $messages_receive = Message::where('product_id', $id)
+            ->where('receiver_id', session('customer_id'))
+            ->get();
+        $messages = $messages_send->merge($messages_receive)->sortBy('created_at');
+
         // Lấy sản phẩm từ ID
         $product = Product::find($id);
         $products = Product::all(); // Lấy tất cả sản phẩm từ cơ sở dữ liệu
@@ -41,17 +46,17 @@ class ProductController extends Controller
         try {
             // Validate form data
             $validatedData = $request->validate([
-                'product_name' => 'required|string|max:255',
-                'category_id' => 'required|exists:categories,category_id',
-                'product_description' => 'nullable|string',
-                'starting_bid' => 'required|numeric',
-                'start_date_time' => 'required|date',
-                'end_date_time' => 'required|date|after:start_date_time',
-                'product_cost' => 'required|numeric',
-                'product_delivery' => 'required|string|max:255',
-                'company_name' => 'required|string|max:255',
-                'status' => 'required|in:Active,Inactive',
-                'product_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+//                'product_name' => 'required|string|max:255',
+//                'category_id' => 'required|exists:categories,category_id',
+//                'product_description' => 'nullable|string',
+//                'starting_bid' => 'required|numeric',
+//                'start_date_time' => 'required|date',
+//                'end_date_time' => 'required|date|after:start_date_time',
+//                'product_cost' => 'required|numeric',
+//                'product_delivery' => 'required|string|max:255',
+//                'company_name' => 'required|string|max:255',
+//                'status' => 'required|in:Active,Inactive',
+//                'product_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
             // Process product image upload

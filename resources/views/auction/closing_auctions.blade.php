@@ -1,1 +1,0 @@
-closing_auctions

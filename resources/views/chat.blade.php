@@ -1,5 +1,6 @@
-{{--<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">--}}
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+{{--<link rel="stylesheet" href="{{ url('css/chat1.css') }}" id="bootstrap-css">--}}
+{{--<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>--}}
+
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
 <div class="container">
@@ -13,16 +14,20 @@
 <div class="popup-box chat-popup" id="qnimate">
     <div class="popup-head">
         <div class="popup-head-left pull-left">
-            {{-- <img src="http://bootsnipp.com/img/avatars/bcf1c0d13e5500875fdd5a7e8ad9752ee16e7462.jpg" alt="iamgurdeeposahan"> --}}
-            {{ $product[16] }}
+            <img src="{{asset('img/favicon.ico')}}" alt="iamgurdeeposahan">
+            {{$product->customer->customer_name}}
         </div>
         <div class="popup-head-right pull-right">
-            <button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button"><i
-                    class="glyphicon glyphicon-off"></i></button>
-            <button data-widget="maximize" id="idmaximize" class="chat-header-button pull-right" type="button"><i
-                    class="glyphicon glyphicon-plus" style=""></i></button>
-            <button data-widget="hide" id="idminimize" class="chat-header-button pull-right" type="button"><i
-                    class="glyphicon glyphicon-minus"></i></button>
+            <button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button">
+                <img src="{{url('img/x-button.png')}}" alt="Turn Off">
+
+            </button>
+            <button data-widget="maximize" id="idmaximize" class="chat-header-button pull-right" type="button">
+                <img src="{{url('img/plus.png')}}" alt="Turn Off">
+            </button>
+            <button data-widget="hide" id="idminimize" class="chat-header-button pull-right" type="button">
+                <img src="{{url('img/minus.png')}}" alt="minus">
+            </button>
         </div>
     </div>
 
@@ -67,6 +72,7 @@
                             'btnmessage': "Submit"
                         },
                         success: (data, status) => {
+                            console.log(data);
                             $('#status_message').val('');
                             $('#popup-messages').html(data);
                             $('#popup-messages').scrollTop($('#popup-messages')[0].scrollHeight);
@@ -136,12 +142,16 @@
 {{--@endsection--}}
 <style>
 
+
+</style>
+<style>
+
     @import url(https://fonts.googleapis.com/css?family=Oswald:400,300);
     @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
     .popup-box {
-        background-color: #ffffff;
-        border: 1px solid #b0b0b0;
+        border: 2px solid #4306ed;
+        border-radius: 12px;
         bottom: 0;
         display: none;
         /*height: 415px;*/
@@ -149,7 +159,7 @@
         right: 0px;
         width: 300px;
         font-family: 'Open Sans', sans-serif;
-        z-index: 1;
+        z-index: 99999999;
     }
 
     .round.hollow {
@@ -182,44 +192,38 @@
     }
 
     .popup-box .popup-head {
-        background-color: #fff;
+        border-radius: 8px;
+        border: 2px solid #4306ed;
+        background-color: white;
         clear: both;
         color: #7b7b7b;
         display: inline-table;
         font-size: 21px;
-        /*padding: 7px 10px;*/
         padding: 0px 10px;
         width: 100%;
         font-family: Oswald;
     }
 
-    .bg_none i {
-        border: 1px solid #ff6701;
-        border-radius: 25px;
-        color: #ff6701;
-        font-size: 17px;
-        height: 33px;
-        line-height: 30px;
-        width: 33px;
-    }
-
-    .bg_none:hover i {
-        border: 1px solid #000;
-        border-radius: 25px;
-        color: #000;
-        font-size: 17px;
-        height: 33px;
-        line-height: 30px;
-        width: 33px;
-    }
-
-    .bg_none {
-        background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-        border: medium none;
-    }
-
     .popup-box .popup-head .popup-head-right {
         margin: 11px 7px 0;
+    }
+
+    .popup-head-right .btn-group {
+        display: inline-flex;
+        margin: 0 8px 0 0;
+        vertical-align: top !important;
+    }
+
+    .popup-head-right .btn-group .dropdown-menu {
+        border: medium none;
+        min-width: 122px;
+        padding: 0;
+    }
+
+    .popup-head-right .btn-group .dropdown-menu li a {
+        font-size: 12px;
+        padding: 3px 10px;
+        color: #303030;
     }
 
     .popup-box .popup-messages {
@@ -232,12 +236,16 @@
     }
 
     .popup-messages-footer > textarea {
-        border-bottom: 1px solid #b2b2b2 !important;
-        height: 50px !important;
+        border: none;
+        border-radius: 25px;
+        background-color: #f3f3f3;
+        height: 40px;
         margin: 7px;
-        padding: 5px !important;
-        /* border: medium none;*/
-        width: 95% !important;
+        padding: 10px;
+        width: calc(100% - 20px);
+        resize: none;
+        font-size: 14px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .popup-messages-footer {
@@ -248,9 +256,18 @@
     }
 
     .popup-messages-footer .btn-footer {
-        overflow: hidden;
-        padding: 2px 5px 10px 6px;
-        width: 100%;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .popup-messages-footer .btn-footer:hover {
+        background-color: #0056b3;
     }
 
     .simple_round {
@@ -263,7 +280,8 @@
     }
 
     .popup-box .popup-messages {
-        background: #3f9684 none repeat scroll 0 0;
+        background: linear-gradient(135deg, #667eea, #764ba2, #6B8E23, #FFA07A, #40E0D0);
+        /*none repeat scroll 0 0;*/
         height: 375px;
         overflow: auto;
         padding-bottom: 60px;
@@ -273,7 +291,6 @@
         overflow: auto;
         padding: 10px;
         transform: translate(0px, 0px);
-
     }
 
     .popup-messages .chat-box-single-line {
@@ -290,11 +307,6 @@
         padding: 0 11px;
     }
 
-    .popup-head-right .btn-group {
-        display: inline-flex;
-        margin: 0 8px 0 0;
-        vertical-align: top !important;
-    }
 
     .chat-header-button {
         background: transparent none repeat scroll 0 0;
@@ -305,17 +317,6 @@
         width: 30px;
     }
 
-    .popup-head-right .btn-group .dropdown-menu {
-        border: medium none;
-        min-width: 122px;
-        padding: 0;
-    }
-
-    .popup-head-right .btn-group .dropdown-menu li a {
-        font-size: 12px;
-        padding: 3px 10px;
-        color: #303030;
-    }
 
     .popup-messages abbr.timestamp {
         background: #3f9684 none repeat scroll 0 0;
@@ -336,7 +337,7 @@
     }
 
     .popup-messages .direct-chat-text {
-        background: #dfece7 none repeat scroll 0 0;
+        background: none repeat scroll 0 0;
         border: 1px solid #dfece7;
         border-radius: 2px;
         color: #1f2121;
@@ -398,7 +399,8 @@
     }
 
     .popup-messages .doted-border::after {
-        background: transparent none repeat scroll 0 0 !important;
+        background-color: red;
+        /*background: transparent none repeat scroll 0 0 !important;*/
         border-right: 2px dotted #fff !important;
         bottom: 0;
         content: "";
@@ -412,7 +414,7 @@
     }
 
     .popup-messages .direct-chat-msg::after {
-        background: #fff none repeat scroll 0 0;
+        /*background: #fff none repeat scroll 0 0;*/
         border-right: medium none;
         bottom: 0;
         content: "";
@@ -461,16 +463,6 @@
         color: #1f2121;
     }
 
-    .direct-chat-text {
-        /*
-        background: #d2d6de none repeat scroll 0 0;
-        border: 1px solid #d2d6de;
-        border-radius: 5px;
-        color: #444;
-        margin: 5px 0 0 50px;
-        padding: 5px 10px;
-        position: relative;
-        */
-    }
-</style>
+
+
 </style>

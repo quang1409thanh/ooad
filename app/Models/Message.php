@@ -27,4 +27,14 @@ class Message extends Model
         return $this->belongsTo(Product::class, 'product_id', 'product_id');
     }
 
+    public function sender()
+    {
+        return $this->belongsTo(Customer::class, 'sender_id', 'customer_id');
+    }
+
+    public function receiver()
+    {
+        return $this->belongsTo(Customer::class, 'receiver_id', 'customer_id');
+    }
+
 }

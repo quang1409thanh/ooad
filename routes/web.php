@@ -110,8 +110,9 @@ Route::get('/products_view', [\App\Http\Controllers\ProductController::class, 'p
 Route::get('/chat/{productid}', [\App\Http\Controllers\MessageController::class, 'getMessages'])->name('chat');
 Route::post('/send-message', [\App\Http\Controllers\MessageController::class, 'sendMessage'])->name('send-message');
 Route::get('/load-messages/{productid}', [\App\Http\Controllers\MessageController::class, 'loadMessages'])->name('load-messages');
-Route::get('/loadmessages/{productid}', [\App\Http\Controllers\MessageController::class, 'loadBoxMessages'])->name('loadmessages');
+Route::get('/loadmessages_box/{productid}', [\App\Http\Controllers\MessageController::class, 'loadBoxMessages'])->name('loadmessages_box');
 Route::post('/chatmessage', [\App\Http\Controllers\MessageController::class, 'store'])->name('chatmessage.store');
+Route::post('/chatmessage_box', [\App\Http\Controllers\MessageController::class, 'store_box'])->name('chatmessage_box');
 
 
 //customer.

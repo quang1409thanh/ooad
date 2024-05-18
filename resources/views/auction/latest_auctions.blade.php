@@ -16,7 +16,11 @@
             if (distance < 0) {
                 clearInterval(x);
                 document.getElementById("countdowntime" + id).innerHTML =
-                    "<center><b style='color: red;'>EXPIRED</b></center>";
+                    "<center>" +
+                    "<b style='color: red;'>EXPIRED</b>" +
+                    "<br>" +
+                    "<br>"
+                    "</center>";
             }
         }, 1000);
     }

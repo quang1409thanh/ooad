@@ -36,7 +36,7 @@
                     <tbody>
                     @foreach ($products as $product)
                         <tr>
-                            <td><img src='imgproduct/{{ $product->product_image }}' width='200px;'
+                            <td><img src='product_images/{{ $product->product_image }}' width='200px;'
                                      style='height:120px;'></td>
 {{--                            @if (session()->has("employee_id"))--}}
 {{--                                <td>{{ $product->customer->customer_name }}</td>--}}

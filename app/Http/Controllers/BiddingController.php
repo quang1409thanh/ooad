@@ -54,9 +54,9 @@ class BiddingController extends Controller
     {
         $userId = session('customer_id');
 
-        $accbalamt = $this->getAccountBalance(); // Use getAccountBalance to get account balance
+        $accbalamt = $this->getAccountBalance();
 
-        if ($accbalamt > 0) {
+        if ($accbalamt > $request->input('purchase_amount')) {
             $dttime = now(); // Get the current time
 
             DB::beginTransaction();
@@ -109,6 +109,7 @@ class BiddingController extends Controller
             }
         } else {
             // If account does not have sufficient balance
+            alert()->error('Thất Bại', 'Số dư của bạn không đủ !!!');
             return redirect()->route('deposit')->with('error', 'Your account does not have sufficient balance. Kindly deposit amount.');
         }
     }

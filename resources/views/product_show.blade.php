@@ -105,6 +105,22 @@
         margin-top: 70px;
         margin-left: 100px;
     }
+
+    .product-image {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px; /* Optional, to match the img border-radius */
+    }
+
+    .product-image img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px; /* To match the container's border-radius */
+    }
+
+
 </style>
 
 <!-- breadcrumb-area start -->
@@ -131,7 +147,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card mb-10">
-                    <div class="card-header">
+                    <div class="card-header" id="headerWithAlert">
                         @if (session('success'))
                             <div class="alert alert-success">
                                 {{ session('success') }}
@@ -163,6 +179,18 @@
                                 <div class="product-gallery-featured">
                                     <img src="{{ asset('product_images/' . $product->all_image_paths[0]) }}" alt="">
                                 </div>
+                                <style>
+                                    .product-gallery-featured {
+                                        height: 400px; /* Chiều cao mong muốn của khung hình ảnh */
+                                        overflow: hidden; /* Đảm bảo hình ảnh không vượt ra ngoài khung */
+                                    }
+
+                                    .product-gallery-featured img {
+                                        height: 100%; /* Đảm bảo hình ảnh sẽ lấp đầy khung */
+                                        object-fit: cover; /* Hiển thị hình ảnh mà không bị biến đổi tỷ lệ */
+                                    }
+                                </style>
+
                             </div>
 
                             <div class="product-seller-recommended">
@@ -226,21 +254,20 @@
                                                         </div>
                                                         <div id="review" class="tab-pane fade">
                                                             <div class="description-content">
-                                                                <p>
                                                                 @if ($bidder_list->isEmpty())
                                                                     <center><b style="color: red;">No biddings done
                                                                             yet..</b></center>
                                                                 @else
                                                                     @foreach ($bidder_list as $bidder)
-                                                                        {{ $bidder->customer->customer_name }} bidded
-                                                                        VND{{ $bidder->bidding_amount }}
-                                                                        on {{ $bidder->bidding_date_time }}
-                                                                        <hr>
-                                                                        @endforeach
-                                                                        @endif
+                                                                        <p>
+                                                                            {{ $bidder->customer->customer_name }}
+                                                                            bidded VND{{ $bidder->bidding_amount }}
+                                                                            on {{ $bidder->bidding_date_time }}
                                                                         </p>
+                                                                        <hr>
+                                                                    @endforeach
+                                                                @endif
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -308,7 +335,7 @@
                                                                    style="flex: 1; margin-right: 10px;"
                                                                    autocomplete="off">
                                                             <button type="button"
-                                                                    onclick="refreshPage({{ $product->id }})"
+                                                                    onclick="refreshPage({{ $product->product_id }})"
                                                                     class="form-control"
                                                                     style="flex: 0 0 100px; color: green;">Refresh
                                                             </button>
@@ -317,8 +344,10 @@
                                                     <br>
                                                     <div class="snipcart-details agileinfo_single_right_details">
                                                         <fieldset style="width: 100%; max-width: 300px;">
-                                                            <button type="button" onclick="confirmBidding(event)"
-                                                                    class="form-control">Bid Now
+                                                            <button
+                                                                style="color: #040505; background-color: yellowgreen"
+                                                                type="button" onclick="confirmBidding(event)"
+                                                                class="form-control">Bid Now
                                                             </button>
                                                         </fieldset>
                                                     </div>
@@ -395,8 +424,6 @@
         });
     });
 
-    // show popover
-    $(".main-questions").popover('show');
 </script>
 
 <!-- product-area start -->
@@ -533,20 +560,6 @@
 
 </style>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const productId = {{ $product->id }};
-        const eventSource = new EventSource(`/sse/${productId}`);
-
-        eventSource.onmessage = function (event) {
-            const data = JSON.parse(event.data);
-            document.getElementById('currentBid').innerText = data.ending_bid;
-        };
-
-        eventSource.onerror = function () {
-            console.error('Error receiving SSE.');
-            eventSource.close();
-        };
-    });
 
     function enableBidForm() {
         var startingTime = new
@@ -568,10 +581,25 @@
 
 <script>
     function refreshPage(productId) {
-        fetch(`/update_price/${productId}`)
+        fetch(`/update_price/${productId}/?query={{$product->ending_bid}}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    var successMessage = data.message;
+                    var cardHeader = document.getElementById('headerWithAlert');
+                    // Kiểm tra xem đã có thông báo trong cardHeader hay chưa
+                    var existingAlert = cardHeader.nextElementSibling;
+
+                    // Nếu đã có, hãy xóa nó trước khi chèn thông báo mới
+                    if (existingAlert && existingAlert.classList.contains('alert')) {
+                        cardHeader.parentNode.removeChild(existingAlert);
+                    }
+                    // Tạo một phần tử div mới cho thông báo thành công
+                    var alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success';
+                    alertDiv.innerHTML = successMessage + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                    cardHeader.parentNode.insertBefore(alertDiv, cardHeader.nextSibling);
+
                     document.getElementById('currentBid').innerText = data.currentBid;
                 } else {
                     console.error('Failed to update the bid amount:', data.message);

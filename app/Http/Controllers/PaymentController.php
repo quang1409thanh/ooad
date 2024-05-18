@@ -58,8 +58,7 @@ class PaymentController extends Controller
 
     public function claimWinningBid($id)
     {
-        $winner = Winner::find($id);
-
+        $winner = Winner::where('product_id', $id)->first();
         return view('customer.claim_winning_bid', compact('winner'));
     }
 

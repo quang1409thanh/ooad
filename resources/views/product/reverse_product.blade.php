@@ -6,7 +6,7 @@
     if (isset($_POST['submit'])) {
         $productdescription = mysqli_real_escape_string($con, $_POST['product_description']);
         $imgname = rand() . $_FILES['product_image']['name'];
-        move_uploaded_file($_FILES["product_image"]["tmp_name"], "imgproduct/" . $imgname);
+        move_uploaded_file($_FILES["product_image"]["tmp_name"], "product_images/" . $imgname);
         if (isset($_GET['editid'])) {
             $sql = "UPDATE product SET product_name='$_POST[product_name]',product_description='$productdescription',starting_bid='$_POST[starting_bid]',ending_bid='$_POST[ending_bid]',product_cost='$_POST[product_cost]',";
             if ($_FILES['product_image']['name'] != "") {
@@ -109,7 +109,7 @@
                                                             if (isset($_GET['editid'])) {
                                                                 ?>
                                                             <img
-                                                                    src='imgproduct/<?php echo $rsedit['product_image']; ?>'
+                                                                    src='product_images/<?php echo $rsedit['product_image']; ?>'
                                                                     style="width:100%;">
                                                                 <?php
                                                             }

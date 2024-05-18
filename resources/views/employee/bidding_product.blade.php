@@ -66,7 +66,7 @@
                     <tbody>
                     @foreach ($products as $product)
                         <tr>
-                            <td><img src='imgproduct/{{ $product->product_image }}' width='200px;'></td>
+                            <td><img src='product_images/{{ $product->product_image }}' width='200px;'></td>
                             <td>{{ $product->customer->customer_name }}<br>
 {{--                                <b>(won for VND{{ $product->biddings->max('bidding_amount') }})</b>--}}
                                 <b>(won for VND{{3}})</b>

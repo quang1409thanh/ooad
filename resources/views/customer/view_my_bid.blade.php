@@ -75,6 +75,25 @@
     }
 
     .bidding-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .bidding-item {
+        padding: 10px;
+    }
+
+    /* Màu cho ô chẵn */
+    .bidding-item:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    /* Màu cho ô lẻ */
+    .bidding-item:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+    .bidding-list {
         max-height: 150px; /* Đặt chiều cao tối đa */
         overflow-y: auto; /* Cho phép cuộn nếu nội dung vượt quá kích thước */
         padding: 5px 0; /* Thêm một số lề để tạo khoảng cách giữa các mục */
@@ -179,7 +198,8 @@
                                     <ul class="bidding-list">
                                          @foreach($biddings as $bidding)
                                             <li class="bidding-item">
-                                                <p>{{ $bidding->customer->customer_name }} bidded VND{{ $bidding->bidding_amount }}</p>
+                                                <p><b>{{ $bidding->customer->customer_name }}</b> bidded VND{{ $bidding->bidding_amount }}</p>
+{{--                                                <hr>.--}}
                                             </li>
                                         @endforeach
                                     </ul>
