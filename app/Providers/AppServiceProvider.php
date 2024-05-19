@@ -41,11 +41,23 @@ class AppServiceProvider extends ServiceProvider
                 ->where('payment_type', 'Deposit')
                 ->sum('purchase_amount');
 
-            // Lấy tổng số tiền đã chi tiêu của người dùng cho đấu giá
-            $widamt = Payment::where('customer_id', session()->get('customer_id'))
+            $widamt = Payment::selectRaw('MAX(paid_amount) as max_paid_amount')
+                ->where('customer_id', session()->get('customer_id'))
                 ->where('status', 'Active')
                 ->where('payment_type', 'Bid')
+                ->groupBy('product_id')
+                ->pluck('max_paid_amount')
+                ->sum();
+            $refund = Payment::where('customer_id', session()->get('customer_id'))
+                ->where('status', 'Active')
+                ->where('payment_type', 'Refund')
                 ->sum('paid_amount');
+            $accbalamt = $depamt - $widamt + $refund;
+//            dd($accbalamt);
+
+            // đang có vấn đề với giá trị này ?
+            $reverseBidCount = 3; // Lấy giá trị $reverseBidCount từ database hoặc bất kỳ nguồn dữ liệu nào khác
+
             // Thực hiện bất kỳ logic nào để truyền các giá trị cần thiết vào header ở đây
             $myBidCount = Bidding::where('customer_id', session()->get('customer_id'))->count();
             $winningBidCount = Winner::select('winners.*')
@@ -53,9 +65,6 @@ class AppServiceProvider extends ServiceProvider
                 ->where('products.customer_id', '!=', '0')
                 ->where('winners.customer_id', '=', session()->get('customer_id'))
                 ->count();
-            // đang có vấn đề với giá trị này ?
-            $reverseBidCount = 3; // Lấy giá trị $reverseBidCount từ database hoặc bất kỳ nguồn dữ liệu nào khác
-            $accbalamt = $depamt - $widamt;
 
             $categories = Category::all();
             $cur = session()->get('customer_id');
@@ -123,7 +132,7 @@ class AppServiceProvider extends ServiceProvider
                 $customer = Customer::find($cid);
 
                 // Tạo bản ghi Winner mới
-                Winner::create([
+                $winner = Winner::create([
                     'product_id' => $product_id,
                     'customer_id' => $cid,
                     'winners_image' => $customer->customer_image ? $customer->customer_image : 'default_image.jpg',
@@ -131,6 +140,52 @@ class AppServiceProvider extends ServiceProvider
                     'end_date' => $end_date_time,
                     'status' => 'Pending'
                 ]);
+                // hoàn tiền cho những người đấu giá mà không thắng.
+                $payments = Payment::where('product_id', $product_id)
+                    ->where('status', 'Active')
+                    ->where('customer_id', '!=', $cid)
+                    ->where('payment_type', 'Bid')
+                    ->get();
+                $dttime = now(); // Get the current time
+
+                $uniqueCustomerIds = $payments->pluck('customer_id')->unique();
+                foreach ($uniqueCustomerIds as $customerId) {
+                    $maxPaidPayment = $payments
+                        ->where('customer_id', $customerId)
+                        ->sortByDesc('paid_amount')
+                        ->first();
+                    // tiến hành hoàn tiền, tạo từ bản ghi trong cơ sở dữ liệu
+                    // Add new bidding
+                    $bidding = new Bidding();
+                    $bidding->fill([
+                        'customer_id' => $maxPaidPayment->customer_id,
+                        'product_id' => $product_id,
+                        'bidding_amount' => $maxPaidPayment->paid_amount,
+                        'bidding_date_time' => $dttime,
+                        'note' => "Refund",
+                        'status' => 'Active',
+                    ]);
+                    $bidding->save();
+                    // Get the ID of the newly added bidding
+                    $biddingid = $bidding->bidding_id;
+
+                    // Add payment
+                    $payment = new Payment();
+                    $payment->fill([
+                        'customer_id' => $customerId,
+                        'payment_type' => 'Refund',
+                        'product_id' => $product_id,
+                        'bidding_id' => $biddingid,
+                        'paid_amount' => $maxPaidPayment->paid_amount,
+                        'paid_date' => $dttime,
+                        'status' => 'Active',
+                    ]);
+                    $payment->save();
+
+                    // Xử lý với $maxPaidPayment ở đây
+                }
+
+
             }
 
             DB::commit();

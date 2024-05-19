@@ -218,7 +218,7 @@
                                                                 <div class="row"
                                                                      style="padding-left: 10%; padding-right: 10%">
                                                                     <table
-                                                                        class="table table-striped table-bordered">
+                                                                            class="table table-striped table-bordered">
                                                                         <tbody>
                                                                         <tr>
                                                                             <th>Uploaded by :</th>
@@ -271,7 +271,11 @@
                                                                     @foreach ($bidder_list as $bidder)
                                                                         <p>
                                                                             <b style="color: #007bff">{{ $bidder->customer->customer_name }}</b>
-                                                                            Bidded
+                                                                            @if($bidder->note == "Refund")
+                                                                                Refund
+                                                                            @else
+                                                                                Bidded
+                                                                            @endif
                                                                             <i> $ </i>
                                                                             {{ $bidder->bidding_amount }}
                                                                             <i>on</i> {{ $bidder->bidding_date_time }}
@@ -359,19 +363,19 @@
                                                     <div class="controls"
                                                          style="display: flex; align-items: center; flex-wrap: wrap;">
                                                         <fieldset
-                                                            style="width: 100%; max-width: 300px; flex: 1; margin-right: 14px;">
+                                                                style="width: 100%; max-width: 300px; flex: 1; margin-right: 14px;">
                                                             <button
-                                                                style="color: #040505; background-color: yellowgreen"
-                                                                type="button" onclick="confirmBidding(event)"
-                                                                class="form-control">Bid Now
+                                                                    style="color: #040505; background-color: yellowgreen"
+                                                                    type="button" onclick="confirmBidding(event)"
+                                                                    class="form-control">Bid Now
                                                             </button>
                                                         </fieldset>
-                                                        <button type="button"
-                                                                onclick="refreshPage({{ $product->product_id }})"
-                                                                class="form-control"
-                                                                style="background-color: red; flex: 0 0 100px; color: black;">
-                                                            Cancel
-                                                        </button>
+                                                        {{--                                                        <button type="button"--}}
+                                                        {{--                                                                onclick="refreshPage({{ $product->product_id }})"--}}
+                                                        {{--                                                                class="form-control"--}}
+                                                        {{--                                                                style="background-color: red; flex: 0 0 100px; color: black;">--}}
+                                                        {{--                                                            Cancel--}}
+                                                        {{--                                                        </button>--}}
                                                     </div>
                                                     <hr>
                                                     <br>
@@ -384,9 +388,9 @@
                                                 <div class="snipcart-details agileinfo_single_right_details">
                                                     <a href="{{ route('product.show', $product->product_id) }}"
                                                        type="button" name="submit" value="Closed"><input
-                                                            type="button" name="submit" value="Closed"
-                                                            class="form-control" style="width: 250px;"
-                                                            disabled/></a>
+                                                                type="button" name="submit" value="Closed"
+                                                                class="form-control" style="width: 250px;"
+                                                                disabled/></a>
                                                 </div>
                                             </fieldset>
                                         @endif
@@ -495,14 +499,14 @@
                                     </h4>
                                     <div class="price-box">
                                         <span
-                                            class="new-price">Current Bid Amount : ${{ $similarProduct->ending_bid > $similarProduct->starting_bid ? $similarProduct->ending_bid : $similarProduct->starting_bid }}</span>
+                                                class="new-price">Current Bid Amount : ${{ $similarProduct->ending_bid > $similarProduct->starting_bid ? $similarProduct->ending_bid : $similarProduct->starting_bid }}</span>
                                     </div>
                                 </div>
                                 <div class="add-actions">
                                     <ul class="add-actions-link">
                                         <li class="add-cart"><a
-                                                href="#"><i
-                                                    class="ion-android-cart"></i> Click here
+                                                    href="#"><i
+                                                        class="ion-android-cart"></i> Click here
                                                 to
                                                 BID</a></li>
                                     </ul>

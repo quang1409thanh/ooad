@@ -32,4 +32,8 @@ class Winner extends Model
         return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
     }
 
+    public function payment()
+    {
+        return $this->hasMany(Payment::class, 'product_id', 'product_id');
+    }
 }

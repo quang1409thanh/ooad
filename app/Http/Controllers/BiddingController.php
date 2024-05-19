@@ -67,21 +67,27 @@ class BiddingController extends Controller
             ->where('payment_type', 'Deposit')
             ->sum('purchase_amount');
 
-        // Lấy tổng số tiền đã chi tiêu của người dùng cho đấu giá
-        $widamt = Payment::where('customer_id', $userId)
+        $widamt = Payment::selectRaw('MAX(paid_amount) as max_paid_amount')
+            ->where('customer_id', session()->get('customer_id'))
             ->where('status', 'Active')
             ->where('payment_type', 'Bid')
+            ->groupBy('product_id')
+            ->pluck('max_paid_amount')
+            ->sum();
+        $refund = Payment::where('customer_id', session()->get('customer_id'))
+            ->where('status', 'Active')
+            ->where('payment_type', 'Refund')
             ->sum('paid_amount');
 
         // Tính số dư tài khoản
-        $accbalamt = $depamt - $widamt;
+        $accbalamt = $depamt - $widamt + $refund;
         return $accbalamt;
     }
 
     public function submitBidding(Request $request)
     {
         $userId = session('customer_id');
-
+//        $request->input('purchase_amount')
         $accbalamt = $this->getAccountBalance();
 
         if ($accbalamt > $request->input('purchase_amount')) {

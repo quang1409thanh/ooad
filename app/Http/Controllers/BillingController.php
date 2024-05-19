@@ -23,10 +23,16 @@ class BillingController extends Controller
                 ->where('payment_type', 'Deposit')
                 ->sum('purchase_amount');
 
-            // Gọi phương thức trong model để lấy tổng paid_amount
-            $totalPaidAmount = Payment::where('customer_id', $customerId)
+            $totalPaidAmount = Payment::selectRaw('MAX(paid_amount) as max_paid_amount')
+                ->where('customer_id', session()->get('customer_id'))
                 ->where('status', 'Active')
                 ->where('payment_type', 'Bid')
+                ->groupBy('product_id')
+                ->pluck('max_paid_amount')
+                ->sum();
+            $refund = Payment::where('customer_id', session()->get('customer_id'))
+                ->where('status', 'Active')
+                ->where('payment_type', 'Refund')
                 ->sum('paid_amount');
 
             // Commit transaction nếu không có lỗi xảy ra
@@ -39,7 +45,7 @@ class BillingController extends Controller
         }
 
         // Trả về view với thông tin đã tính toán
-        return view('deposit', compact('totalPurchaseAmount', 'totalPaidAmount'));
+        return view('deposit', compact('totalPurchaseAmount', 'totalPaidAmount','refund'));
     }
 
     public function store(Request $request)

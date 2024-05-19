@@ -200,7 +200,7 @@
 
                             <span class="price-new">
                                 @php
-                                    $biddings = Bidding::select('biddings.*', 'customers.*')
+                                    $biddings = Bidding::select('biddings.*', 'customers.*','biddings.note as note_bidding')
                                             ->leftJoin('customers', 'biddings.customer_id', '=', 'customers.customer_id')
                                             ->where('biddings.product_id', $product->product_id)
                                             ->where('biddings.customer_id', session('customer_id'))
@@ -212,7 +212,13 @@
                                     <ul class="bidding-list">
                                          @foreach($biddings as $bidding)
                                             <li class="bidding-item">
-                                                <p><b>{{ $bidding->customer->customer_name }}</b> bidded ${{ $bidding->bidding_amount }}</p>
+                                                <p><b>{{ $bidding->customer->customer_name }}</b>
+                                                    @if($bidding->note_bidding == "Refund")
+                                                        Refund
+                                                    @else
+                                                        Bidder
+                                                    @endif
+                                                    ${{ $bidding->bidding_amount }}</p>
 {{--                                                <hr>.--}}
                                             </li>
                                         @endforeach

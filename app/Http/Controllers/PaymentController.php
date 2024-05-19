@@ -36,24 +36,29 @@ class PaymentController extends Controller
         if (!$payment) {
             return redirect()->back()->with('error', 'Payment not found.');
         }
-
         // Retrieve the current customer's ID from session
         $customerId = session('customer_id');
 
-        // Calculate the total deposit amount for the current customer
-        $depamt = Billing::where('customer_id', $customerId)
+        $depamt = Billing::where('customer_id', session()->get('customer_id'))
             ->where('status', 'Active')
             ->where('payment_type', 'Deposit')
             ->sum('purchase_amount');
 
-        // Calculate the total bidding amount for the current customer
-        $widamt = Payment::where('customer_id', $customerId)
+        $widamt = Payment::selectRaw('MAX(paid_amount) as max_paid_amount')
+            ->where('customer_id', session()->get('customer_id'))
             ->where('status', 'Active')
             ->where('payment_type', 'Bid')
+            ->groupBy('product_id')
+            ->pluck('max_paid_amount')
+            ->sum();
+        $refund = Payment::where('customer_id', session()->get('customer_id'))
+            ->where('status', 'Active')
+            ->where('payment_type', 'Refund')
             ->sum('paid_amount');
+        $accbalamt = $depamt - $widamt + $refund;
 
         // Return the receipt view with payment information and calculated amounts
-        return view('receipt', compact('payment', 'depamt', 'widamt'));
+        return view('receipt', compact('payment', 'depamt', 'widamt', 'refund'));
     }
 
     public function claimWinningBid($id)

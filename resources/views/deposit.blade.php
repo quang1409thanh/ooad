@@ -32,18 +32,24 @@
                                     <tr>
                                         <th>Deposit amount</th>
                                         <td>
-                                            RS: {{$totalPurchaseAmount}}
+                                            $ {{$totalPurchaseAmount}}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Withdrawn amount</th>
                                         <td>
-                                            RS: {{$totalPaidAmount}}
+                                            $ {{$totalPaidAmount}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Refund amount</th>
+                                        <td>
+                                            $ {{$refund}}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Balance amount</th>
-                                        <td>Rs: {{ $totalPurchaseAmount - $totalPaidAmount }}</td>
+                                        <td>$ {{ $totalPurchaseAmount - $totalPaidAmount +$refund}}</td>
                                     </tr>
                                 </table>
                                 <hr>

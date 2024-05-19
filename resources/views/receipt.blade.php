@@ -53,17 +53,26 @@
                                                 </tr>
                                                 <tr>
                                                     <th><b>Paid amount</b></th>
-                                                    <td>Rs: {{ $payment->purchase_amount }}</td>
+                                                    <td>$ {{ $payment->purchase_amount }}</td>
                                                 </tr>
-                                                <tr>
-                                                    <th>Previous balance</th>
-                                                    <td>
-                                                        Rs: {{$depamt - ($widamt + $payment->purchase_amount)}}
-                                                    </td>
-                                                </tr>
+{{--                                                <tr>--}}
+{{--                                                    @php--}}
+{{--                                                        $var = 0; // Khởi tạo biến $var với giá trị mặc định là 0--}}
+{{--                                                        // Nếu loại thanh toán là "Winners", gán giá trị của $var là purchase_amount--}}
+{{--                                                        if ($payment->payment_type !== "Winners") {--}}
+{{--                                                            $var = $payment->purchase_amount;--}}
+{{--                                                        }--}}
+{{--                                                    @endphp--}}
+
+{{--                                                    <th>Previous balance</th>--}}
+
+{{--                                                    <td>--}}
+{{--                                                        $ {{$depamt - ($widamt + $var) + $refund}}--}}
+{{--                                                    </td>--}}
+{{--                                                </tr>--}}
                                                 <tr>
                                                     <th>Balanced amount</th>
-                                                    <td>Rs: {{ $depamt - $widamt }}</td>
+                                                    <td>$ {{ $depamt - $widamt + $refund}}</td>
                                                 </tr>
                                             </table>
                                         </div>
