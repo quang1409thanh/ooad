@@ -43,23 +43,6 @@ class EmployeeController extends Controller
         return view('employee.employee_account');
     }
 
-    public function register_lock(Request $request)
-    {
-        // Validate the request data
-        // Create a new customer record
-        $employee = new Employee();
-        $employee->employee_name = "admin@gmail.com";
-        $employee->login_id = "AdminNe";
-        $employee->password = Hash::make("Thanh12345678"); // Encrypt the password
-        $employee->employee_type = "Admin";
-        $employee->status = 'Active';
-        $employee->save();
-
-        // Redirect the user after successful registration
-        return redirect()->route('employee_login')->with('success', 'Customer Registration done successfully.');
-
-    }
-
     public function employee_profile()
     {
         return view('employee.employee_profile');

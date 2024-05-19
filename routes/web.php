@@ -36,13 +36,8 @@ Route::get('/pay_winning_bid/{winner_id}', [PaymentController::class, 'claimWinn
     ->name('pay.winning.bid');
 Route::post('/payment-submit', [PaymentController::class, 'submitWinner'])->name('payment.submit');
 
-Route::get('/customeraccount', 'ProductController@index')->name('customer.account');
-//Route::get('/messagebox', 'ProductController@index')->name('message.box');
-Route::get('/view_my_bid', 'ProductController@index')->name('view.my.bid');
-//Route::get('/viewbillingcustomer', 'ProductController@index')->name('view_billing_customer');
-Route::get('/selectcategory', 'ProductController@index')->name('add.products');
+    Route::get('/selectcategory', 'ProductController@index')->name('add.products');
 Route::get('/viewproduct', 'ProductController@index')->name('view.products');
-//Route::get('/employeeviewreverseproduct', 'ProductController@index')->name('view.reverse.product');
 
 Route::get('/customer_profile', [\App\Http\Controllers\CustomerController::class, 'customer_profile'])->name('customer_profile');
 Route::get('/customer_change_password', [\App\Http\Controllers\CustomerController::class, 'customer_change_password'])->name('customer_change_password');
@@ -64,13 +59,17 @@ Route::get('/payment_receipt/{payment_id}', [\App\Http\Controllers\PaymentContro
 Route::post('/post_bidding', [BiddingController::class, 'submitBidding'])->name('post_bidding');
 
 // admin
+
+Route::get('/add_category', [\App\Http\Controllers\CategoryController::class, 'addCategory'])->name('category');
+Route::post('/store_category', [\App\Http\Controllers\CategoryController::class, 'store'])->name('store_category');
+
+
 Route::get('/employeeaccount', 'ProductController@index')->name('employee.account');
 Route::get('/empprofile', 'ProductController@index')->name('employee.profile');
 Route::get('/empchangepassword', 'ProductController@index')->name('emp.change.password');
 Route::post('/employee_login', [\App\Http\Controllers\EmployeeController::class, 'login']);
 Route::post('/accept_product/{id}', [\App\Http\Controllers\EmployeeController::class, 'accept_product'])->name('accept_product');
 
-Route::post('/store_category', [\App\Http\Controllers\CategoryController::class, 'store'])->name('store_category');
 Route::post('/product_store', [\App\Http\Controllers\ProductController::class, 'store'])->name('product_store');
 Route::get('delete_category/{id}', [\App\Http\Controllers\CategoryController::class, 'destroy'])->name('delete_category');
 
@@ -81,7 +80,6 @@ Route::get('/employee_login', [\App\Http\Controllers\EmployeeController::class, 
 Route::get('/view_employee', [EmployeeController::class, 'viewEmployee'])->name('view_employee');
 
 // thêm danh mục
-Route::get('/category', [\App\Http\Controllers\CategoryController::class, 'addCategory'])->name('category');
 Route::get('/view_category', [\App\Http\Controllers\CategoryController::class, 'viewCategory'])->name('view_category');
 
 
@@ -108,35 +106,11 @@ Route::get('/view_payment', [\App\Http\Controllers\PaymentController::class, 'vi
 Route::get('/products_view', [\App\Http\Controllers\ProductController::class, 'products_view'])->name('products_view');
 
 Route::get('/chat/{productid}', [\App\Http\Controllers\MessageController::class, 'getMessages'])->name('chat');
-Route::post('/send-message', [\App\Http\Controllers\MessageController::class, 'sendMessage'])->name('send-message');
 Route::get('/load-messages/{productid}', [\App\Http\Controllers\MessageController::class, 'loadMessages'])->name('load-messages');
 Route::get('/loadmessages_box/{productid}', [\App\Http\Controllers\MessageController::class, 'loadBoxMessages'])->name('loadmessages_box');
 Route::post('/chatmessage', [\App\Http\Controllers\MessageController::class, 'store'])->name('chatmessage.store');
 Route::post('/chatmessage_box', [\App\Http\Controllers\MessageController::class, 'store_box'])->name('chatmessage_box');
 
-
-//customer.
-
-
-// tiếp
-//thêm chức năng
-
-
-//Route::get('/logout', [\App\Models\Message::class, 'logout'])->name('logout');
-
-
-//Route::get('/customerlogin', 'ProductController@showLoginForm')->name('customer_login');
-//Route::post('/logout', 'ProductController@logout')->name('logout');
-Route::get('/view_blockchain', 'ProductController@search')->name('view_blockchain');
-Route::get('/featured', 'ProductController@search')->name('featured');
-Route::get('/upcominauction', 'ProductController@search')->name('upcominauction');
-Route::get('/closingauctions', 'ProductController@search')->name('closingauctions');
-Route::get('/latestauction', 'ProductController@search')->name('latestauction');
-Route::get('/closed', 'ProductController@search')->name('closed');
-Route::get('/displayreversebid', 'ProductController@search')->name('displayreversebid');
-
 Route::get('/token', function () {
     return csrf_token();
 });
-Route::get('/sse', [SSEController::class, 'stream'])->name('see');
-Route::get('/sse-updates', [SSEController::class, 'sendSSE'])->name('sse-updates');

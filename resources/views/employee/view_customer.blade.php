@@ -1,16 +1,5 @@
 @include('header')
 
-@if (isset($_GET['delid']))
-        <?php
-        $sql = "DELETE FROM customer WHERE customer_id='{$_GET['delid']}'";
-        $qsql = mysqli_query($con, $sql);
-        if (mysqli_affected_rows($con) == 1) {
-            echo "<script>alert('Customer record deleted successfully...');</script>";
-            echo "<script>window.location='viewcustomer';</script>";
-        }
-        ?>
-@endif
-
 <!-- breadcrumb-area start -->
 <div class="breadcrumb-area bg-gray">
     <div class="container-fluid">
@@ -60,13 +49,16 @@
                                                     <tr>
                                                         <td>{{ $customer->customer_name }}</td>
                                                         <td>{{ $customer->email_id }}</td>
-                                                        <td>{{ $customer->address }},<br>{{ $customer->city }}-{{ $customer->pincode }},<br>{{ $customer->state }}</td>
+                                                        <td>{{ $customer->address }},<br>{{ $customer->city }}
+                                                            -{{ $customer->pincode }},<br>{{ $customer->state }}</td>
                                                         <td>{{ $customer->landmark }}</td>
                                                         <td>{{ $customer->mobile_no }}</td>
                                                         <td>{{ $customer->status }}</td>
                                                         <td>
-                                                            <a href='customer/{{ $customer->customer_id }}/edit' class='btn btn-info' >Edit</a>
-                                                            <a href='viewcustomer/{{ $customer->customer_id }}' class='btn btn-danger' onclick='return confirmdelete()'>Delete</a>
+                                                            <a href='#/?customer_edit={{ $customer->customer_id }}'
+                                                               class='btn btn-info'>Edit</a>
+                                                            <a href='#/?customer_delete={{ $customer->customer_id }}'
+                                                               class='btn btn-danger' onclick='return confirmdelete()'>Delete</a>
                                                         </td>
                                                     </tr>
                                                 @endforeach

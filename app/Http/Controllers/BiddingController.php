@@ -6,27 +6,55 @@ use App\Models\Bidding;
 use App\Models\Billing;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\Winner;
 use App\Providers\AppServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BiddingController extends Controller
 {//
-    public function index()
-    {
-
-    }
 
     public function viewBiddingProduct()
     {
-        $products = Product::all();
-        return view('employee.bidding_product', compact('products'));
+        $products = Product
+            ::where('status', 'Active')
+            ->where('end_date_time', '>', Carbon::now())->get();
+        $productsWithCurrentBidder = [];
+        foreach ($products as $product) {
+            $bidder_current_win = Bidding::with('customer')
+                ->where('product_id', $product->product_id)
+                ->orderBy('bidding_id', 'DESC')
+                ->first();
+            $productsWithCurrentBidder[] = [
+                'product' => $product,
+                'bidder_current_win' => $bidder_current_win
+            ];
+        }
+        return view('employee.bidding_product', compact('productsWithCurrentBidder'));
     }
 
     public function closeBiddingProduct()
     {
-        $products = Product::all();
-        return view('employee.close_bidding_product', compact('products'));
+        $products = Product
+            ::where('status', 'Active')
+            ->where('end_date_time', '<', Carbon::now())->get();
+
+        $productsWithWinner = [];
+        foreach ($products as $product) {
+            if (Winner::where('product_id', $product->product_id)->exists()) {
+                $productsWithWinner[] = [
+                    'product' => $product,
+                    'winner' => Winner::where('product_id', $product->product_id)->first()
+                ];
+            } else {
+                $productsWithWinner[] = [
+                    'product' => $product,
+                    'winner' => null
+                ];
+            }
+        }
+        return view('employee.close_bidding_product', compact('productsWithWinner'));
     }
 
     public function getAccountBalance()

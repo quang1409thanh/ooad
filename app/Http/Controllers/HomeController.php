@@ -24,30 +24,35 @@ class HomeController extends Controller
         // Latest products
         $latest_products = Product::where($activeWithCustomer)
             ->where('start_date_time', '<=', $now)
+            ->where('status', 'Active')
             ->orderByDesc('product_id')
             ->get();
 
         // Featured products
         $featured_products = Product::where($activeWithCustomer)
             ->where('end_date_time', '>', $now)
+            ->where('status', 'Active')
             ->orderByDesc('product_id')
             ->get();
 
         // Upcoming products
         $upcoming_products = Product::where($activeWithCustomer)
             ->where('start_date_time', '>', $now)
+            ->where('status', 'Active')
             ->orderByDesc('product_id')
             ->get();
 
         // Closing products
         $closing_products = Product::where($activeWithCustomer)
             ->whereBetween('end_date_time', [$startOfDay, $endOfDay])
+            ->where('status', 'Active')
             ->orderByDesc('product_id')
             ->get();
 
         // Closed products
         $closed_products = Product::where($activeWithCustomer)
             ->where('end_date_time', '<', $now)
+            ->where('status', 'Active')
             ->orderByDesc('product_id')
             ->get();
 
@@ -92,7 +97,6 @@ class HomeController extends Controller
                 ->where('category_id', $categoryId)
                 ->where($conditions)
                 ->orderByDesc('product_id')
-                ->take(3)
                 ->get();
         };
 
@@ -134,10 +138,8 @@ class HomeController extends Controller
                         ['customer_id', '!=', '0']
                     ];
                     break;
-                case 'Reverse Bid':
-                    $conditions = [
-                        ['customer_id', '=', '0']
-                    ];
+                case 'Trending Bid':
+                    $conditions = [];
                     break;
                 default:
                     $conditions = [
@@ -146,7 +148,19 @@ class HomeController extends Controller
                     break;
             }
 
+            $getProducts = function ($categoryId, $conditions) {
+                return Product::where('status', 'Active')
+                    ->where('category_id', $categoryId)
+                    ->where($conditions)
+                    ->orderByDesc('product_id')
+                    ->get();
+            };
+
+
             $products = $getProducts($category->category_id, $conditions);
+            $products = $products->sortByDesc(function ($product) {
+                return [$product->countBidders(), $product->countBids()];
+            });
             return [
                 'category_id' => $category->category_id,
                 'category_name' => $category->category_name,
@@ -166,8 +180,6 @@ class HomeController extends Controller
         return view('auction.latest_auctions', compact('categoriesWithProductCount', 'auctiontype'));
     }
 
-
-// auction controller
 
     public function searchProduct(Request $request)
     {

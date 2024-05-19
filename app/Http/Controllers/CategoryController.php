@@ -13,21 +13,20 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         // Validate form data
-        $validatedData = $request->validate([
-            'category_name' => 'required|string|max:255',
-            'category_icon' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
-            'description' => 'nullable|string',
-            'status' => 'required|in:Active,Inactive',
-        ]);
-
         DB::beginTransaction();
 
         try {
+            $validatedData = $request->validate([
+                'category_name' => 'required|string',
+                'description' => 'nullable|string',
+                'status' => 'required|in:Active,Inactive',
+            ]);
+
             // Process category icon upload
             if ($request->hasFile('category_icon')) {
                 $image = $request->file('category_icon');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('imgcategory'), $imageName);
+                $image->move(public_path('category'), $imageName);
                 $validatedData['category_icon'] = $imageName;
             }
 
@@ -42,8 +41,8 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             // Optionally, log the error or handle it
-            return redirect()->route('category.create')
-                ->with('error', 'Đã có lỗi xảy ra. Vui lòng thử lại.');
+            alert()->error('Thất bại', 'Đã có lỗi xảy ra. Vui lòng thử lại.');
+            return redirect()->route('category');
         }
     }
 
@@ -57,7 +56,7 @@ class CategoryController extends Controller
 
             // Delete the category image if it exists
             if (!empty($category->category_icon)) {
-                $imagePath = public_path('imgcategory/' . $category->category_icon);
+                $imagePath = public_path('category/' . $category->category_icon);
                 if (file_exists($imagePath)) {
                     unlink($imagePath); // Delete the image
                 }
@@ -68,12 +67,12 @@ class CategoryController extends Controller
 
             DB::commit();
 
-            return redirect()->route('view_category')->with('success', 'Category deleted successfully!');
+            return redirect()->route('view_category')->with('success', 'Danh mục đã xóa thành công!');
 
         } catch (\Exception $e) {
             DB::rollBack();
             // Optionally, log the error or handle it
-            return redirect()->route('view_category')->with('error', 'An error occurred while deleting the category. Please try again.');
+            return redirect()->route('view_category')->with('error', 'Đã có lỗi khi xóa, xin vui lòng thử lại.');
         }
     }
 

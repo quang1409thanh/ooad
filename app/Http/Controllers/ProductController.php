@@ -15,6 +15,14 @@ class ProductController extends Controller
     //
     public function show($id)
     {
+
+        try {
+            $product = Product::findOrFail($id);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Xử lý khi không tìm thấy sản phẩm
+            abort(404); // Trả về trang lỗi 404
+        }
+
         $messages_send = Message::where('product_id', $id)
             ->where('sender_id', session('customer_id'))
             ->get();
@@ -34,8 +42,7 @@ class ProductController extends Controller
             ->orderBy('bidding_id', 'DESC')
             ->get();
 
-        // Trả về view và truyền sản phẩm vào view
-        return view('product_show', ['product' => $product], compact('products', 'categories', 'similarProducts', 'bidder_list','messages'));
+        return view('product_show', ['product' => $product], compact('products', 'categories', 'similarProducts', 'bidder_list', 'messages'));
     }
 
     public function store(Request $request)
@@ -45,7 +52,8 @@ class ProductController extends Controller
 
         try {
             // Validate form data
-            $validatedData = $request->validate([
+            $validatedData = $request;
+//                ->validate([
 //                'product_name' => 'required|string|max:255',
 //                'category_id' => 'required|exists:categories,category_id',
 //                'product_description' => 'nullable|string',
@@ -57,7 +65,7 @@ class ProductController extends Controller
 //                'company_name' => 'required|string|max:255',
 //                'status' => 'required|in:Active,Inactive',
 //                'product_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
+//            ]);
 
             // Process product image upload
             $imagePaths = [];
@@ -68,7 +76,6 @@ class ProductController extends Controller
                     $imagePaths[] = $imageName;
                 }
             }
-
             // Create new product
             $product = Product::create([
                 'customer_id' => session('customer_id'),
@@ -80,7 +87,7 @@ class ProductController extends Controller
                 'start_date_time' => $validatedData['start_date_time'],
                 'end_date_time' => $validatedData['end_date_time'],
                 'product_cost' => $validatedData['product_cost'],
-                'product_warranty' => null,
+                'product_warranty' => "100 years",
                 'product_delivery' => $validatedData['product_delivery'],
                 'company_name' => $validatedData['company_name'],
                 'status' => $validatedData['status'],
@@ -98,7 +105,7 @@ class ProductController extends Controller
             DB::rollback();
 
             // Display error message
-            alert()->error('Lỗi', 'Đã xảy ra lỗi khi thêm sản phẩm. Vui lòng thử lại sau.');
+            alert()->error('Lỗi', $e->getMessage());
             return redirect()->back()->with('error', 'Error occurred while creating the product. Please try again later.');
         }
     }
@@ -148,34 +155,6 @@ class ProductController extends Controller
     {
         $products = Product::all();
         return view('product.view_reverse_product', compact('products'));
-    }
-
-    public function updatePriceSSE($id)
-    {
-        $productId = request()->query('product_id');
-
-        $product = Product::find($productId);
-        // Code để lấy và gửi giá trị cập nhật tới client sử dụng SSE
-        $response = new StreamedResponse(function () use ($product) {
-            while (true) {
-                // Lấy giá trị cập nhật (ví dụ: giá mới)
-                $newPrice = $product->ending_bid;// Logic để lấy giá mới từ database hoặc bất kỳ nguồn dữ liệu nào khác
-
-                // Gửi dữ liệu cập nhật tới client
-                echo "data: $newPrice\n\n";
-                ob_flush();
-                flush();
-                // Chờ một khoảng thời gian trước khi gửi giá trị tiếp theo (ví dụ: 1 giây)
-                sleep(1);
-            }
-        });
-
-        // Thiết lập header cho SSE
-        $response->headers->set('Content-Type', 'text/event-stream');
-        $response->headers->set('Cache-Control', 'no-cache');
-        $response->headers->set('Connection', 'keep-alive');
-
-        return $response;
     }
 
 }

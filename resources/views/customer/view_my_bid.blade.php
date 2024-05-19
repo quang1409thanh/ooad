@@ -138,6 +138,20 @@
         }, 1000);
     }
 </script>
+<!-- breadcrumb-area start -->
+<div class="breadcrumb-area bg-gray">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item active">View My Bid</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area end -->
 <!------ Include the above in your HEAD tag ---------->
 <div class="container">
     <br>
@@ -198,7 +212,7 @@
                                     <ul class="bidding-list">
                                          @foreach($biddings as $bidding)
                                             <li class="bidding-item">
-                                                <p><b>{{ $bidding->customer->customer_name }}</b> bidded VND{{ $bidding->bidding_amount }}</p>
+                                                <p><b>{{ $bidding->customer->customer_name }}</b> bidded ${{ $bidding->bidding_amount }}</p>
 {{--                                                <hr>.--}}
                                             </li>
                                         @endforeach

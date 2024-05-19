@@ -35,21 +35,27 @@
                                                             <h4><a class="product_name"
                                                                    href="{{ route('product.show', $product->product_id) }}">{{ $product->product_name }}</a>
                                                             </h4>
-                                                            <div class="manufacturer"><a
-                                                                    href="{{ route('product.show', $product->product_id) }}">Product
-                                                                    Code: {{ $product->product_id }}</a></div>
+                                                            <div class="manufacturer">
+                                                                <a href="{{ route('product.show', $product->product_id) }}">Number
+                                                                    of Bidders: {{ $product->countBidders() }}</a>
+                                                            </div>
+                                                            <div class="manufacturer">
+                                                                <a href="{{ route('product.show', $product->product_id) }}">Number
+                                                                    of Bids: {{ $product->countBids() }}</a>
+                                                            </div>
+                                                            <p id="countdowntime_latest{{ $product->product_id }}"></p>
                                                             <script type="application/javascript">
-                                                                countdowntimer('{{ $product->product_id }}', '{{ date("M d, Y H:i:s", strtotime($product->end_date_time)) }}');
+                                                                countdowntimer_latest('{{ $product->product_id }}', '{{ date("M d, Y H:i:s", strtotime($product->end_date_time)) }}');
                                                             </script>
                                                             <div class="price-box">
                                                                 <span
-                                                                    class="new-price">Current Bid Amount : VND{{ $product->ending_bid > $product->starting_bid ? $product->ending_bid : $product->starting_bid }}</span>
+                                                                    class="new-price">Current Bid Amount : $ {{ $product->ending_bid > $product->starting_bid ? $product->ending_bid : $product->starting_bid }}</span>
                                                             </div>
                                                         </div>
                                                         <div class="add-actions">
                                                             <ul class="add-actions-link">
                                                                 <li class="add-cart"><a
-                                                                        href="#"><i
+                                                                        href="{{ route('product.show', $product->product_id) }}">><i
                                                                             class="ion-android-cart"></i> Click here
                                                                         to
                                                                         BID</a></li>

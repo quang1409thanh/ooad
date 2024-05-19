@@ -27,7 +27,6 @@ class CustomerController extends Controller
             'password' => 'required|string|min:6',
             'mobile_no' => 'required|string|max:15',
         ]);
-
         DB::beginTransaction();
 
         try {
@@ -122,7 +121,6 @@ class CustomerController extends Controller
             ->where('products.customer_id', '!=', '0')
             ->orderByDesc('winners.winner_id')
             ->get();
-//        dd($winners);
         // lấy thêm hình ảnh ra nữa là được.
         return view('customer.view_winning_bid', compact('winners'));
     }
@@ -161,10 +159,7 @@ class CustomerController extends Controller
         // Xóa phiên làm việc hiện tại của người dùng
         session()->regenerate();
         $products = Product::all(); // Lấy tất cả sản phẩm từ cơ sở dữ liệu
-//        dd($products);
-//        return view('products.index', compact('products')); // Truyền biến $products sang view
         $categories = Category::all();
-
         // Chuyển hướng về trang index
         return redirect()->route('home', compact('products', 'categories'));
     }
@@ -172,8 +167,7 @@ class CustomerController extends Controller
     public function viewCustomer()
     {
         $customers = Customer::all();
-        return view('customer.view_customer', compact('customers'));
-
+        return view('employee.view_customer', compact('customers'));
     }
 
 }

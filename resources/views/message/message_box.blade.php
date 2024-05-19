@@ -126,14 +126,28 @@
 
 </style>
 
+<!-- breadcrumb-area start -->
+<div class="breadcrumb-area bg-gray">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item active">Message Box</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area end -->
+
+
 <!-- services -->
 <div class="services" id="services">
     <div class="container">
         <div class="heading">
             <h3 data-aos="zoom-in">Message Box</h3>
         </div>
-
-
         <form method="post" action="" onsubmit="return validateform()" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-3 user-panel-container">
@@ -166,7 +180,6 @@
                         </div>
                     </div>
                 </div>
-
                 <hr>
             </div>
         </form>

@@ -49,12 +49,12 @@
                                 @if ($product->currentcost == 0)
                                     No bidding done yet..
                                 @else
-                                    VND{{ $product->currentcost }}
+                                    $ {{ $product->currentcost }}
                                 @endif
                             </td>
                             <td>{{ date("d/m/Y h:i A", strtotime($product->start_date_time)) }}
                                 - {{ date("d/m/Y h:i A", strtotime($product->end_date_time)) }}</td>
-                            <td>VND{{ $product->product_cost }}</td>
+                            <td>$ {{ $product->product_cost }}</td>
                             <td>{{ $product->status }}</td>
                             <td>
                                 <a href='product/{{ $product->product_id }}/edit' class='btn btn-warning'>Edit</a> <br>

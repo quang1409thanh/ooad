@@ -35,10 +35,16 @@ class Product extends Model
         return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
     }
 
+    public function winner()
+    {
+        return $this->hasOne(Winner::class);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
+
     public function getFirstImageAttribute()
     {
         if (is_string($this->product_image)) {
@@ -91,6 +97,7 @@ class Product extends Model
             return 'noimage.gif';
         }
     }
+
     public function getAllImagePathsAttribute()
     {
         if (is_string($this->product_image)) {
@@ -102,8 +109,22 @@ class Product extends Model
             return ['noimage.gif'];
         }
     }
+
     public function product()
     {
         return $this->hasMany(Bidding::class, 'product_id', 'product_id');
     }
+
+    public function countBidders()
+    {
+        return Bidding::where('product_id', $this->product_id)
+            ->distinct('customer_id')
+            ->count('customer_id');
+    }
+
+    public function countBids()
+    {
+        return Bidding::where('product_id', $this->product_id)->count();
+    }
+
 }

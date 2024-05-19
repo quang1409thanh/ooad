@@ -54,7 +54,7 @@
                                                     <tr>
                                                         <td>{{ $message->sender->customer_name }}</td>
                                                         <td>{{ $message->receiver->customer_name }}</td>
-                                                        <td>{{ $message->message_date_time->format('d-M-Y h:i A') }}</td>
+                                                        <td>{{ $message->message_date_time}}</td>
                                                         <td>{{ $message->product->product_name }}</td>
                                                         <td>{{ $message->message }}</td>
                                                     </tr>

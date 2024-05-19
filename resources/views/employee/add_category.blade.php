@@ -52,7 +52,7 @@
                                                 @if (isset($category))
                                                     @if (!empty($category->category_icon))
                                                         <img
-                                                            src="{{ asset('imgcategory/' . $category->category_icon) }}"
+                                                            src="{{ asset('category/' . $category->category_icon) }}"
                                                             style="width: 200px;height:250px;">
                                                     @else
                                                         <img src="{{ asset('img/No-Image-Available.png') }}"

@@ -9,22 +9,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class SSEController extends Controller
 {
     //
-    public function index()
-    {
-        return view('sse'); //for rendering sse blade file
-    }
-
-
-    public function getNewPrice()
-    {
-
-    }
-
     public function stream(Request $request, $id)
     {
         $queryParam = $request->query('quert');
         $product = Product::where('product_id', $id)->first();
-        $message = "";
         if ($queryParam !== $product->ending_bid) {
             $message = "Sản phẩm chưa có cập nhật mới";
         } else {

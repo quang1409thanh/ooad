@@ -28,12 +28,12 @@ class PaymentController extends Controller
     public function showReceipt($paymentId)
     {
         // Retrieve payment information with customer relationship
-        $rspayment = Billing::with('customer')
+        $payment = Billing::with('customer')
             ->where('billing_id', $paymentId)
             ->first();
 
         // If payment information is not found, handle the error
-        if (!$rspayment) {
+        if (!$payment) {
             return redirect()->back()->with('error', 'Payment not found.');
         }
 
@@ -53,7 +53,7 @@ class PaymentController extends Controller
             ->sum('paid_amount');
 
         // Return the receipt view with payment information and calculated amounts
-        return view('receipt', compact('rspayment', 'depamt', 'widamt'));
+        return view('receipt', compact('payment', 'depamt', 'widamt'));
     }
 
     public function claimWinningBid($id)
@@ -118,6 +118,7 @@ class PaymentController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
+            alert()->error("Đã có lỗi", $e->getMessage());
             // Log the error or handle it as necessary
             return redirect()->back()->with('error', 'Payment failed. Please try again.');
         }

@@ -1,5 +1,6 @@
 @include('header')
 <style>
+
     .table img {
         width: 100%;
         height: 100%;
@@ -7,10 +8,22 @@
         border-radius: 8px;
     }
 
+    /* Thiết lập giới hạn chiều rộng cho cột Description */
+    #datatable tbody td:nth-child(3) {
+        max-width: 300px; /* Đặt giới hạn chiều rộng ở đây */
+        overflow: hidden;
+        /* Xóa text-overflow và white-space để cho phép nội dung xuống dòng */
+        /* text-overflow: ellipsis; */
+        /* white-space: nowrap; */
+        /* Thêm thuộc tính để cho phép nội dung xuống dòng */
+        word-wrap: break-word;
+    }
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <div class="breadcrumb-area bg-gray">
     <div class="container-fluid">
         <div class="row">
@@ -33,16 +46,9 @@
                         <div class="col-lg-12 col-xl-12 col-sm-12">
                             <form action="" method="post">
                                 <div class="checkbox-form checkout-review-order">
-                                    @if (session('success'))
-                                        <div class="alert alert-success">
-                                            {{ session('success') }}
-                                        </div>
-                                    @endif
-
                                     <h3 class="shoping-checkboxt-title">View Category</h3>
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <p class="single-form-row">
                                             <table id="datatable" class="table table-striped table-bordered">
                                                 <thead>
                                                 <tr>
@@ -59,8 +65,8 @@
                                                         <td>
                                                             @php
                                                                 $iconPath = 'img/No-Image-Available.png'; // Default image path
-                                                                if ($category->category_icon && file_exists(public_path("imgcategory/{$category->category_icon}"))) {
-                                                                    $iconPath = "imgcategory/{$category->category_icon}";
+                                                                if ($category->category_icon && file_exists(public_path("category/{$category->category_icon}"))) {
+                                                                    $iconPath = "category/{$category->category_icon}";
                                                                 }
                                                             @endphp
                                                             <img src="{{ asset($iconPath) }}"
@@ -70,7 +76,7 @@
                                                         <td>{{ $category->description }}</td>
                                                         <td>{{ $category->status }}</td>
                                                         <td>
-                                                            <a href='category.php?editid={{ $category->category_id }}'
+                                                            <a href='#?category_id={{ $category->category_id }}'
                                                                class='btn btn-info'>Edit</a>
                                                             <a href='{{ route("delete_category", $category->category_id) }}'
                                                                class='btn btn-danger' onclick="confirmation(event)">Delete</a>
@@ -79,7 +85,6 @@
                                                 @endforeach
                                                 </tbody>
                                             </table>
-                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -113,11 +118,4 @@
             });
     }
 
-    function confirmdelete() {
-        if (confirm("Are you sure want to delete this record?") == true) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 </script>

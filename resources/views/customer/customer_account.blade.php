@@ -104,13 +104,26 @@
         color: #777;
     }
 </style>
+<!-- breadcrumb-area start -->
+<div class="breadcrumb-area bg-gray">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item active">Customer Panel</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area end -->
 
 <div class="banner">
     <div class="w3l_banner_nav_right">
         <div class="w3ls_w3l_banner_nav_right_grid w3ls_w3l_banner_nav_right_grid_sub">
 
             <h3 class="w3l_fruit">Customer Panel</h3>
-
             <div class="row">
                 <!-- Deposit Amount Section -->
                 <div class="col-md-3 w3ls_w3l_banner_left w3ls_w3l_banner_left_asdfdfd">

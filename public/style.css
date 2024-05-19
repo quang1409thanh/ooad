@@ -3746,17 +3746,17 @@ thead {
 
 .dashboard-upper-info a.view-cart,
 .view {
-    color: #fff;
+    color: #000000;
     font-size: 14px;
     padding: 5px 12px;
-    background: #EB3E32;
+    background: #e2acf8;
     text-transform: capitalize;
 }
 
 .dashboard-upper-info a.view-cart:hover,
 .view:hover {
-    background: #222;
-    color: #fff;
+    background: #f3eeee;
+    color: #000000;
 }
 
 .view-cart {

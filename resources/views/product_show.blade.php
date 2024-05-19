@@ -206,8 +206,8 @@
                                                             <li class="active"><a href="#description" data-toggle="tab"
                                                                                   class="active show">Description</a>
                                                             </li>
-                                                            <li><a href="#review" data-toggle="tab">Bidders list
-                                                                    ({{count($bidder_list)}})</a></li>
+                                                            <li><a href="#review" data-toggle="tab">List of Bids
+                                                                    ({{$product->countBids()}})</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -215,29 +215,38 @@
                                                     <div class="tab-content">
                                                         <div class="tab-pane fade in active show" id="description">
                                                             <div class="description-content">
-                                                                <div class="row">
-                                                                    <div class="col-md-8">
-                                                                        <table
-                                                                            class="table table-striped table-bordered">
-                                                                            <tbody>
-                                                                            <tr>
-                                                                                <th>Uploaded by :</th>
-                                                                                <td>{{ $product->customer->customer_name }}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <th>Product Code :</th>
-                                                                                <td>{{ $product->product_id }}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <th>Company :</th>
-                                                                                <td>{{ $product->company_name }}</td>
-                                                                            </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </div>
+                                                                <div class="row"
+                                                                     style="padding-left: 10%; padding-right: 10%">
+                                                                    <table
+                                                                        class="table table-striped table-bordered">
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <th>Uploaded by :</th>
+                                                                            <td>{{ $product->customer->customer_name }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Number of Bidders:</th>
+                                                                            <td>{{ $product->countBidders()}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Number of Bids:</th>
+                                                                            <td>{{ count($bidder_list) }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Company :</th>
+                                                                            <td>{{ $product->company_name }}</td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
                                                                 </div>
+                                                                <hr>
+
                                                                 <div class="row">
+
                                                                     <div class="col-md-12">
+                                                                        <b>Mô tả sản phẩm</b>
+                                                                        <br>
+
                                                                         <p>{{ $product->product_description }}</p>
                                                                     </div>
                                                                 </div>
@@ -253,16 +262,19 @@
                                                             </div>
                                                         </div>
                                                         <div id="review" class="tab-pane fade">
-                                                            <div class="description-content">
+                                                            <div class="description-content"
+                                                                 style="max-height: 300px; overflow-y: auto;">
                                                                 @if ($bidder_list->isEmpty())
                                                                     <center><b style="color: red;">No biddings done
                                                                             yet..</b></center>
                                                                 @else
                                                                     @foreach ($bidder_list as $bidder)
                                                                         <p>
-                                                                            {{ $bidder->customer->customer_name }}
-                                                                            bidded VND{{ $bidder->bidding_amount }}
-                                                                            on {{ $bidder->bidding_date_time }}
+                                                                            <b style="color: #007bff">{{ $bidder->customer->customer_name }}</b>
+                                                                            Bidded
+                                                                            <i> $ </i>
+                                                                            {{ $bidder->bidding_amount }}
+                                                                            <i>on</i> {{ $bidder->bidding_date_time }}
                                                                         </p>
                                                                         <hr>
                                                                     @endforeach
@@ -294,12 +306,13 @@
                             </div>
 
                             <div class="price-box">
-                                <p><b>Actual product cost</b>: VND{{ $product->product_cost }}</p>
-                                <h4>Current Bid Amount:<br>VND<span id="currentBid">{{ $product->ending_bid }}</span>
-                                </h4>
-                                <input type='hidden' name='max_bid_amt' id='max_bid_amt'
-                                       value='{{ $product->ending_bid + 5000 }}'>
+                                <p><b>Actual product cost</b>: ${{ $product->product_cost }}</p>
+                                <b>Current Bid Amount: $<span id="currentBid">{{ $product->ending_bid }}</span>
+                                </b>
 
+                                <input type='hidden' name='max_bid_amt' id='max_bid_amt'
+                                       value='{{ $product->ending_bid + 50000000 }}'>
+                                <br>
                                 <form id="biddingForm" action="{{ route('post_bidding') }}" method="post"
                                       onsubmit="return confirmBidding(event)">
                                     @csrf
@@ -326,6 +339,7 @@
                                             @else
                                                 <div id="divbidstatus">
                                                     <div class="w3_agileits_card_number_grid_left" id="bidAmountDiv">
+                                                        <hr>
                                                         <label class="control-label"><b>Enter Bid Amount</b></label>
                                                         <div class="controls"
                                                              style="display: flex; align-items: center; flex-wrap: wrap;">
@@ -342,23 +356,31 @@
                                                         </div>
                                                     </div>
                                                     <br>
-                                                    <div class="snipcart-details agileinfo_single_right_details">
-                                                        <fieldset style="width: 100%; max-width: 300px;">
+                                                    <div class="controls"
+                                                         style="display: flex; align-items: center; flex-wrap: wrap;">
+                                                        <fieldset
+                                                            style="width: 100%; max-width: 300px; flex: 1; margin-right: 14px;">
                                                             <button
                                                                 style="color: #040505; background-color: yellowgreen"
                                                                 type="button" onclick="confirmBidding(event)"
                                                                 class="form-control">Bid Now
                                                             </button>
                                                         </fieldset>
+                                                        <button type="button"
+                                                                onclick="refreshPage({{ $product->product_id }})"
+                                                                class="form-control"
+                                                                style="background-color: red; flex: 0 0 100px; color: black;">
+                                                            Cancel
+                                                        </button>
                                                     </div>
-                                                    <br>
+                                                    <hr>
                                                     <br>
                                                     @include('chat')
-
                                                 </div>
                                             @endif
                                         @else
                                             <fieldset>
+                                                <hr>
                                                 <div class="snipcart-details agileinfo_single_right_details">
                                                     <a href="{{ route('product.show', $product->product_id) }}"
                                                        type="button" name="submit" value="Closed"><input
@@ -368,9 +390,19 @@
                                                 </div>
                                             </fieldset>
                                         @endif
+                                    @elseif(session()->has('employee_id'))
+                                        <div class="snipcart-details agileinfo_single_right_details">
+                                            <fieldset>
+                                                <br>
+                                                <input type="button"
+                                                       value="Admin không thể đấu giá !" class='btn btn-info'
+                                                       style="width: 250px;"/>
+                                            </fieldset>
+                                        </div>
                                     @else
                                         <div class="snipcart-details agileinfo_single_right_details">
                                             <fieldset>
+                                                <br>
                                                 <input type="button"
                                                        onclick="window.location.href = '{{ route('customer_login') }}'"
                                                        name="submit" value="Login to Bid" class='btn btn-info'
@@ -457,11 +489,22 @@
                                 <div class="label-product">{{ $similarProduct->category->category_name }}</div>
                             </div>
                             <div class="product_desc">
+                                <div class="product_desc_info">
+                                    <h4><a class="product_name"
+                                           href="#">{{ $similarProduct->product_name }}</a>
+                                    </h4>
+                                    <div class="price-box">
+                                        <span
+                                            class="new-price">Current Bid Amount : ${{ $similarProduct->ending_bid > $similarProduct->starting_bid ? $similarProduct->ending_bid : $similarProduct->starting_bid }}</span>
+                                    </div>
+                                </div>
                                 <div class="add-actions">
                                     <ul class="add-actions-link">
                                         <li class="add-cart"><a
-                                                href="{{ route('product.show', ['id' => $similarProduct->product_id]) }}"><i
-                                                    class="ion-android-cart"></i> Click here to BID</a></li>
+                                                href="#"><i
+                                                    class="ion-android-cart"></i> Click here
+                                                to
+                                                BID</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -473,6 +516,7 @@
         </div>
     </div>
 </div>
+<hr>
 <!-- product-area end -->
 
 
@@ -495,7 +539,7 @@
 
         if (endingBid > biddingAmount) {
             swal({
-                title: "Bidding amount must be greater than VND " + endingBid,
+                title: "Bidding amount must be greater than $ " + endingBid,
                 icon: "error"
             });
             return false;
@@ -503,7 +547,7 @@
 
         if (biddingAmount > maxBidAmount) {
             swal({
-                title: "Bidding amount should be lesser than VND " + maxBidAmount,
+                title: "Bidding amount should be lesser than $ " + maxBidAmount,
                 icon: "error"
             });
             return false;

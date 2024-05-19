@@ -1,38 +1,32 @@
 @include('header')
 
-{{--@if (request()->has('submit'))--}}
-{{--        <?php--}}
-{{--        $sql = "UPDATE customer SET customer_name='" . request()->input('customer_name') . "', email_id='" . request()->input('email_id') . "', address='" . request()->input('address') . "', state='" . request()->input('state') . "', city='" . request()->input('city') . "', landmark='" . request()->input('landmark') . "', pincode='" . request()->input('pincode') . "', mobile_no='" . request()->input('mobile_no') . "' WHERE  customer_id='" . session('customer_id') . "'";--}}
-{{--        $qsql = mysqli_query($con, $sql);--}}
-{{--        echo mysqli_error($con);--}}
-{{--        if (mysqli_affected_rows($con) == 1) {--}}
-{{--            echo "<script>alert('Customer Profile updated successfully...');</script>";--}}
-{{--        }--}}
-{{--        ?>--}}
-{{--@endif--}}
-
-{{--@if (session()->has('customer_id'))--}}
-{{--        <?php--}}
-{{--        $sqledit = "SELECT * FROM customer WHERE customer_id='" . session('customer_id') . "'";--}}
-{{--        $qsqledit = mysqli_query($con, $sqledit);--}}
-{{--        $rsedit = mysqli_fetch_array($qsqledit);--}}
-{{--        ?>--}}
-{{--@endif--}}
-
-<div class="content-wraper mt-50">
+<!-- breadcrumb-area start -->
+<div class="breadcrumb-area bg-gray">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="customer-login-register">
-                    <!-- banner -->
-                    <div class="banner">
-                        <div class="w3l_banner_nav_right">
-                            <!-- about -->
-                            <div class="privacy about">
-                                <h3>Customer <span>Profile</span></h3>
+            <div class="col-lg-12">
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+                    <li class="breadcrumb-item active">Pay for Winning Bid</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area end -->
 
-                                <div class="checkout-left">
+<div class="content-wraper mt-10">
+    <div class="container-fluid">
+        <div class="checkout-area">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 col-sm-12">
+                            <div class="checkbox-form checkout-review-order">
+
+                                <h3 style="text-align: center">Customer <span>Profile</span></h3>
+
+                                <div class="checkout-left" style="padding-left: 300px; padding-right: 300px">
 
                                     <div class="col-md-12 ">
                                         <form action="" method="post" class="creditly-card-form agileinfo_form"
@@ -79,7 +73,9 @@
                                                                         Province------------
                                                                     </option>
                                                                     <option value="An Giang">An Giang</option>
-                                                                    <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
+                                                                    <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng
+                                                                        Tàu
+                                                                    </option>
                                                                     <option value="Bắc Giang">Bắc Giang</option>
                                                                     <option value="Bắc Kạn">Bắc Kạn</option>
                                                                     <option value="Bạc Liêu">Bạc Liêu</option>
@@ -133,9 +129,11 @@
                                                                     <option value="Thái Bình">Thái Bình</option>
                                                                     <option value="Thái Nguyên">Thái Nguyên</option>
                                                                     <option value="Thanh Hóa">Thanh Hóa</option>
-                                                                    <option value="Thừa Thiên Huế">Thừa Thiên Huế</option>
+                                                                    <option value="Thừa Thiên Huế">Thừa Thiên Huế
+                                                                    </option>
                                                                     <option value="Tiền Giang">Tiền Giang</option>
-                                                                    <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+                                                                    <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh
+                                                                    </option>
                                                                     <option value="Trà Vinh">Trà Vinh</option>
                                                                     <option value="Tuyên Quang">Tuyên Quang</option>
                                                                     <option value="Vĩnh Long">Vĩnh Long</option>
@@ -250,10 +248,10 @@
             document.getElementById("erraddress").innerHTML = "Address Should not be empty..";
             errchk = "True";
         }
-        if (!document.getElementById("state").value.match(alphaSpaceExp)) {
-            document.getElementById("errstate").innerHTML = "State should contain alphabets....";
-            errchk = "True";
-        }
+        // if (!document.getElementById("state").value.match(alphaSpaceExp)) {
+        //     document.getElementById("errstate").innerHTML = "State should contain alphabets....";
+        //     errchk = "True";
+        // }
         if (document.getElementById("state").value == "") {
             document.getElementById("errstate").innerHTML = "State Should not be empty..";
             errchk = "True";
