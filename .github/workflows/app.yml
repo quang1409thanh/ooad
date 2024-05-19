@@ -12,14 +12,12 @@ jobs:
 
     services:
       mysql:
-        image: mysql:8.0
+        image: mysql:8.2
         ports:
           - 3306:3306
         env:
-          MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD
+          MYSQL_ROOT_PASSWORD: 140903  # Thay đổi mật khẩu root tại đây
           MYSQL_DATABASE: auction_ooad
-          MYSQL_USER: root
-          MYSQL_PASSWORD: root
         options: >-
           --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
@@ -47,15 +45,15 @@ jobs:
           sed -i 's/DB_PORT=.*/DB_PORT=3306/' .env
           sed -i 's/DB_DATABASE=.*/DB_DATABASE=auction_ooad/' .env
           sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
-          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=root/' .env
+          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=140903/' .env  # Sử dụng MYSQL_ROOT_PASSWORD đã đặt
       - name: Wait for MySQL to be ready
         run: |
-          until docker exec -i $(docker-compose ps -q mysql) mysqladmin ping -uroot -proot --silent; do
+          until docker exec -i $(docker-compose ps -q mysql) mysqladmin ping -uroot -p140903 --silent; do  # Sử dụng MYSQL_ROOT_PASSWORD đã đặt
             echo 'Waiting for MySQL...'
             sleep 5
           done
       - name: Import SQL file
-        run: mysql -h127.0.0.1 -uroot -proot auction_ooad < database/file/auction_ooad.sql
+        run: mysql -h127.0.0.1 -uroot -p140903 auction_ooad < database/file/auction_ooad.sql  # Sử dụng MYSQL_ROOT_PASSWORD đã đặt
       - name: Run Migrations
         run: php artisan migrate --force
       - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
