@@ -1,5 +1,10 @@
 name: Auction Online System
 
+env:
+  AZURE_WEBAPP_NAME: AUCTIONOOAD   # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
+  PHP_VERSION: '8.2'                  # set this to the PHP version to use
+
 on:
   push:
     branches: [ "main" ]
@@ -54,7 +59,29 @@ jobs:
         run: php artisan migrate --force
       - name: Generate key
         run: php artisan key:generate
+      - name: Clear Config
+        run: php artisan config:clear
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
       - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
         run: php artisan test
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: php-app
+
+      - name: 'Deploy to Azure Web App'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
