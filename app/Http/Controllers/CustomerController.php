@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bidding;
 use App\Models\Billing;
 use App\Models\Category;
 use App\Models\Payment;
@@ -10,7 +11,9 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CustomerController extends Controller
 {
@@ -24,18 +27,30 @@ class CustomerController extends Controller
             'password' => 'required|string|min:6',
             'mobile_no' => 'required|string|max:15',
         ]);
+        DB::beginTransaction();
 
-        // Create a new customer record
-        $customer = new Customer();
-        $customer->customer_name = $validatedData['customer_name'];
-        $customer->email_id = $validatedData['email_id'];
-        $customer->password = Hash::make($validatedData['password']); // Encrypt the password
-        $customer->mobile_no = $validatedData['mobile_no'];
-        $customer->status = 'Active';
-        $customer->save();
+        try {
+            // Create a new customer record
+            $customer = new Customer();
+            $customer->customer_name = $validatedData['customer_name'];
+            $customer->email_id = $validatedData['email_id'];
+            $customer->password = Hash::make($validatedData['password']); // Encrypt the password
+            $customer->mobile_no = $validatedData['mobile_no'];
+            $customer->status = 'Active';
+            $customer->save();
 
-        // Redirect the user after successful registration
-        return redirect()->route('customer_login')->with('success', 'Customer Registration done successfully.');
+            DB::commit();
+
+            alert()->success('Đăng Ký Thành Công', 'Chúc mừng bạn đã đăng ký thành công');
+
+            // Redirect the user after successful registration
+            return redirect()->route('customer_login')->with('success', 'Customer Registration done successfully.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Optionally, log the error or handle it
+            return redirect()->route('customer_register')->with('error', 'An error occurred during registration. Please try again.');
+        }
     }
 
     public function login(Request $request)
@@ -48,22 +63,22 @@ class CustomerController extends Controller
 
         if (!$customer || !Hash::check($credentials['password'], $customer->password)) {
             // Xác thực thất bại
-            return redirect()->route('customer_login')->with('error', 'Invalid credentials');
+            alert()->error('Đăng nhập Thất bại', 'Vui lòng kiểm tra lại thông tin đăng nhập');
+            return redirect()->route('customer_login');
         }
         session(['customer_id' => $customer->customer_id]);
         // Xác thực thành công, đăng nhập người dùng
-//        Auth::login($customer);
-
-
+        alert()->success('Đăng nhập Thành công', 'Chúc mừng bạn đã đăng nhập thành công');
+//        Alert::success('Success Title', 'Success Message');
         // Redirect sau khi đăng nhập thành công
-        return redirect()->route('customeraccount'); // Redirect to customer account page
+        return redirect()->route('customer_account'); // Redirect to customer account page
 
     }
 
-    public function customeraccount()
+    public function customerAccount()
     {
         $categories = Category::all();
-        return view('customer.customeraccount', compact('categories'));
+        return view('customer.customer_account', compact('categories'));
     }
 
     public function customer_profile()
@@ -83,26 +98,52 @@ class CustomerController extends Controller
     {
         $customer_id = session('customer_id');
         $customer = Customer::find($customer_id);
-        $payments = Payment::all();
+        //
+        $payments = Payment::select('product_id', DB::raw('MAX(payment_id) as payment_id'))
+            ->where('customer_id', $customer_id)
+            ->where('status', 'Active')
+            ->groupBy('product_id')
+            ->get();
         return view('customer.view_my_bid', compact('customer', 'payments'));
 
     }
 
     public function view_winning_bid()
     {
-        $winners = Winner::all();
+        $winners = Winner::select('winners.*', 'products.*', 'customers.*', 'products.product_id as proid', 'winners.status as winner_status')
+            ->leftJoin('products', 'winners.product_id', '=', 'products.product_id')
+            ->leftJoin('customers', 'winners.customer_id', '=', 'customers.customer_id')
+            ->where(function ($query) {
+                $query->where('winners.status', 'Pending')
+                    ->orWhere('winners.status', 'Active');
+            })
+            ->where('winners.customer_id', '=', session('customer_id'))
+            ->where('products.customer_id', '!=', '0')
+            ->orderByDesc('winners.winner_id')
+            ->get();
+        // lấy thêm hình ảnh ra nữa là được.
         return view('customer.view_winning_bid', compact('winners'));
     }
 
     public function reverse_bid_winner()
     {
-        $winners = Winner::all();
+        $winners = Winner::select('winners.*', 'products.*', 'customers.*', 'products.product_id as proid', 'winners.status as winner_status')
+            ->leftJoin('products', 'winners.product_id', '=', 'products.product_id')
+            ->leftJoin('customers', 'winners.customer_id', '=', 'customers.customer_id')
+            ->where(function ($query) {
+                $query->where('winners.status', 'Pending')
+                    ->orWhere('winners.status', 'Active');
+            })
+            ->where('winners.customer_id', '=', session('customer_id'))
+            ->where('products.customer_id', '!=', '0')
+            ->orderByDesc('winners.winner_id')
+            ->get();
         return view('customer.reverse_bid_winner', compact('winners'));
     }
 
     public function view_billing_customer()
     {
-        $transactions = Billing::all();
+        $transactions = Billing::where('customer_id', session('customer_id'))->get();
         return view('customer.view_billing_customer', compact('transactions'));
 
     }
@@ -118,10 +159,7 @@ class CustomerController extends Controller
         // Xóa phiên làm việc hiện tại của người dùng
         session()->regenerate();
         $products = Product::all(); // Lấy tất cả sản phẩm từ cơ sở dữ liệu
-//        dd($products);
-//        return view('products.index', compact('products')); // Truyền biến $products sang view
         $categories = Category::all();
-
         // Chuyển hướng về trang index
         return redirect()->route('home', compact('products', 'categories'));
     }
@@ -129,8 +167,7 @@ class CustomerController extends Controller
     public function viewCustomer()
     {
         $customers = Customer::all();
-        return view('customer.view_customer', compact('customers'));
-
+        return view('employee.view_customer', compact('customers'));
     }
 
 }

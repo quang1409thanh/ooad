@@ -129,8 +129,9 @@ ul {
 }
 
 body {
+    /*background-color: ;*/
     font-family: 'Rubik', sans-serif;
-    font-size: 14px;
+    /*background-color: #0c0c0c;*/
     font-weight: 400;
     font-size: 16px;
     line-height: 1.5;
@@ -369,8 +370,10 @@ body {
 }
 
 .bg-gradient {
-    background: linear-gradient(135deg, #306c56, #ff7e5f, #6a82fb, #ffb997);
+    /*background: linear-gradient(135deg, #306c56, #ff7e5f, #6a82fb, #ffb997);*/
+    background-color: #0f1a2a;
 }
+
 
 #scrollUp {
     background: #333333 none repeat scroll 0 0;
@@ -379,11 +382,13 @@ body {
     font-size: 22px;
     height: 40px;
     line-height: 38px;
-    right: 20px;
+    right: 20px; /* Điều chỉnh vị trí từ phải sang trái */
     text-align: center;
     -webkit-transition: all 0.4s ease-in-out 0s;
     transition: all 0.4s ease-in-out 0s;
     width: 40px;
+    position: absolute; /* Sử dụng absolute để đặt nút ở vị trí cố định trong phạm vi của popup-box */
+    z-index: 99999999; /* Thiết lập z-index cao hơn để nút hiển thị trên hộp thoại chat */
 }
 
 #scrollUp:hover {
@@ -2261,7 +2266,9 @@ body {
     14. footer-area css
 -------------------------------*/
 .footer-area {
-    background: linear-gradient(135deg, #306c56, #ff7e5f, #6a82fb, #ffb997);
+    background-color: #0f1a2a;
+
+    /*background: linear-gradient(135deg, #306c56, #ff7e5f, #6a82fb, #ffb997);*/
 }
 
 .footer-top {
@@ -3739,17 +3746,17 @@ thead {
 
 .dashboard-upper-info a.view-cart,
 .view {
-    color: #fff;
+    color: #000000;
     font-size: 14px;
     padding: 5px 12px;
-    background: #EB3E32;
+    background: #e2acf8;
     text-transform: capitalize;
 }
 
 .dashboard-upper-info a.view-cart:hover,
 .view:hover {
-    background: #222;
-    color: #fff;
+    background: #f3eeee;
+    color: #000000;
 }
 
 .view-cart {

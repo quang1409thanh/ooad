@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <ul class="breadcrumb-list">
-                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
                     <li class="breadcrumb-item active">Register</li>
                 </ul>
             </div>
@@ -160,45 +160,27 @@
             errchk = "True";
         }
 
-        if (document.getElementById("password").value == "") {
+        if (document.getElementById("password").value === "") {
             document.getElementById("errpassword").innerHTML = "New password should not be empty....";
             errchk = "True";
         }
-        if (document.getElementById("cpassword").value != document.getElementById("password").value) {
+        if (document.getElementById("cpassword").value !== document.getElementById("password").value) {
             document.getElementById("errcpassword").innerHTML = "Confirm password Must match with new password..";
             errchk = "True";
         }
-        if (document.getElementById("cpassword").value == "") {
+        if (document.getElementById("cpassword").value === "") {
             document.getElementById("errcpassword").innerHTML = "Confirm Password should not be empty....";
             i = 1;
         }
-        if (document.getElementById("mobile_no").value.length != 13) {
+        if (document.getElementById("mobile_no").value.length !== 11) {
             document.getElementById("errmobile_no").innerHTML = "Mobile Number should contain 10 digits..";
             errchk = "True";
         }
-        if (document.getElementById("mobile_no").value == "") {
+        if (document.getElementById("mobile_no").value === "") {
             document.getElementById("errmobile_no").innerHTML = "Mobile number should not be empty..";
             errchk = "True";
         }
-        if (errchk == "True") {
-            return false;
-        } else {
-            return true;
-            // document.getElementById("register-form").submit();
-            // $('#btnsubmit').attr('disabled',true);
-            // //return false;
-            // var xmlhttp = new XMLHttpRequest();
-            // xmlhttp.onreadystatechange = function() {
-            // 	if (this.readyState == 4 && this.status == 200)
-            // 	{
-            // 		document.getElementById("otpnumber").value = this.responseText;
-            // 		document.getElementById("emailids").value = document.getElementById("email_id").value;
-            // 		$('#otpModal').modal('show');
-            // 	}
-            // };
-            // xmlhttp.open("GET","sendotp.php?emailid="+document.getElementById("email_id").value+"&cstname="+document.getElementById("customer_name").value,true);
-            // xmlhttp.send();
-        }
+        return errchk !== "True";
     }
 
     $("#mobile_no").keydown(function (e) {
@@ -214,9 +196,7 @@
     function isNumber(evt) {
         evt = (evt) ? evt : window.event;
         var charCode = (evt.which) ? evt.which : evt.keyCode;
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-            return false;
-        }
-        return true;
+        return !(charCode > 31 && (charCode < 48 || charCode > 57));
+
     }
 </script>

@@ -42,7 +42,6 @@
                                                 <thead>
                                                 <tr>
                                                     <th>Customer</th>
-                                                    <th>Product</th>
                                                     <th>Purchase Date</th>
                                                     <th>Purchase Amount</th>
                                                     <th>Payment Type</th>
@@ -61,7 +60,6 @@
                                                 @foreach ($billings as $billing)
                                                     <tr>
                                                         <td>{{ $billing->customer_id }}</td>
-                                                        <td>{{ $billing->product_id }}</td>
                                                         <td>{{ $billing->purchase_date }}</td>
                                                         <td>{{ $billing->purchase_amount }}</td>
                                                         <td>{{ $billing->payment_type }}</td>
@@ -74,8 +72,10 @@
                                                         <td>{{ $billing->note }}</td>
                                                         <td>{{ $billing->status }}</td>
                                                         <td>
-                                                            <a href='billing.php?editid={{ $billing->id }}' class='btn btn-info'>Edit</a>
-                                                            <a href='viewbilling.php?delid={{ $billing->id }}' class='btn btn-danger' onclick='return confirmdelete()'>Delete</a>
+                                                            <a href='billing.php?editid={{ $billing->id }}'
+                                                               class='btn btn-info'>Edit</a>
+                                                            <a href='viewbilling.php?delid={{ $billing->id }}'
+                                                               class='btn btn-danger' onclick='return confirmdelete()'>Delete</a>
                                                         </td>
                                                     </tr>
                                                 @endforeach

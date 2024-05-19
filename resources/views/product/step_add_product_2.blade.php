@@ -53,20 +53,20 @@
                             </div>
                         </div>
 
-                        <div class="row ">
+                        <div class="row">
                             &nbsp;<br>
                             <div class="col-md-12 col-lg-12 table table-bordered">
-                                <div class="row ">
+                                <div class="row">
                                     <div class="col-md-3 col-lg-3">
-                                        <div class="table table-bordered">
+                                        <div class="table table-bordered image-upload-container">
                                             <label class="control-label"> &nbsp; <b>Upload image</b> </label>
                                             <span id='idproduct_name' style="color:red;"></span>
                                             <span id='idproduct_image' style="color:red;"></span>
-                                            <input name="product_image[]" id="product_image" class="form-control"
+                                            <input name="product_image[]" id="product_image0" class="form-control"
                                                    type="file" placeholder="product images" accept="image/*" required
-                                                   multiple>
-                                            <center><img src='images/upload.png' style="width:125px;height: 100px;"
-                                                         id="img0"></center>
+                                                   multiple onchange="previewImage(event, 'imgPreview0')">
+                                            <center><img src='{{url('images/upload.png')}}'
+                                                         class="img-thumbnail" id="imgPreview0"></center>
                                         </div>
                                     </div>
                                     <hr id="divafterimg">
@@ -80,15 +80,59 @@
                             </div>
                         </div>
                         <script>
-                            function addmoreimage() {
-                                var x = 'a' + Math.floor((Math.random() * 1000000000) + 1);
-                                $('<div class="col-md-3 col-lg-3" id="' + x + '" ><div class="table table-bordered"><label class="control-label" style="width: 100%;"> &nbsp; <b>Upload image</b> <span style="float: right;cursor: pointer;" class="btn-danger" onclick="removediv(`' + x + '`)">&nbsp;X&nbsp;</span></label><input name="product_image[]" id="product_image" class="form-control" type="file" placeholder="product images" accept="image/*" required multiple><center><img src="images/upload.png" id="b' + x + '" style="width:125px;height: 100px;"></center></div></div>').insertBefore("#divafterimg");
+                            function previewImage(event, previewId) {
+                                var imgPreview = document.getElementById(previewId);
+                                var files = event.target.files;
+
+                                if (files.length > 0) {
+                                    var reader = new FileReader();
+                                    reader.onload = function (e) {
+                                        imgPreview.src = e.target.result;
+                                    }
+                                    reader.readAsDataURL(files[0]);
+                                } else {
+                                    imgPreview.src = '{{url('images/upload.png')}}'; // Default image URL
+                                }
                             }
 
-                            function removediv(x) {
-                                $('#' + x).remove();
+                            function addmoreimage() {
+                                var uniqueId = 'img' + Math.floor((Math.random() * 1000000000) + 1);
+                                $('<div class="col-md-3 col-lg-3" id="' + uniqueId + 'Container">' +
+                                    '<div class="table table-bordered image-upload-container">' +
+                                    '<label class="control-label" style="width: 100%;">' +
+                                    ' &nbsp; ' +
+                                    '<b>Upload image</b> ' +
+                                    '<span style="float: right;cursor: pointer;" class="btn-danger" onclick="removediv(\'' + uniqueId + 'Container\')">' +
+                                    '&nbsp;X&nbsp;' +
+                                    '</span>' +
+                                    '</label>' +
+                                    '<input name="product_image[]" id="' + uniqueId + '" class="form-control" type="file" placeholder="product images" accept="image/*" required multiple onchange="previewImage(event, \'' + uniqueId + 'Preview\')">' +
+                                    '<center>' +
+                                    '<img src="{{url('images/upload.png')}}" class="img-thumbnail" id="' + uniqueId + 'Preview">' +
+                                    '</center></div>' +
+                                    '</div>').insertBefore("#divafterimg");
+                            }
+
+                            function removediv(containerId) {
+                                $('#' + containerId).remove();
                             }
                         </script>
+                        <style>
+                            .image-upload-container {
+                                padding: 10px;
+                                margin-bottom: 15px;
+                            }
+
+                            .image-upload-container img {
+                                width: 100%;
+                                height: auto;
+                                max-width: 125px;
+                                max-height: 100px;
+                                object-fit: cover;
+                                border-radius: 8px;
+                            }
+                        </style>
+
                         <div class="row">
                             <div class="col-md-6 col-lg-6">
                                 <label class="control-label">Starting bid</label>
@@ -110,13 +154,13 @@
                                 <input name="start_date_time" class="form-control" type="date"
                                        placeholder="start date and time" min="{{ date('Y-m-d') }}"
                                        value="{{ isset($_GET['editid']) ? date('Y-m-d', strtotime($product->start_date_time)) : date('Y-m-d') }}"
-                                        {{ isset($_GET['editid']) ? 'readonly style=background-color:#fcf8e3;' : '' }}>
+                                    {{ isset($_GET['editid']) ? 'readonly style=background-color:#fcf8e3;' : '' }}>
                             </div>
                             <div class="col-md-6 col-lg-6">
                                 <label class="control-label">Start time</label>
                                 <input class="form-control" name="start_time" type="time" placeholder="Start time"
                                        value="{{ isset($_GET['editid']) ? date('H:i', strtotime($product->start_date_time)) : date('H:i') }}"
-                                        {{ isset($_GET['editid']) ? 'readonly style=background-color:#fcf8e3;' : '' }}>
+                                    {{ isset($_GET['editid']) ? 'readonly style=background-color:#fcf8e3;' : '' }}>
                             </div>
                         </div>
 

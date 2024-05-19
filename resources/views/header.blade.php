@@ -24,6 +24,7 @@
     </style>
 </head>
 <body style="overflow-x: hidden">
+@include('sweetalert::alert')
 
 <div class="wrapper home-3">
     <header>
@@ -42,7 +43,7 @@
                                         <nav>
                                             <ul>
                                                 <li><a href="/">Home</a></li>
-                                                <li><a href="{{ route('see') }}">About</a></li>
+                                                <li><a href="{{ route('about') }}">About</a></li>
                                                 <!-- Đây là liên kết đến trang About -->
                                                 <li><a href="{{ route('contact') }}">Contact</a></li>
                                             </ul>
@@ -59,7 +60,7 @@
                                                 <div class="top-dropdown">
                                                     <ul>
                                                         @if (session()->has('customer_id'))
-                                                            <li><a href="{{ route('customeraccount') }}">Main</a></li>
+                                                            <li><a href="{{ route('customer_account') }}">Main</a></li>
                                                             <li><a href="{{ route('message_box') }}">Message Box</a>
                                                             </li>
                                                             <li class="drodown-show">
@@ -69,8 +70,6 @@
                                                                             ({{ $myBidCount }})</a></li>
                                                                     <li><a href="{{ route('view_winning_bid') }}">Winning
                                                                             Bid ({{ $winningBidCount }})</a></li>
-                                                                    <li><a href="{{ route('reverse_bid_winner') }}">Reverse
-                                                                            Bid ({{ $reverseBidCount }})</a></li>
                                                                     <li><a href="{{ route('view_billing_customer') }}">View
                                                                             Transaction</a></li>
                                                                 </ul>
@@ -97,16 +96,8 @@
                                                                 </ul>
                                                             </li>
                                                         @elseif (session()->has('employee_id'))
-                                                            <li class="drodown-show">
-                                                                <a href="#">Reverse Product <i
-                                                                        class="fa fa-angle-down"></i></a>
-                                                                <ul class="open-dropdown setting">
-                                                                    <li>
-                                                                            <a href="{{ route('select.reverse.bid.category') }}">Add
-                                                                            Product</a></li>
-                                                                    <li><a href="{{ route('view.reverse.product') }}">View
-                                                                            Products</a></li>
-                                                                </ul>
+                                                            <li>
+                                                                <a href="{{route('home')}}">Home </a>
                                                             </li>
 
                                                             <li class="drodown-show"><a href="#"> Users <i
@@ -166,14 +157,16 @@
                                                                 </ul>
                                                             </li>
 
-                                                            <li class="drodown-show"><a href="#"> {{$employee->employee_name}} <i
+                                                            <li class="drodown-show"><a
+                                                                    href="#"> {{$employee->employee_name}} <i
                                                                         class="fa fa-angle-down"></i></a>
                                                                 <ul class="open-dropdown setting">
                                                                     <li><a href="{{ route('employee_account') }}">Dashboard</a>
                                                                     </li>
                                                                     <li><a href="{{ route('employee_profile') }}">My
                                                                             Profile</a></li>
-                                                                    <li><a href="{{ route('employee_change_password') }}">Change
+                                                                    <li>
+                                                                        <a href="{{ route('employee_change_password') }}">Change
                                                                             password</a></li>
                                                                     <li><a href="{{ route('logout') }}">Logout</a>
                                                                     </li>
@@ -211,7 +204,7 @@
 
                         <!-- searchbox start -->
                         <div class="searchbox">
-                            <form action="{{ route('searchproduct') }}" method="get">
+                            <form action="{{ route('search_product') }}" method="get">
                                 <div class="search-form-input">
                                     <select id="searchcategory_id" name="searchcategory_id" class="nice-select">
                                         <option value="">All Categories</option>
@@ -222,7 +215,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <input type="text" name="searchcriteria" placeholder="Enter your search key ..."
+                                    <input type="text" name="searchcriteria" placeholder="Enter your auction keyword..."
                                            value="{{ request('searchcriteria') }}">
                                     <button class="top-search-btn" type="submit">Search</button>
                                 </div>
@@ -238,7 +231,7 @@
                                     <span class="item-cart-inner">
                                         Balance
                                     </span>
-                                            <div class="item-total">PKR{{ $accbalamt }}</div>
+                                            <div class="item-total">$ {{ $accbalamt }}</div>
                                         </a>
                                     </li>
                                 @else
@@ -274,6 +267,9 @@
 
                                     <li><a href="{{ route('auction', ['auctiontype' => 'Latest Auctions']) }}"
                                            style="color:black;">Latest Auctions</a></li>
+                                    <li><a href="{{ route('auction', ['auctiontype' => 'Trending Bid']) }}"
+                                           style="color:black;">Trending
+                                            Bid</a></li>
                                     <li><a href="{{ route('auction', ['auctiontype' => 'Featured Auctions']) }}"
                                            style="color:black;">Featured Auctions</a></li>
                                     <li>
@@ -284,10 +280,6 @@
                                            style="color:black;">Closing Auctions</a></li>
                                     <li><a href="{{ route('auction', ['auctiontype' => 'Closed Auctions']) }}"
                                            style="color:black;">Closed Auctions</a></li>
-                                    <li><a href="{{ route('auction', ['auctiontype' => 'Reverse Bid']) }}"
-                                           style="color:black;">Reverse
-                                            Bid</a></li>
-
                                 </ul>
                             </nav>
                         </div>
@@ -303,54 +295,20 @@
         <div class="slider-main-area">
             <div class="slider-active owl-carousel">
                 <!-- slider-wrapper start -->
-                <div class="slider-wrapper" style="background-image:url(img/slider/home-3-01.jpg);width: 100%;">
+                <div class="slider-wrapper slide-3" style="width: 100%;">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col">
-                                <div class="slider-text-info style-2 text-center slider-text-animation">
-                                    <h1 class="title1"><span class="text">Online Auction..</span></h1>
-                                    <p>Pakistan's top rated auction platform..</p>
-                                    <div class="slier-btn-1">
+                                <div class="slider-text-info style-2 text-center slider-text-animation"
+                                     style="padding: 100px 0;">
+                                    <h1 class="title1" style="color: #fff; font-size: 3em; font-weight: bold;">
+                                        <span class="text">Upcoming Auctions</span>
+                                    </h1>
+                                    <p style="color: #fff; font-size: 1.2em;">Stay Tuned for Exciting New Auctions</p>
+                                    <div class="slider-btn-1" style="margin-top: 20px;">
                                         <a title="Bid now"
-                                           href="{{ url('latestauction', ['auctiontype' => 'Latest Auctions']) }}"
-                                           class="shop-btn">View Latest Auctions</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- slider-wrapper end -->
-                <!-- slider-wrapper start -->
-                <div class="slider-wrapper" style="background-image:url(img/slider/home-2-02.jpg);width: 100%;">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col">
-                                <div class="slider-text-info style-2 text-center slider-text-animation">
-                                    <h1 class="title1"><span class="text">Online Auction.. </span></h1>
-                                    <p>Pakistan's top rated auction platform..</p>
-                                    <div class="slier-btn-1">
-                                        <a title="Bid now"
-                                           href="{{ url('featured', ['auctiontype' => 'featured Auctions']) }}"
-                                           class="shop-btn">View Featured Auctions</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- slider-wrapper end -->
-                <!-- slider-wrapper start -->
-                <div class="slider-wrapper" style="background-image:url(img/slider/home-3-1.jpg);width: 100%;">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col">
-                                <div class="slider-text-info style-2 text-center slider-text-animation">
-                                    <h1 class="title1"><span class="text">Online Auction.. </span></h1>
-                                    <p>Pakistan's top rated auction platform..</p>
-                                    <div class="slier-btn-1">
-                                        <a title="Bid now"
-                                           href="{{ url('upcominauction', ['auctiontype' => 'Upcoming Auctions']) }}"
+                                           style="color: #fff; background-color: #007bff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 1em;"
+                                           href="{{ url('auction', ['auctiontype' => 'Upcoming Auctions']) }}"
                                            class="shop-btn">View Upcoming Auctions</a>
                                     </div>
                                 </div>
@@ -359,11 +317,106 @@
                     </div>
                 </div>
                 <!-- slider-wrapper end -->
+                <!-- slider-wrapper start -->
+                <div class="slider-wrapper slide-1" style="width: 100%;">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+                                <div class="slider-text-info style-2 text-center slider-text-animation"
+                                     style="padding: 100px 0;">
+                                    <h1 class="title1" style="color: #fff; font-size: 3em; font-weight: bold;">
+                                        <span class="text">Online Auction</span>
+                                    </h1>
+                                    <p style="color: #fff; font-size: 1.2em;">Vietnam's Top Rated Auction Platform</p>
+                                    <div class="slider-btn-1" style="margin-top: 20px;">
+                                        <a title="Bid now"
+                                           style="color: #fff; background-color: #007bff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 1em;"
+                                           href="{{ url('auction', ['auctiontype' => 'Latest Auctions']) }}"
+                                           class="shop-btn">View Latest Auctions</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- slider-wrapper end -->
+
+                <!-- slider-wrapper start -->
+                <div class="slider-wrapper slide-2" style="width: 100%;">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+                                <div class="slider-text-info style-2 text-center slider-text-animation"
+                                     style="padding: 100px 0;">
+                                    <h1 class="title1" style="color: #fff; font-size: 3em; font-weight: bold;">
+                                        <span class="text">Featured Auctions</span>
+                                    </h1>
+                                    <p style="color: #fff; font-size: 1.2em;">Discover the Best Deals Today</p>
+                                    <div class="slider-btn-1" style="margin-top: 20px;">
+                                        <a title="Bid now"
+                                           style="color: #fff; background-color: #007bff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 1em;"
+                                           href="{{ url('auction', ['auctiontype' => 'Featured Auctions']) }}"
+                                           class="shop-btn">View Featured Auctions</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- slider-wrapper end -->
+
+
             </div>
         </div>
-
         <!-- slider-main-area end -->
     @endif
+    <style>
+        .slider-wrapper {
+            width: 100%;
+            padding: 10px 0;
+        }
+
+        .slide-1 {
+            background: linear-gradient(135deg, rgba(255, 126, 95, 0.93), rgba(254, 180, 123, 0.95));
+        }
+
+        .slide-2 {
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+        }
+
+        .slide-3 {
+            background: linear-gradient(135deg, #ff6e7f, #bfe9ff);
+        }
+
+        .slider-text-info {
+            padding: 100px 0;
+        }
+
+        .slider-text-info h1 {
+            color: #fff;
+            font-size: 3em;
+            font-weight: bold;
+        }
+
+        .slider-text-info p {
+            color: #fff;
+            font-size: 1.2em;
+        }
+
+        .slider-btn-1 a {
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1em;
+        }
+
+        .slider-btn-1 a:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
 
     <!-- More Content -->
 </div>

@@ -1,38 +1,5 @@
 @include('header')
 
-@if (isset($submit))
-    {{--    @php--}}
-    {{--        $filename = rand() . $category_icon->getClientOriginalName();--}}
-    {{--        $category_icon->move(public_path('imgcategory'), $filename);--}}
-    {{--    @endphp--}}
-    {{--    @if (isset($editid))--}}
-    {{--        @php--}}
-    {{--            $sql = "UPDATE category SET category_name='$category_name', category_icon='$filename', description='$description', status='$status' WHERE category_id='$editid'";--}}
-    {{--            $success_message = 'Category record updated successfully..';--}}
-    {{--        @endphp--}}
-    {{--    @else--}}
-    {{--        @php--}}
-    {{--            $sql = "INSERT INTO category(category_name, category_icon, description, status) VALUES('$category_name', '$filename', '$description', '$status')";--}}
-    {{--            $success_message = 'Category record inserted successfully..';--}}
-    {{--        @endphp--}}
-    {{--    @endif--}}
-    {{--    @php--}}
-    {{--        $qsql = mysqli_query($con, $sql);--}}
-    {{--        if (mysqli_affected_rows($con) == 1) {--}}
-    {{--            echo "<script>alert('$success_message');</script>";--}}
-    {{--            echo "<script>window.location='category.php';</script>";--}}
-    {{--        } else {--}}
-    {{--            echo mysqli_error($con);--}}
-    {{--        }--}}
-    {{--    @endif--}}
-    {{--    --}}
-    {{--    @if (isset($editid))--}}
-    {{--        @php--}}
-    {{--        $sqledit = "SELECT * FROM category WHERE category_id='$editid'";--}}
-    {{--        $qsqledit = mysqli_query($con, $sqledit);--}}
-    {{--        $rsedit = mysqli_fetch_array($qsqledit);--}}
-    {{--    @endphp--}}
-@endif
 
 <div class="breadcrumb-area bg-gray">
     <div class="container-fluid">
@@ -85,7 +52,7 @@
                                                 @if (isset($category))
                                                     @if (!empty($category->category_icon))
                                                         <img
-                                                            src="{{ asset('imgcategory/' . $category->category_icon) }}"
+                                                            src="{{ asset('category/' . $category->category_icon) }}"
                                                             style="width: 200px;height:250px;">
                                                     @else
                                                         <img src="{{ asset('img/No-Image-Available.png') }}"
@@ -152,10 +119,10 @@
         var i = 0;
         /* ########end 1######## */
 
-        if (!document.getElementById("category_name").value.match(alphaspaceExp)) {
-            document.getElementById("errcategory_name").innerHTML = "Category name should contain only alphabets....";
-            i = 1;
-        }
+        // if (!document.getElementById("category_name").value.match(alphaspaceExp)) {
+        //     document.getElementById("errcategory_name").innerHTML = "Category name should contain only alphabets....";
+        //     i = 1;
+        // }
         if (document.getElementById("category_name").value == "") {
             document.getElementById("errcategory_name").innerHTML = "Category name should not be empty....";
             i = 1;

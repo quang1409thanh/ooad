@@ -1,4 +1,3 @@
-
 @include('header')
 
 @if (isset($errors) && count($errors) > 0)
@@ -6,68 +5,74 @@
         <div>{{ $error }}</div>
     @endforeach
 @endif
-
-<div class="content-wraper mt-50">
+<!-- breadcrumb-area start -->
+<div class="breadcrumb-area bg-gray">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="customer-login-register">
-                    <!-- banner -->
-                    <div class="banner">
-
-                        <div class="w3l_banner_nav_right">
-                            <!-- about -->
-                            <div class="privacy about">
-                                <h3>Change Employee Password</h3>
-
-                                <div class="checkout-left">
-
-                                    <div class="col-md-8">
-                                        <form action="{{ route('update_password') }}" method="post" onsubmit="return validateform()" class="creditly-card-form agileinfo_form">
-                                            @csrf
-                                            <section class="creditly-wrapper wthree, w3_agileits_wrapper">
-                                                <div class="information-wrapper">
-                                                    <div class="first-row form-group">
-                                                        <div class="w3_agileits_card_number_grid_left">
-                                                            <div class="controls">
-                                                                <label class="control-label">Old password:</label>
-                                                                <input name="opass" id="opass" class="form-control" type="password" placeholder="Enter old password">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="w3_agileits_card_number_grid_left">
-                                                            <div class="controls">
-                                                                <label class="control-label">New Password:</label>
-                                                                <input name="npass" id="npass" class="form-control" type="password" placeholder="Enter New password">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="w3_agileits_card_number_grid_left">
-                                                            <div class="controls">
-                                                                <label class="control-label">Confirm Password:</label>
-                                                                <input name="cpass" id="cpass" class="form-control" type="password" placeholder="Confirm New password">
-                                                            </div>
+            <div class="col-lg-12">
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item active">Profile</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area end -->
+<div class="content-wraper mt-10">
+    <div class="container-fluid">
+        <div class="checkout-area">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 col-sm-12">
+                            <div class="checkbox-form checkout-review-order">
+                                <h3 style="text-align: center">Change Employee Password</h3>
+                                <div class="checkout-left" style="padding-left: 300px; padding-right: 300px">
+                                    <form  method="get"
+                                          onsubmit="return validateform()"
+                                          class="creditly-card-form agileinfo_form">
+                                        @csrf
+                                        <section class="creditly-wrapper wthree, w3_agileits_wrapper">
+                                            <div class="information-wrapper">
+                                                <div class="first-row form-group">
+                                                    <div class="w3_agileits_card_number_grid_left">
+                                                        <div class="controls">
+                                                            <label class="control-label">Old password:</label>
+                                                            <input name="opass" id="opass" class="form-control"
+                                                                   type="password" placeholder="Enter old password">
                                                         </div>
                                                     </div>
-                                                    <button class="submit check_out" type="submit" name="submit">Update Password</button>
+
+                                                    <div class="w3_agileits_card_number_grid_left">
+                                                        <div class="controls">
+                                                            <label class="control-label">New Password:</label>
+                                                            <input name="npass" id="npass" class="form-control"
+                                                                   type="password" placeholder="Enter New password">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="w3_agileits_card_number_grid_left">
+                                                        <div class="controls">
+                                                            <label class="control-label">Confirm Password:</label>
+                                                            <input name="cpass" id="cpass" class="form-control"
+                                                                   type="password"
+                                                                   placeholder="Confirm New password">
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </section>
-                                        </form>
-
-                                    </div>
-
-                                    <div class="clearfix"> </div>
-
+                                                <button class="submit check_out" type="submit" name="submit">Update
+                                                    Password
+                                                </button>
+                                            </div>
+                                        </section>
+                                    </form>
+                                    <div class="clearfix"></div>
                                 </div>
-
                             </div>
-                            <!-- //about -->
                         </div>
                         <div class="clearfix"></div>
                     </div>
-                    <!-- //banner -->
-
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3"></div>

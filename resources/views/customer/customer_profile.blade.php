@@ -1,38 +1,32 @@
 @include('header')
 
-{{--@if (request()->has('submit'))--}}
-{{--        <?php--}}
-{{--        $sql = "UPDATE customer SET customer_name='" . request()->input('customer_name') . "', email_id='" . request()->input('email_id') . "', address='" . request()->input('address') . "', state='" . request()->input('state') . "', city='" . request()->input('city') . "', landmark='" . request()->input('landmark') . "', pincode='" . request()->input('pincode') . "', mobile_no='" . request()->input('mobile_no') . "' WHERE  customer_id='" . session('customer_id') . "'";--}}
-{{--        $qsql = mysqli_query($con, $sql);--}}
-{{--        echo mysqli_error($con);--}}
-{{--        if (mysqli_affected_rows($con) == 1) {--}}
-{{--            echo "<script>alert('Customer Profile updated successfully...');</script>";--}}
-{{--        }--}}
-{{--        ?>--}}
-{{--@endif--}}
-
-{{--@if (session()->has('customer_id'))--}}
-{{--        <?php--}}
-{{--        $sqledit = "SELECT * FROM customer WHERE customer_id='" . session('customer_id') . "'";--}}
-{{--        $qsqledit = mysqli_query($con, $sqledit);--}}
-{{--        $rsedit = mysqli_fetch_array($qsqledit);--}}
-{{--        ?>--}}
-{{--@endif--}}
-
-<div class="content-wraper mt-50">
+<!-- breadcrumb-area start -->
+<div class="breadcrumb-area bg-gray">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="customer-login-register">
-                    <!-- banner -->
-                    <div class="banner">
-                        <div class="w3l_banner_nav_right">
-                            <!-- about -->
-                            <div class="privacy about">
-                                <h3>Customer <span>Profile</span></h3>
+            <div class="col-lg-12">
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+                    <li class="breadcrumb-item active">Pay for Winning Bid</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb-area end -->
 
-                                <div class="checkout-left">
+<div class="content-wraper mt-10">
+    <div class="container-fluid">
+        <div class="checkout-area">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 col-sm-12">
+                            <div class="checkbox-form checkout-review-order">
+
+                                <h3 style="text-align: center">Customer <span>Profile</span></h3>
+
+                                <div class="checkout-left" style="padding-left: 300px; padding-right: 300px">
 
                                     <div class="col-md-12 ">
                                         <form action="" method="post" class="creditly-card-form agileinfo_form"
@@ -78,10 +72,73 @@
                                                                     <option value="">------------Select
                                                                         Province------------
                                                                     </option>
-                                                                    <option value="Uttaranchal">punjab</option>
-                                                                    <option value="Uttar Pradesh">Sindh</option>
-                                                                    <option value="West Bengal">Balochistan</option>
-                                                                    <option value="Uttaranchal">VND</option>
+                                                                    <option value="An Giang">An Giang</option>
+                                                                    <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng
+                                                                        Tàu
+                                                                    </option>
+                                                                    <option value="Bắc Giang">Bắc Giang</option>
+                                                                    <option value="Bắc Kạn">Bắc Kạn</option>
+                                                                    <option value="Bạc Liêu">Bạc Liêu</option>
+                                                                    <option value="Bắc Ninh">Bắc Ninh</option>
+                                                                    <option value="Bến Tre">Bến Tre</option>
+                                                                    <option value="Bình Định">Bình Định</option>
+                                                                    <option value="Bình Dương">Bình Dương</option>
+                                                                    <option value="Bình Phước">Bình Phước</option>
+                                                                    <option value="Bình Thuận">Bình Thuận</option>
+                                                                    <option value="Cà Mau">Cà Mau</option>
+                                                                    <option value="Cần Thơ">Cần Thơ</option>
+                                                                    <option value="Cao Bằng">Cao Bằng</option>
+                                                                    <option value="Đà Nẵng">Đà Nẵng</option>
+                                                                    <option value="Đắk Lắk">Đắk Lắk</option>
+                                                                    <option value="Đắk Nông">Đắk Nông</option>
+                                                                    <option value="Điện Biên">Điện Biên</option>
+                                                                    <option value="Đồng Nai">Đồng Nai</option>
+                                                                    <option value="Đồng Tháp">Đồng Tháp</option>
+                                                                    <option value="Gia Lai">Gia Lai</option>
+                                                                    <option value="Hà Giang">Hà Giang</option>
+                                                                    <option value="Hà Nam">Hà Nam</option>
+                                                                    <option value="Hà Nội">Hà Nội</option>
+                                                                    <option value="Hà Tĩnh">Hà Tĩnh</option>
+                                                                    <option value="Hải Dương">Hải Dương</option>
+                                                                    <option value="Hải Phòng">Hải Phòng</option>
+                                                                    <option value="Hậu Giang">Hậu Giang</option>
+                                                                    <option value="Hòa Bình">Hòa Bình</option>
+                                                                    <option value="Hưng Yên">Hưng Yên</option>
+                                                                    <option value="Khánh Hòa">Khánh Hòa</option>
+                                                                    <option value="Kiên Giang">Kiên Giang</option>
+                                                                    <option value="Kon Tum">Kon Tum</option>
+                                                                    <option value="Lai Châu">Lai Châu</option>
+                                                                    <option value="Lâm Đồng">Lâm Đồng</option>
+                                                                    <option value="Lạng Sơn">Lạng Sơn</option>
+                                                                    <option value="Lào Cai">Lào Cai</option>
+                                                                    <option value="Long An">Long An</option>
+                                                                    <option value="Nam Định">Nam Định</option>
+                                                                    <option value="Nghệ An">Nghệ An</option>
+                                                                    <option value="Ninh Bình">Ninh Bình</option>
+                                                                    <option value="Ninh Thuận">Ninh Thuận</option>
+                                                                    <option value="Phú Thọ">Phú Thọ</option>
+                                                                    <option value="Phú Yên">Phú Yên</option>
+                                                                    <option value="Quảng Bình">Quảng Bình</option>
+                                                                    <option value="Quảng Nam">Quảng Nam</option>
+                                                                    <option value="Quảng Ngãi">Quảng Ngãi</option>
+                                                                    <option value="Quảng Ninh">Quảng Ninh</option>
+                                                                    <option value="Quảng Trị">Quảng Trị</option>
+                                                                    <option value="Sóc Trăng">Sóc Trăng</option>
+                                                                    <option value="Sơn La">Sơn La</option>
+                                                                    <option value="Tây Ninh">Tây Ninh</option>
+                                                                    <option value="Thái Bình">Thái Bình</option>
+                                                                    <option value="Thái Nguyên">Thái Nguyên</option>
+                                                                    <option value="Thanh Hóa">Thanh Hóa</option>
+                                                                    <option value="Thừa Thiên Huế">Thừa Thiên Huế
+                                                                    </option>
+                                                                    <option value="Tiền Giang">Tiền Giang</option>
+                                                                    <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh
+                                                                    </option>
+                                                                    <option value="Trà Vinh">Trà Vinh</option>
+                                                                    <option value="Tuyên Quang">Tuyên Quang</option>
+                                                                    <option value="Vĩnh Long">Vĩnh Long</option>
+                                                                    <option value="Vĩnh Phúc">Vĩnh Phúc</option>
+                                                                    <option value="Yên Bái">Yên Bái</option>
 
                                                                 </select>
                                                             </div>
@@ -191,10 +248,10 @@
             document.getElementById("erraddress").innerHTML = "Address Should not be empty..";
             errchk = "True";
         }
-        if (!document.getElementById("state").value.match(alphaSpaceExp)) {
-            document.getElementById("errstate").innerHTML = "State should contain alphabets....";
-            errchk = "True";
-        }
+        // if (!document.getElementById("state").value.match(alphaSpaceExp)) {
+        //     document.getElementById("errstate").innerHTML = "State should contain alphabets....";
+        //     errchk = "True";
+        // }
         if (document.getElementById("state").value == "") {
             document.getElementById("errstate").innerHTML = "State Should not be empty..";
             errchk = "True";

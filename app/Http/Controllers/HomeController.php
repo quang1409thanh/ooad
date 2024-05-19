@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Blockchain\Blockchain;
 use App\Models\Category;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -12,11 +13,50 @@ class HomeController extends Controller
     //
     public function index()
     {
-        $products = Product::all(); // Lấy tất cả sản phẩm từ cơ sở dữ liệu
-//        dd($products);
-//        return view('products.index', compact('products')); // Truyền biến $products sang view
-        $categories = Category::all();
-        return view('home', compact('products', 'categories'));
+        $now = Carbon::now(); // Current date and time
+        $today = Carbon::today(); // Today's date
+        $startOfDay = $today->startOfDay();
+        $endOfDay = $today->endOfDay();
+
+        // Common condition for active products with a customer
+        $activeWithCustomer = ['status' => 'Active', ['customer_id', '!=', '0']];
+
+        // Latest products
+        $latest_products = Product::where($activeWithCustomer)
+            ->where('start_date_time', '<=', $now)
+            ->where('status', 'Active')
+            ->orderByDesc('product_id')
+            ->get();
+
+        // Featured products
+        $featured_products = Product::where($activeWithCustomer)
+            ->where('end_date_time', '>', $now)
+            ->where('status', 'Active')
+            ->orderByDesc('product_id')
+            ->get();
+
+        // Upcoming products
+        $upcoming_products = Product::where($activeWithCustomer)
+            ->where('start_date_time', '>', $now)
+            ->where('status', 'Active')
+            ->orderByDesc('product_id')
+            ->get();
+
+        // Closing products
+        $closing_products = Product::where($activeWithCustomer)
+            ->whereBetween('end_date_time', [$startOfDay, $endOfDay])
+            ->where('status', 'Active')
+            ->orderByDesc('product_id')
+            ->get();
+
+        // Closed products
+        $closed_products = Product::where($activeWithCustomer)
+            ->where('end_date_time', '<', $now)
+            ->where('status', 'Active')
+            ->orderByDesc('product_id')
+            ->get();
+
+        return view('home', compact('latest_products', 'featured_products', 'upcoming_products', 'closing_products', 'closed_products'));
     }
 
     public function about()
@@ -47,91 +87,146 @@ class HomeController extends Controller
     }
 
     public function showAuction($auctiontype)
-    {// Lấy tất cả các danh mục có trạng thái là 'Active'
-        $categories_i = Category::where('status', 'Active')->get();
+    {
+        // Fetch all active categories
+        $categories = Category::where('status', 'Active')->get();
 
-        foreach ($categories_i as $category) {
-            // Lấy tất cả các sản phẩm thuộc danh mục này, có trạng thái là 'Active',
-            // ngày giờ bắt đầu nhỏ hơn hoặc bằng thời điểm hiện tại, và không phải của khách hàng '0'
-            $products = Product::where('status', 'Active')
-                ->where('category_id', $category->category_id)
-                ->where('start_date_time', '<=', now()) // Giả sử 'now()' trả về thời gian hiện tại
-                ->where('customer_id', '!=', '0')
-                ->get(); // Thực hiện truy vấn và lấy dữ liệu
+        // Function to get products based on conditions
+        $getProducts = function ($categoryId, $conditions) {
+            return Product::where('status', 'Active')
+                ->where('category_id', $categoryId)
+                ->where($conditions)
+                ->orderByDesc('product_id')
+                ->get();
+        };
 
-            // Xử lý dữ liệu sản phẩm ở đây
+        // Prepare the categories with product count and products
+        $categoriesWithProductCount = $categories->map(function ($category) use ($getProducts, $auctiontype) {
+            $now = Carbon::now();
+            $todayStart = $now->startOfDay();
+            $todayEnd = $now->endOfDay();
+
+            switch ($auctiontype) {
+                case 'Latest Auctions':
+                    $conditions = [
+                        ['start_date_time', '<=', $now],
+                        ['customer_id', '!=', '0']
+                    ];
+                    break;
+                case 'Featured Auctions':
+                    $conditions = [
+                        ['end_date_time', '>', $now],
+                        ['customer_id', '!=', '0']
+                    ];
+                    break;
+                case 'Upcoming Auctions':
+                    $conditions = [
+                        ['start_date_time', '>', $now],
+                        ['customer_id', '!=', '0']
+                    ];
+                    break;
+                case 'Closing Auctions':
+                    $conditions = [
+                        ['end_date_time', '>=', $todayStart],
+                        ['end_date_time', '<=', $todayEnd],
+                        ['customer_id', '!=', '0']
+                    ];
+                    break;
+                case 'Closed Auctions':
+                    $conditions = [
+                        ['end_date_time', '<', $now],
+                        ['customer_id', '!=', '0']
+                    ];
+                    break;
+                case 'Trending Bid':
+                    $conditions = [];
+                    break;
+                default:
+                    $conditions = [
+                        ['status', '=', 'Active']
+                    ];
+                    break;
+            }
+
+            $getProducts = function ($categoryId, $conditions) {
+                return Product::where('status', 'Active')
+                    ->where('category_id', $categoryId)
+                    ->where($conditions)
+                    ->orderByDesc('product_id')
+                    ->get();
+            };
+
+
+            $products = $getProducts($category->category_id, $conditions);
+            $products = $products->sortByDesc(function ($product) {
+                return [$product->countBidders(), $product->countBids()];
+            });
+            return [
+                'category_id' => $category->category_id,
+                'category_name' => $category->category_name,
+                'active_product_count' => $products->count(),
+                'products' => $products,
+            ];
+        });
+
+        $categoriesWithProductCount = $categoriesWithProductCount->toArray();
+
+        // Handle the 'Winners Blockchain' separately
+        if ($auctiontype === 'Winners Blockchain') {
+            $data = \App\Models\Blockchain::all();
+            return view('customer.view_block_chain', compact('data', 'categories'));
         }
 
-
-        $categories = Category::all();
-        // Xử lý logic để chuyển hướng đến view tương ứng dựa trên $auctiontype
-        switch ($auctiontype) {
-            case 'Winners Blockchain':
-                // Xử lý cho trường hợp Winners Blockchain
-                $data = \App\Models\Blockchain::all();
-                return view('customer.view_block_chain', compact('data', 'categories'));
-//                $products = Product::where('status', 'Active')->get();
-                break;
-            case 'Latest Auctions':
-                $products = [];
-
-                $categories_i = Category::where('status', 'Active')->get();
-//                foreach ($categories_i as $category) {
-//                    // Lấy tất cả các sản phẩm thuộc danh mục này, có trạng thái là 'Active',
-//                    // ngày giờ bắt đầu nhỏ hơn hoặc bằng thời điểm hiện tại, và không phải của khách hàng '0'
-//                    $productsInCategory = Product::where('status', 'Active')
-//                        ->where('category_id', $category->category_id)
-//                        ->where('start_date_time', '<=', now()) // Giả sử 'now()' trả về thời gian hiện tại
-//                        ->where('customer_id', '!=', '0')
-//                        ->orderBy('product_id', 'DESC')
-//                        ->limit(3)
-//                        ->get(); // Thực hiện truy vấn và lấy dữ liệu
-//
-//                    // Thêm tất cả các sản phẩm của danh mục vào mảng $products
-//                    $products = array_merge($products, $productsInCategory->toArray());
-//                }
-                $products = Product::where('status', 'Active')->get();
-
-                // Xử lý cho trường hợp Latest Auctions
-//                return view('auction.latest_auctions', compact('categories', 'auctiontype', 'products'));
-                break;
-            case 'Featured Auctions':
-                $products = Product::where('status', 'Active')->get();
-
-                // Xử lý cho trường hợp Featured Auctions
-//                return view('auction.featured_auctions', compact('categories', 'auctiontype', 'products'));
-                break;
-            case 'Upcoming Auctions':
-                // Xử lý cho trường hợp Upcoming Auctions
-//                return view('auction.upcoming_auctions', compact('categories', 'auctiontype'));
-
-                $products = Product::where('status', 'Active')->get();
-                break;
-            case 'Closing Auctions':
-                // Xử lý cho trường hợp Closing Auctions
-//                return view('auction.closing_auctions', compact('categories', 'auctiontype'));
-                $products = Product::where('status', 'Active')->get();
-                break;
-            case 'Closed Auctions':
-                // Xử lý cho trường hợp Closed Auctions
-//                return view('auction.closed_auctions', compact('categories', 'auctiontype'));
-                $products = Product::where('status', 'Active')->get();
-                break;
-            case 'Reverse Bid':
-                // Xử lý cho trường hợp Reverse Bid
-//                return view('auction.reverse_bid', compact('categories', 'auctiontype'));
-                $products = Product::where('status', 'Active')->get();
-                break;
-            default:
-                // Trong trường hợp không tìm thấy $auctiontype nào phù hợp, có thể redirect hoặc trả về một trang lỗi
-                $products = Product::where('status', 'Active')->get();
-                abort(404);
-                break;
-        }
-        return view('auction.latest_auctions', compact('categories', 'auctiontype', 'products'));
-
+        return view('auction.latest_auctions', compact('categoriesWithProductCount', 'auctiontype'));
     }
-    // auction controller
 
+
+    public function searchProduct(Request $request)
+    {
+        // Fetch all active categories
+        $categories = Category::where('status', 'Active')->get();
+
+        // Initialize the array to store categories with product count
+        $categoriesWithProductCount = [];
+
+        // Fetch search criteria
+        $searchCriteria = $request->input('searchcriteria');
+        $searchCategoryId = $request->input('searchcategory_id');
+
+        // Build the base query for products
+        $query = Product::where('status', 'Active')
+            ->where('product_name', 'like', '%' . $searchCriteria . '%')
+            ->orderByDesc('product_id');
+
+        // If a specific category is selected, filter by category
+        if ($searchCategoryId) {
+            $category = Category::where('category_id', $searchCategoryId)->first();
+            if ($category) {
+                $query->where('category_id', $category->category_id);
+                $products = $query->get();
+                $categoriesWithProductCount[] = [
+                    'category_id' => $category->category_id,
+                    'category_name' => $category->category_name,
+                    'active_product_count' => $products->count(),
+                    'products' => $products,
+                ];
+            }
+        } else {
+            // If no specific category is selected, search across all categories
+            foreach ($categories as $category) {
+                $products = (clone $query)->where('category_id', $category->category_id)->get();
+                if ($products->count() > 0) {
+                    $categoriesWithProductCount[] = [
+                        'category_id' => $category->category_id,
+                        'category_name' => $category->category_name,
+                        'active_product_count' => $products->count(),
+                        'products' => $products,
+                    ];
+                }
+            }
+        }
+
+        return view('product.search_product', compact('categories', 'categoriesWithProductCount'));
+    }
 
 }

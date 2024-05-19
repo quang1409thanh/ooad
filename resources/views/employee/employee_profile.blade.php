@@ -15,65 +15,70 @@
         $rsedit = App\Models\Employee::where('employee_id', session('employee_id'))->first();
     @endphp
 @endif
-
-<div class="content-wraper mt-50">
+<!-- breadcrumb-area start -->
+<div class="breadcrumb-area bg-gray">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3"></div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="customer-login-register">
-                    <!-- banner -->
-                    <div class="banner">
-                        <div class="w3l_banner_nav_right">
-                            <!-- about -->
-                            <div class="privacy about">
-                                <h3>Employee <span>Profile</span></h3>
-
-                                <div class="checkout-left">
-
-                                    <div class="col-md-8 ">
-                                        <form method="post" action="{{ route('update_employee') }}" class="creditly-card-form agileinfo_form">
-                                            @csrf
-                                            <section class="creditly-wrapper wthree, w3_agileits_wrapper">
-                                                <div class="information-wrapper">
-                                                    <div class="first-row form-group">
-                                                        <div class="controls">
-                                                            <label class="control-label">Employee Name: </label>
-                                                            <input class="billing-address-name form-control" type="text" name="emp_name" id="emp_name" placeholder="Employee name" value="{{ $rsedit->employee_name }}">
-                                                        </div>
-
-                                                        <div class="w3_agileits_card_number_grid_left">
-                                                            <div class="controls">
-                                                                <label class="control-label">Login ID:</label>
-                                                                <input name="login_id" id="login_id" class="form-control" type="text" placeholder="Login ID" value="{{ $rsedit->login_id }}">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <button class="submit check_out" type="submit" name="submit">Submit</button>
-                                                </div>
-                                            </section>
-                                        </form>
-
-                                    </div>
-
-                                    <div class="clearfix"> </div>
-
-                                </div>
-
-                            </div>
-                            <!-- //about -->
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <!-- //banner -->
-
-                </div>
+            <div class="col-lg-12">
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item active">Profile</li>
+                </ul>
             </div>
-            <div class="col-lg-3 col-md-3 col-sm-3"></div>
         </div>
     </div>
 </div>
+<!-- breadcrumb-area end -->
+<div class="content-wraper mt-10">
+    <div class="container-fluid">
+        <div class="checkout-area">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 col-sm-12">
+                            <div class="checkbox-form checkout-review-order">
+                                <h3 style="text-align: center">Employee <span>Profile</span></h3>
+                                <div class="checkout-left" style="padding-left: 300px; padding-right: 300px">
+                                    <form method="post" action="{{ route('update_employee') }}"
+                                          class="creditly-card-form agileinfo_form">
+                                        @csrf
+                                        <section class="creditly-wrapper wthree, w3_agileits_wrapper">
+                                            <div class="information-wrapper">
+                                                <div class="first-row form-group">
+                                                    <div class="controls">
+                                                        <label class="control-label">Employee Name: </label>
+                                                        <input class="billing-address-name form-control" type="text"
+                                                               name="emp_name" id="emp_name"
+                                                               placeholder="Employee name"
+                                                               value="{{ $rsedit->employee_name }}">
+                                                    </div>
 
+                                                    <div class="w3_agileits_card_number_grid_left">
+                                                        <div class="controls">
+                                                            <label class="control-label">Login ID:</label>
+                                                            <input name="login_id" id="login_id"
+                                                                   class="form-control" type="text"
+                                                                   placeholder="Login ID"
+                                                                   value="{{ $rsedit->login_id }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button class="submit check_out" type="submit" name="submit">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </section>
+                                    </form>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @include('footer')
 <script>
     function validateform() {

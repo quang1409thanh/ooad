@@ -35,9 +35,25 @@ class Product extends Model
         return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
     }
 
+    public function winner()
+    {
+        return $this->hasOne(Winner::class);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'category_id');
+    }
+
+    public function getFirstImageAttribute()
+    {
+        if (is_string($this->product_image)) {
+            return json_decode($this->product_image, true)[0] ?? 'noimage.gif';
+        } else if (is_array($this->product_image)) {
+            return $this->product_image[0] ?? 'noimage.gif';
+        } else {
+            return 'noimage.gif';
+        }
     }
 
     public function scopeActive($query)
@@ -70,5 +86,45 @@ class Product extends Model
         return $query->limit($limit);
     }
 
+    public function getFirstImagePathAttribute()
+    {
+        if (is_string($this->product_image)) {
+            $images = json_decode($this->product_image, true);
+            return isset($images[0]) ? $images[0] : 'noimage.gif';
+        } else if (is_array($this->product_image)) {
+            return isset($this->product_image[0]) ? $this->product_image[0] : 'noimage.gif';
+        } else {
+            return 'noimage.gif';
+        }
+    }
+
+    public function getAllImagePathsAttribute()
+    {
+        if (is_string($this->product_image)) {
+            $images = json_decode($this->product_image, true);
+            return is_array($images) ? $images : ['noimage.gif'];
+        } else if (is_array($this->product_image)) {
+            return $this->product_image;
+        } else {
+            return ['noimage.gif'];
+        }
+    }
+
+    public function product()
+    {
+        return $this->hasMany(Bidding::class, 'product_id', 'product_id');
+    }
+
+    public function countBidders()
+    {
+        return Bidding::where('product_id', $this->product_id)
+            ->distinct('customer_id')
+            ->count('customer_id');
+    }
+
+    public function countBids()
+    {
+        return Bidding::where('product_id', $this->product_id)->count();
+    }
 
 }

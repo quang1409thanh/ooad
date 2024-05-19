@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Billing;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BillingController extends Controller
 {
@@ -12,49 +13,75 @@ class BillingController extends Controller
     public function deposit()
     {
         $customerId = session('customer_id');
-        $totalPurchaseAmount = Billing::where('customer_id', $customerId)
-            ->where('status', 'Active')
-            ->where('payment_type', 'Deposit')
-            ->sum('purchase_amount');
-        // Gọi phương thức trong model để lấy tổng paid_amount
-        $totalPaidAmount = Payment::where('customer_id', $customerId)
-            ->where('status', 'Active')
-            ->where('payment_type', 'Bid')
-            ->sum('paid_amount');
 
+        // Bắt đầu transaction
+        DB::beginTransaction();
+
+        try {
+            $totalPurchaseAmount = Billing::where('customer_id', $customerId)
+                ->where('status', 'Active')
+                ->where('payment_type', 'Deposit')
+                ->sum('purchase_amount');
+
+            // Gọi phương thức trong model để lấy tổng paid_amount
+            $totalPaidAmount = Payment::where('customer_id', $customerId)
+                ->where('status', 'Active')
+                ->where('payment_type', 'Bid')
+                ->sum('paid_amount');
+
+            // Commit transaction nếu không có lỗi xảy ra
+            DB::commit();
+        } catch (\Exception $e) {
+            // Nếu có lỗi, rollback transaction và xử lý lỗi
+            DB::rollback();
+            // Ví dụ: log lỗi hoặc thông báo lỗi cho người dùng
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
+        // Trả về view với thông tin đã tính toán
         return view('deposit', compact('totalPurchaseAmount', 'totalPaidAmount'));
     }
 
     public function store(Request $request)
     {
-        // Lấy customer_id từ session
-        $customerId = session('customer_id');
+        // Sử dụng transaction để đảm bảo tính toàn vẹn của dữ liệu
+        DB::beginTransaction();
 
-        // Tạo mới đối tượng Billing từ dữ liệu request
-        $billing = Billing::create([
-            'customer_id' => $customerId,
-            'purchase_date' => now(),
-            'purchase_amount' => $request->input('paid_amount'),
-            'payment_type' => 'Deposit',
-            'card_type' => $request->input('card_type'),
-            'card_number' => $request->input('card_number'),
-            'expire_date' => $request->input('expire_date') . '-01',
-            'cvv_number' => $request->input('cvv_number'),
-            'card_holder' => $request->input('card_holder'),
-            'delivery_date' => now(),
-            'status' => 'Active',
-            'note' => 'null',
-        ]);
+        try {
+            // Lấy customer_id từ session
+            $customerId = session('customer_id');
 
-        // Lấy id của thanh toán mới tạo
-        $paymentId = $billing->billing_id;
-//        dd($paymentId)
+            // Tạo mới đối tượng Billing từ dữ liệu request
+            $billing = Billing::create([
+                'customer_id' => $customerId,
+                'purchase_date' => now(),
+                'purchase_amount' => $request->input('paid_amount'),
+                'payment_type' => 'Deposit',
+                'card_type' => $request->input('card_type'),
+                'card_number' => $request->input('card_number'),
+                'expire_date' => $request->input('expire_date') . '-01',
+                'cvv_number' => $request->input('cvv_number'),
+                'card_holder' => $request->input('card_holder'),
+                'delivery_date' => now(),
+                'status' => 'Active',
+                'note' => 'null',
+            ]);
 
-        // Kiểm tra xem việc thêm dữ liệu đã thành công hay không
-        if ($billing) {
+            // Lấy id của thanh toán mới tạo
+            $paymentId = $billing->billing_id;
+
+            // Commit transaction nếu mọi thứ diễn ra thành công
+            DB::commit();
+
+            alert()->success('Thành Công', 'Bạn đã nạp tiền thành công');
+
             return redirect()->route('payment_receipt', ['payment_id' => $paymentId])->with('success', 'You have deposited Rs. ' . $request->input('paid_amount') . ' successfully...');
-        } else {
-            return back()->with('error', 'Error occurred: ' . mysqli_error($con)); // Nếu sử dụng Laravel, thì không cần gọi hàm mysqli_error
+        } catch (\Exception $e) {
+            // Nếu có lỗi xảy ra, rollback transaction
+            DB::rollBack();
+            alert()->error('Thất bại', 'Xem lại các thông tin!!!');
+            // Trả về thông báo lỗi
+            return back()->with('error', 'Error occurred: ' . $e->getMessage());
         }
     }
 

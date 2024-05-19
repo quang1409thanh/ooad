@@ -36,7 +36,7 @@
                     <tbody>
                     @foreach ($products as $product)
                         <tr>
-                            <td><img src='imgproduct/{{ $product->product_image }}' width='200px;'
+                            <td><img src='product_images/{{ $product->product_image }}' width='200px;'
                                      style='height:120px;'></td>
 {{--                            @if (session()->has("employee_id"))--}}
 {{--                                <td>{{ $product->customer->customer_name }}</td>--}}
@@ -49,12 +49,12 @@
                                 @if ($product->currentcost == 0)
                                     No bidding done yet..
                                 @else
-                                    PKR{{ $product->currentcost }}
+                                    $ {{ $product->currentcost }}
                                 @endif
                             </td>
                             <td>{{ date("d/m/Y h:i A", strtotime($product->start_date_time)) }}
                                 - {{ date("d/m/Y h:i A", strtotime($product->end_date_time)) }}</td>
-                            <td>PKR{{ $product->product_cost }}</td>
+                            <td>$ {{ $product->product_cost }}</td>
                             <td>{{ $product->status }}</td>
                             <td>
                                 <a href='product/{{ $product->product_id }}/edit' class='btn btn-warning'>Edit</a> <br>

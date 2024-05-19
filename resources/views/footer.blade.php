@@ -80,50 +80,30 @@
                         <div class="row">
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <div class="footer-title">
-                                    <h3>Nhóm X</h3>
+                                    <h3>Contact Information</h3>
                                 </div>
                                 <ul>
-                                    <li><a href="">Lê Anh Đức</a></li>
-                                    <li><a href="">Nguyễn Quang Thành</a></li>
-                                    <li><a href="">Lê Hải Nam</a></li>
-                                    <li><a href="">Hoàng Mạnh Quân</a></li>
-                                    <li><a href="">Lê Hải Lâm</a></li>
+                                    <li><a href="mailto:thanhaxt342@gmail.com">Email: contact@example.com</a></li>
+                                    <li><a href="tel:+1234567890">Phone: +123-456-7890</a></li>
+                                    <li><a href="https://www.example.com">Website: www.example.com</a></li>
                                 </ul>
                             </div>
-
-                            @guest
-                                @if (!isset($_SESSION['employee_id']))
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="footer-title">
-                                            <h3>Employee Account</h3>
-                                        </div>
-                                        <ul>
-                                            <li><a href="{{route('employee_login')}}">Admin Login</a></li>
-                                            <li><a href="{{route('employee_login')}}">Employee Login</a></li>
-                                        </ul>
-                                    </div>
-                                @endif
-                            @endguest
-                            @auth
-                                @if (isset($_SESSION['employee_id']))
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="footer-title">
-                                            <h3>Employee Account</h3>
-                                        </div>
-                                        <ul>
-                                            <li><a href="{{route('employee_login')}}">Admin Login</a></li>
-                                            <li><a href="{{route('employee_login')}}">Employee Login</a></li>
-                                            <li><a href="{{route('logout')}}">Logout</a></li>
-                                        </ul>
-                                    </div>
-                                @endif
-                            @endauth
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="footer-title">
+                                    <h3>Office Address</h3>
+                                </div>
+                                <ul>
+                                    <li style="color: white">144 Xuân Thủy Cầu Giấy Hà Nội Việt Nam</li>
+                                    <li style="color: white">City, State, ZIP Code</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     {{--    <!-- Modal start-->--}}
     {{--    <div class="modal fade modal-wrapper" id="exampleModalCenter">--}}
     {{--        <div class="modal-dialog modal-dialog-centered" role="document">--}}

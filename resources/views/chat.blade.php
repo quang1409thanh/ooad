@@ -1,25 +1,5 @@
-<!-- resources/views/view-product.blade.php -->
-
-{{--@include('databaseconnection')--}}
-<?php
-
-use Illuminate\Support\Facades\DB;
-
-error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_WARNING);
-date_default_timezone_set('Asia/Kolkata');
-$sqlproduct1 = "SELECT * FROM products LEFT JOIN customers ON customers.customer_id = products.customer_id WHERE products.product_id='" . request()->input('productid') . "'";
-$qsqlproduct1 = DB::select($sqlproduct1);
-$rsproduct1 = $qsqlproduct1[0];
-$receiverid = $rsproduct1->customer_id;
-?>
-
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-{{--lỗi ở file này khiến header bị hỏng >?d--}}
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
-
-<!------ Include the above in your HEAD tag ---------->
 <div class="container">
     <div class="row">
         <div class="round hollow">
@@ -28,111 +8,147 @@ $receiverid = $rsproduct1->customer_id;
     </div>
 </div>
 
-
 <div class="popup-box chat-popup" id="qnimate">
     <div class="popup-head">
         <div class="popup-head-left pull-left">
-            <?php echo $rsproduct1->customer_name; ?></div>
+            <img src="{{asset('img/favicon.ico')}}" alt="iamgurdeeposahan">
+            {{$product->customer->customer_name}}
+        </div>
         <div class="popup-head-right pull-right">
+            <button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button">
+                <img src="{{url('img/x-button.png')}}" alt="Turn Off">
 
-            <button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button"><i
-                    class="glyphicon glyphicon-off"></i></button>
-
-            <button data-widget="maximize" id="idmaximize" class="chat-header-button pull-right" type="button"><i
-                    class="glyphicon glyphicon-plus" style=""></i></button>
-
-            <button data-widget="hide" id="idminimize" class="chat-header-button pull-right" type="button"><i
-                    class="glyphicon glyphicon-minus"></i></button>
+            </button>
+            <button data-widget="maximize" id="idmaximize" class="chat-header-button pull-right" type="button">
+                <img src="{{url('img/plus.png')}}" alt="Turn Off">
+            </button>
+            <button data-widget="hide" id="idminimize" class="chat-header-button pull-right" type="button">
+                <img src="{{url('img/minus.png')}}" alt="minus">
+            </button>
         </div>
     </div>
 
     <div class="popup-messages" id="popup-messages">
-{{--        @include('chatmessage')--}}
+        @include('chatmessage')
     </div>
 
     <div class="popup-messages-footer" id="popup-messages-footer">
         <textarea id="status_message" placeholder="Type a message..." rows="10" cols="40" name="message"></textarea>
     </div>
-
 </div>
 
 <script>
-    $(function () {
-        $("#addClass").click(function () {
+    $(document).ready(() => {
+        $("#addClass").on("click", () => {
             $("#idmaximize").hide();
             $('#qnimate').addClass('popup-box-on');
         });
-        $("#removeClass").click(function () {
+
+        $("#removeClass").on("click", () => {
             $('#qnimate').removeClass('popup-box-on');
         });
-    });
-</script>
-<script>
-    $('#status_message').bind('keyup', function (e) {
-        if ($('#status_message').val() != "") {
-            if (e.keyCode === 13) { // 13 is enter key
-                var message = $('#status_message').val();
-                {{--$.post("chatmessage", {--}}
-                {{--        'message': message,--}}
-                {{--        'product_id': {{ request()->input('productid') }},--}}
-                {{--        'senderid': {{ session('customer_id') }},--}}
-                {{--        'receiverid': {{ $receiverid }},--}}
-                {{--        'btnmessage': "Submit"--}}
-                {{--    },--}}
-                {{--    function (data, status) {--}}
-                {{--        $('#status_message').val('');--}}
-                {{--        $('#popup-messages').html(data);--}}
-                {{--        $('#popup-messages').scrollTop($('#popup-messages')[0].scrollHeight);--}}
-                {{--    });--}}
+
+        $('#status_message').on('keyup', (e) => {
+            if ($('#status_message').val() !== "") {
+                if (e.key === "Enter") {
+                    const message = $('#status_message').val();
+                    const productid = '{{ $product->product_id }}';
+                    const senderid = '{{ session('customer_id') }}';
+                    const receiverid = '{{ $product->customer->customer_id }}';
+                    const csrfToken = '{{ csrf_token() }}'; // Lấy CSRF token từ blade template
+
+                    $.ajax({
+                        url: '/chatmessage',
+                        type: 'POST',
+                        data: {
+                            '_token': csrfToken, // Thêm CSRF token vào dữ liệu gửi đi
+                            'message': message,
+                            'productid': productid,
+                            'senderid': senderid,
+                            'receiverid': receiverid,
+                            'btnmessage': "Submit"
+                        },
+                        success: (data, status) => {
+                            console.log(data);
+                            $('#status_message').val('');
+                            $('#popup-messages').html(data);
+                            $('#popup-messages').scrollTop($('#popup-messages')[0].scrollHeight);
+                        },
+                        error: (xhr, textStatus, errorThrown) => {
+                            console.error(xhr.responseText); // Log lỗi nếu có
+                        }
+                    });
+                }
             }
-        }
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $("#idminimize").click(function () {
+        });
+
+
+        $("#idminimize").on("click", () => {
             $("#popup-messages").hide();
             $("#popup-messages-footer").hide();
             $("#idminimize").hide();
             $("#idmaximize").show();
         });
-        $("#idmaximize").click(function () {
+
+        $("#idmaximize").on("click", () => {
             $("#popup-messages").show();
             $("#popup-messages-footer").show();
             $("#idminimize").show();
             $("#idmaximize").hide();
         });
-    });
-</script>
-<script>
-    function loadmessage(senderid, receiverid, productid) {
-        var message = "";
-        {{--$.post("chatmessenger", {--}}
-        {{--        'message': message,--}}
-        {{--        'productid': {{ request()->input('productid') }},--}}
-        {{--        'senderid': {{ session('customer_id') }},--}}
-        {{--        'receiverid': {{ $receiverid }},--}}
-        {{--        'status': 'Seller',--}}
-        {{--        'btnmessage': 'btnmessage'--}}
-        {{--    },--}}
-        {{--    function (data, status) {--}}
-        {{--        //$('#status_message').val('');--}}
-        {{--        $('#popup-messages').html(data);--}}
-        {{--        $('#popup-messages').scrollTop($('#popup-messages')[0].scrollHeight);--}}
-        {{--    });--}}
-    }
 
-    setInterval(function () {
-        loadmessage(0, 0); // this will run after every 5 seconds
-    }, 5000);
+        function loadmessage(productid, senderid, receiverid) {
+            $.ajax({
+                url: "/load-messages/" + productid,
+                type: "GET",
+                data: {
+                    'productid': productid,
+                    'senderid': senderid,
+                    'receiverid': receiverid,
+                    'status': 'Seller',
+                    'btnmessage': 'btnmessage'
+                },
+                success: function (data, status) {
+                    $('#popup-messages').html(data);
+                    $('#popup-messages').scrollTop($('#popup-messages')[0].scrollHeight);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error(xhr.responseText); // Log lỗi nếu có
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $("#addClass").on("click", function () {
+                $("#idmaximize").hide();
+                $('#qnimate').addClass('popup-box-on');
+                loadmessage('{{ $product->product_id }}', '{{ session('customer_id') }}', '{{ $product->customer->customer_id }}');
+            });
+
+            // Load messages initially when the document is ready
+            loadmessage('{{ $product->product_id }}', '{{ session('customer_id') }}', '{{ $product->customer->customer_id }}');
+
+            // Update messages every 5 seconds
+            setInterval(function () {
+                loadmessage('{{ $product->product_id }}', '{{ session('customer_id') }}', '{{ $product->customer->customer_id }}');
+            }, 5000);
+        });
+    });
+
 </script>
+{{--@endsection--}}
 <style>
+
+
+</style>
+<style>
+
     @import url(https://fonts.googleapis.com/css?family=Oswald:400,300);
     @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
     .popup-box {
-        background-color: #ffffff;
-        border: 1px solid #b0b0b0;
+        border: 2px solid #4306ed;
+        border-radius: 12px;
         bottom: 0;
         display: none;
         /*height: 415px;*/
@@ -140,7 +156,7 @@ $receiverid = $rsproduct1->customer_id;
         right: 0px;
         width: 300px;
         font-family: 'Open Sans', sans-serif;
-        z-index: 1;
+        z-index: 99999999;
     }
 
     .round.hollow {
@@ -173,44 +189,38 @@ $receiverid = $rsproduct1->customer_id;
     }
 
     .popup-box .popup-head {
-        background-color: #fff;
+        border-radius: 8px;
+        border: 2px solid #4306ed;
+        background-color: white;
         clear: both;
         color: #7b7b7b;
         display: inline-table;
         font-size: 21px;
-        /*padding: 7px 10px;*/
         padding: 0px 10px;
         width: 100%;
         font-family: Oswald;
     }
 
-    .bg_none i {
-        border: 1px solid #ff6701;
-        border-radius: 25px;
-        color: #ff6701;
-        font-size: 17px;
-        height: 33px;
-        line-height: 30px;
-        width: 33px;
-    }
-
-    .bg_none:hover i {
-        border: 1px solid #000;
-        border-radius: 25px;
-        color: #000;
-        font-size: 17px;
-        height: 33px;
-        line-height: 30px;
-        width: 33px;
-    }
-
-    .bg_none {
-        background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-        border: medium none;
-    }
-
     .popup-box .popup-head .popup-head-right {
         margin: 11px 7px 0;
+    }
+
+    .popup-head-right .btn-group {
+        display: inline-flex;
+        margin: 0 8px 0 0;
+        vertical-align: top !important;
+    }
+
+    .popup-head-right .btn-group .dropdown-menu {
+        border: medium none;
+        min-width: 122px;
+        padding: 0;
+    }
+
+    .popup-head-right .btn-group .dropdown-menu li a {
+        font-size: 12px;
+        padding: 3px 10px;
+        color: #303030;
     }
 
     .popup-box .popup-messages {
@@ -223,12 +233,16 @@ $receiverid = $rsproduct1->customer_id;
     }
 
     .popup-messages-footer > textarea {
-        border-bottom: 1px solid #b2b2b2 !important;
-        height: 50px !important;
+        border: none;
+        border-radius: 25px;
+        background-color: #f3f3f3;
+        height: 40px;
         margin: 7px;
-        padding: 5px !important;
-        /* border: medium none;*/
-        width: 95% !important;
+        padding: 10px;
+        width: calc(100% - 20px);
+        resize: none;
+        font-size: 14px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .popup-messages-footer {
@@ -239,9 +253,18 @@ $receiverid = $rsproduct1->customer_id;
     }
 
     .popup-messages-footer .btn-footer {
-        overflow: hidden;
-        padding: 2px 5px 10px 6px;
-        width: 100%;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .popup-messages-footer .btn-footer:hover {
+        background-color: #0056b3;
     }
 
     .simple_round {
@@ -254,7 +277,8 @@ $receiverid = $rsproduct1->customer_id;
     }
 
     .popup-box .popup-messages {
-        background: #3f9684 none repeat scroll 0 0;
+        background: linear-gradient(135deg, #667eea, #764ba2, #6B8E23, #FFA07A, #40E0D0);
+        /*none repeat scroll 0 0;*/
         height: 375px;
         overflow: auto;
         padding-bottom: 60px;
@@ -264,7 +288,6 @@ $receiverid = $rsproduct1->customer_id;
         overflow: auto;
         padding: 10px;
         transform: translate(0px, 0px);
-
     }
 
     .popup-messages .chat-box-single-line {
@@ -281,11 +304,6 @@ $receiverid = $rsproduct1->customer_id;
         padding: 0 11px;
     }
 
-    .popup-head-right .btn-group {
-        display: inline-flex;
-        margin: 0 8px 0 0;
-        vertical-align: top !important;
-    }
 
     .chat-header-button {
         background: transparent none repeat scroll 0 0;
@@ -296,17 +314,6 @@ $receiverid = $rsproduct1->customer_id;
         width: 30px;
     }
 
-    .popup-head-right .btn-group .dropdown-menu {
-        border: medium none;
-        min-width: 122px;
-        padding: 0;
-    }
-
-    .popup-head-right .btn-group .dropdown-menu li a {
-        font-size: 12px;
-        padding: 3px 10px;
-        color: #303030;
-    }
 
     .popup-messages abbr.timestamp {
         background: #3f9684 none repeat scroll 0 0;
@@ -327,7 +334,7 @@ $receiverid = $rsproduct1->customer_id;
     }
 
     .popup-messages .direct-chat-text {
-        background: #dfece7 none repeat scroll 0 0;
+        background: none repeat scroll 0 0;
         border: 1px solid #dfece7;
         border-radius: 2px;
         color: #1f2121;
@@ -389,7 +396,8 @@ $receiverid = $rsproduct1->customer_id;
     }
 
     .popup-messages .doted-border::after {
-        background: transparent none repeat scroll 0 0 !important;
+        background-color: red;
+        /*background: transparent none repeat scroll 0 0 !important;*/
         border-right: 2px dotted #fff !important;
         bottom: 0;
         content: "";
@@ -403,7 +411,7 @@ $receiverid = $rsproduct1->customer_id;
     }
 
     .popup-messages .direct-chat-msg::after {
-        background: #fff none repeat scroll 0 0;
+        /*background: #fff none repeat scroll 0 0;*/
         border-right: medium none;
         bottom: 0;
         content: "";
@@ -452,15 +460,6 @@ $receiverid = $rsproduct1->customer_id;
         color: #1f2121;
     }
 
-    .direct-chat-text {
-        /*
-        background: #d2d6de none repeat scroll 0 0;
-        border: 1px solid #d2d6de;
-        border-radius: 5px;
-        color: #444;
-        margin: 5px 0 0 50px;
-        padding: 5px 10px;
-        position: relative;
-        */
-    }
+
+
 </style>
