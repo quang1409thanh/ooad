@@ -44,7 +44,7 @@ jobs:
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=140903/' .env  # Sử dụng MYSQL_ROOT_PASSWORD đã đặt
       - name: Wait for MySQL to be ready
         run: |
-          until docker exec -i $(docker-compose ps -q mysql) mysqladmin ping -uroot -p140903 --silent; do  # Sử dụng MYSQL_ROOT_PASSWORD đã đặt
+          until echo 'SELECT 1' | mysql -h127.0.0.1 -uroot -p140903 --silent; do
             echo 'Waiting for MySQL...'
             sleep 5
           done
