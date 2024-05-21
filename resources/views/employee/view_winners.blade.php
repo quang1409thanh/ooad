@@ -38,6 +38,7 @@
 
                                                 <th>Customer</th>
                                                 <th style="300px;">Product</th>
+                                                <th>Status</th>
                                                 <th>Winning bid</th>
                                                 <th>End date</th>
                                             </tr>
@@ -45,9 +46,13 @@
                                             <tbody>
                                             @foreach ($winners as $winner)
                                                 <tr>
-                                                    <td><img src='imgwinner/{{ $winner->winners_image }}' style="width: 200px"></td>
+                                                    <td><img src='imgwinner/{{ $winner->winners_image }}'
+                                                             style="width: 200px"></td>
                                                     <td>{{ $winner->customer->customer_name }}</td>
-                                                    <td><a style="color: darkcyan" href="{{route("product.show",$winner->product_id)}}">{{ $winner->product->product_name }}</a></td>
+                                                    <td><a style="color: darkcyan"
+                                                           href="{{route("product.show",$winner->product_id)}}">{{ $winner->product->product_name }}</a>
+                                                    </td>
+                                                    <td>{{$winner->status}}</td>
                                                     <td>{{ $winner->winning_bid }}</td>
                                                     <td>{{ $winner->end_date }}</td>
                                                 </tr>
