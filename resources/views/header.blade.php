@@ -267,9 +267,9 @@
 
                                     <li><a href="{{ route('auction', ['auctiontype' => 'Latest Auctions']) }}"
                                            style="color:black;">Latest Auctions</a></li>
-                                    <li><a href="{{ route('auction', ['auctiontype' => 'Trending Bid']) }}"
+                                    <li><a href="{{ route('auction', ['auctiontype' => 'Trending Auction']) }}"
                                            style="color:black;">Trending
-                                            Bid</a></li>
+                                            Auction</a></li>
                                     <li><a href="{{ route('auction', ['auctiontype' => 'Featured Auctions']) }}"
                                            style="color:black;">Featured Auctions</a></li>
                                     <li>

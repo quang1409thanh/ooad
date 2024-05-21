@@ -234,9 +234,9 @@
 <hr>
 
 <!-- Closing Auctions start -->
-@include('home_view.closing_home');
+{{--@include('home_view.closing_home');--}}
 <!-- Closing Auctions end -->
-<hr>
+{{--<hr>--}}
 
 <!-- Closed Auctions start -->
 @include('home_view.closed_home');

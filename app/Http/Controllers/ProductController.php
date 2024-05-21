@@ -36,7 +36,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         $products = Product::all(); // Lấy tất cả sản phẩm từ cơ sở dữ liệu
         $categories = Category::all();
-        $similarProducts = Product::all();
+        $similarProducts = Product::where('category_id', '=', $product->category_id)->get();
         $bidder_list = Bidding::with('customer')
             ->where('product_id', $id)
             ->orderBy('bidding_id', 'DESC')

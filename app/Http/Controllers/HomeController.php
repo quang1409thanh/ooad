@@ -22,37 +22,50 @@ class HomeController extends Controller
         $activeWithCustomer = ['status' => 'Active', ['customer_id', '!=', '0']];
 
         // Latest products
-        $latest_products = Product::where($activeWithCustomer)
+        // Lấy các sản phẩm từ query đầu tiên
+        $latest_products0 = Product::where($activeWithCustomer)
             ->where('start_date_time', '<=', $now)
-            ->where('status', 'Active')
-            ->orderByDesc('product_id')
+            ->where('ending_bid', '!=', '0')
             ->get();
+
+        // Lấy các sản phẩm từ query thứ hai
+        $latest_products1 = Product::where($activeWithCustomer)
+            ->where('start_date_time', '<=', $now)
+            ->get();
+
+        // Hợp nhất hai tập hợp và loại bỏ các sản phẩm trùng lặp (nếu có)
+        $latest_products_unsorted = $latest_products0->merge($latest_products1)->unique('product_id');
+
+        // Sắp xếp lại tập hợp, ưu tiên các sản phẩm có ending_bid khác 0 lên trước và sắp xếp theo updated_at giảm dần
+        $latest_products = $latest_products_unsorted->sortBy(function ($product) {
+            // Chuyển ending_bid thành giá trị boolean, sản phẩm có ending_bid khác 0 sẽ được xếp trước
+            return $product->ending_bid == '0';
+        })->values()->sortByDesc('updated_at'); // Sau đó sắp xếp theo updated_at giảm dần
+
+        // Convert to a collection and reindex
+        $latest_products = $latest_products->values();
 
         // Featured products
         $featured_products = Product::where($activeWithCustomer)
             ->where('end_date_time', '>', $now)
-            ->where('status', 'Active')
             ->orderByDesc('product_id')
             ->get();
 
         // Upcoming products
         $upcoming_products = Product::where($activeWithCustomer)
             ->where('start_date_time', '>', $now)
-            ->where('status', 'Active')
             ->orderByDesc('product_id')
             ->get();
 
         // Closing products
         $closing_products = Product::where($activeWithCustomer)
             ->whereBetween('end_date_time', [$startOfDay, $endOfDay])
-            ->where('status', 'Active')
             ->orderByDesc('product_id')
             ->get();
 
         // Closed products
         $closed_products = Product::where($activeWithCustomer)
             ->where('end_date_time', '<', $now)
-            ->where('status', 'Active')
             ->orderByDesc('product_id')
             ->get();
 
@@ -138,7 +151,7 @@ class HomeController extends Controller
                         ['customer_id', '!=', '0']
                     ];
                     break;
-                case 'Trending Bid':
+                case 'Trending Auction':
                     $conditions = [];
                     break;
                 default:
