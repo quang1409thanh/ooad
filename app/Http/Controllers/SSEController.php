@@ -11,12 +11,12 @@ class SSEController extends Controller
     //
     public function stream(Request $request, $id)
     {
-        $queryParam = $request->query('quert');
+        $queryParam = $request->query('query');
         $product = Product::where('product_id', $id)->first();
         if ($queryParam !== $product->ending_bid) {
-            $message = "Sản phẩm chưa có cập nhật mới";
+            $message = "Sản phẩm đã có cập nhật mới";
         } else {
-            $message = "Sản phẩm đã được cập nhật mới";
+            $message = "Sản phẩm chưa được cập nhật mới !";
         }
         if ($product) {
             return response()->json([

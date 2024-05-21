@@ -36,9 +36,10 @@
                                                             <h4><a class="product_name"
                                                                    href="#">{{ $product->product_name }}</a>
                                                             </h4>
-                                                            <div class="manufacturer"><a
-                                                                    href="#">Product
-                                                                    Code: {{ $product->product_id }}</a></div>
+                                                            <div class="manufacturer">
+                                                                <a href="#">Starting
+                                                                    Bid: {{ $product->start_date_time }}</a>
+                                                            </div>
                                                             <p id="countdowntimer_upcoming{{ $product->product_id }}"></p>
                                                             <script type="application/javascript">
                                                                 countdowntimer_upcoming('{{ $product->product_id }}', '{{ date("M d, Y H:i:s", strtotime($product->end_date_time)) }}');

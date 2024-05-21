@@ -23,33 +23,37 @@ class HomeController extends Controller
 
         // Latest products
         // Lấy các sản phẩm từ query đầu tiên
-        $latest_products0 = Product::where($activeWithCustomer)
+        $latest_products = Product::where($activeWithCustomer)
             ->where('start_date_time', '<=', $now)
-            ->where('ending_bid', '!=', '0')
+            ->orderBy('updated_at', 'desc')
             ->get();
 
-        // Lấy các sản phẩm từ query thứ hai
-        $latest_products1 = Product::where($activeWithCustomer)
-            ->where('start_date_time', '<=', $now)
-            ->get();
+//        // Lấy các sản phẩm từ query thứ hai
+//        $latest_products1 = Product::where($activeWithCustomer)
+//            ->where('start_date_time', '<=', $now)
+//            ->get();
+//
+//        // Hợp nhất hai tập hợp và loại bỏ các sản phẩm trùng lặp (nếu có)
+//        $latest_products_unsorted = $latest_products0->merge($latest_products1)->unique('product_id');
+//
+//        // Sắp xếp lại tập hợp, ưu tiên các sản phẩm có ending_bid khác 0 lên trước và sắp xếp theo updated_at giảm dần
+//        $latest_products = $latest_products_unsorted->sortBy(function ($product) {
+//            // Chuyển ending_bid thành giá trị boolean, sản phẩm có ending_bid khác 0 sẽ được xếp trước
+//            return $product->ending_bid == '0';
+//        })->values()->sortByDesc('updated_at'); // Sau đó sắp xếp theo updated_at giảm dần
+//
+//        // Convert to a collection and reindex
+//        $latest_products = $latest_products->values();
 
-        // Hợp nhất hai tập hợp và loại bỏ các sản phẩm trùng lặp (nếu có)
-        $latest_products_unsorted = $latest_products0->merge($latest_products1)->unique('product_id');
-
-        // Sắp xếp lại tập hợp, ưu tiên các sản phẩm có ending_bid khác 0 lên trước và sắp xếp theo updated_at giảm dần
-        $latest_products = $latest_products_unsorted->sortBy(function ($product) {
-            // Chuyển ending_bid thành giá trị boolean, sản phẩm có ending_bid khác 0 sẽ được xếp trước
-            return $product->ending_bid == '0';
-        })->values()->sortByDesc('updated_at'); // Sau đó sắp xếp theo updated_at giảm dần
-
-        // Convert to a collection and reindex
-        $latest_products = $latest_products->values();
 
         // Featured products
         $featured_products = Product::where($activeWithCustomer)
             ->where('end_date_time', '>', $now)
             ->orderByDesc('product_id')
             ->get();
+        $featured_products = $featured_products->sortByDesc(function ($product) {
+            return [$product->countBidders(), $product->countBids()];
+        });
 
         // Upcoming products
         $upcoming_products = Product::where($activeWithCustomer)
