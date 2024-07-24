@@ -197,7 +197,7 @@
                         <!-- hot-line-area start -->
                         <div class="hot-line-area">
                             <div class="phone">
-                                Customer Support: <span>+84-123456789</span>
+                                Customer Support: <span>+84332258398</span>
                             </div>
                         </div>
                         <!-- hot-line-area end -->

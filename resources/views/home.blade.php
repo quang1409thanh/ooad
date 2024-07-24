@@ -219,17 +219,17 @@
 
 <hr>
 <!-- Latest Auctions start -->
-@include("home_view.latest_home");
+@include("home_view.latest_home")
 <!-- Latest Auctions end -->
 <hr>
 
 <!-- Featured Auctions start -->
-@include('home_view.featured_home');
+@include('home_view.featured_home')
 <!-- Featured Auctions end -->
 <hr>
 
 <!-- Upcoming Auctions start -->
-@include('home_view.upcoming_home');
+@include('home_view.upcoming_home')
 <!-- Upcoming Auctions end -->
 <hr>
 
@@ -239,7 +239,7 @@
 {{--<hr>--}}
 
 <!-- Closed Auctions start -->
-@include('home_view.closed_home');
+@include('home_view.closed_home')
 <!-- Closed Auctions end -->
 
 <hr>
