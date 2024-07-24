@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 21, 2024 lúc 10:05 AM
+-- Thời gian đã tạo: Th7 24, 2024 lúc 10:15 AM
 -- Phiên bản máy phục vụ: 10.4.28-MariaDB
 -- Phiên bản PHP: 8.2.4
 
@@ -56,7 +56,16 @@ INSERT INTO `biddings` (`bidding_id`, `customer_id`, `product_id`, `bidding_amou
 (10, 1, 5, 10000, '2024-05-21 14:17:51', 'null', 'Active', '2024-05-21 07:17:51', '2024-05-21 07:17:51'),
 (11, 1, 9, 9000, '2024-05-21 14:28:35', 'null', 'Active', '2024-05-21 07:28:35', '2024-05-21 07:28:35'),
 (12, 3, 9, 10000, '2024-05-21 14:49:19', 'null', 'Active', '2024-05-21 07:49:19', '2024-05-21 07:49:19'),
-(13, 1, 9, 20000, '2024-05-21 14:50:17', 'null', 'Active', '2024-05-21 07:50:17', '2024-05-21 07:50:17');
+(13, 1, 9, 20000, '2024-05-21 14:50:17', 'null', 'Active', '2024-05-21 07:50:17', '2024-05-21 07:50:17'),
+(14, 5, 13, 1000000, '2024-05-21 16:17:56', 'null', 'Active', '2024-05-21 09:17:56', '2024-05-21 09:17:56'),
+(15, 3, 13, 4000000, '2024-05-21 16:21:55', 'null', 'Active', '2024-05-21 09:21:55', '2024-05-21 09:21:55'),
+(16, 5, 13, 1000000, '2024-05-21 16:26:05', 'Refund', 'Active', '2024-05-21 09:26:05', '2024-05-21 09:26:05'),
+(17, 8, 14, 2000, '2024-05-21 17:27:26', 'null', 'Active', '2024-05-21 10:27:26', '2024-05-21 10:27:26'),
+(18, 5, 14, 3000, '2024-05-21 17:27:44', 'null', 'Active', '2024-05-21 10:27:44', '2024-05-21 10:27:44'),
+(19, 8, 14, 4000, '2024-05-21 17:29:14', 'null', 'Active', '2024-05-21 10:29:14', '2024-05-21 10:29:14'),
+(20, 8, 14, 7000, '2024-05-21 17:30:34', 'null', 'Active', '2024-05-21 10:30:34', '2024-05-21 10:30:34'),
+(21, 5, 14, 3000, '2024-05-21 17:31:03', 'Refund', 'Active', '2024-05-21 10:31:03', '2024-05-21 10:31:03'),
+(22, 3, 9, 10000, '2024-07-24 15:08:53', 'Refund', 'Active', '2024-07-24 08:08:53', '2024-07-24 08:08:53');
 
 -- --------------------------------------------------------
 
@@ -90,7 +99,10 @@ INSERT INTO `billings` (`billing_id`, `customer_id`, `purchase_date`, `purchase_
 (1, 2, '2024-05-19', 13000000, 'Deposit', 'Credit card', '1234567890654321', '2028-12-01', '123', 'NGUYEN QUANG THANH', '2024-05-19', 'null', 'Active', '2024-05-18 21:20:09', '2024-05-18 21:20:09'),
 (2, 2, '2024-05-19', 2000000, 'Winners', 'Credit card', '1234567890123456', '2027-07-01', '123', 'HOANG MANH QUAN', '2024-05-19', 'null', 'Active', '2024-05-19 09:35:06', '2024-05-19 09:35:06'),
 (3, 1, '2024-05-21', 119000, 'Deposit', 'Credit card', '1234567890456789', '2027-01-01', '123', 'NGUYEN QUANG THANH', '2024-05-21', 'null', 'Active', '2024-05-21 07:12:11', '2024-05-21 07:12:11'),
-(4, 3, '2024-05-21', 80000000, 'Deposit', 'Credit card', '1234567890987654', '2026-12-01', '123', 'NGUYEN QUANG NAM', '2024-05-21', 'null', 'Active', '2024-05-21 07:18:45', '2024-05-21 07:18:45');
+(4, 3, '2024-05-21', 80000000, 'Deposit', 'Credit card', '1234567890987654', '2026-12-01', '123', 'NGUYEN QUANG NAM', '2024-05-21', 'null', 'Active', '2024-05-21 07:18:45', '2024-05-21 07:18:45'),
+(5, 5, '2024-05-21', 80000000, 'Deposit', 'Credit card', '123456789456789', '2024-12-01', '123', 'NGUYEN VAN BINH', '2024-05-21', 'null', 'Active', '2024-05-21 09:17:40', '2024-05-21 09:17:40'),
+(6, 8, '2024-05-21', 1000000, 'Deposit', 'Debit Card', '1234567890123456', '2029-12-01', '124', 'LE VAN A', '2024-05-21', 'null', 'Active', '2024-05-21 10:26:51', '2024-05-21 10:26:51'),
+(7, 8, '2024-05-21', 7000, 'Winners', 'Credit card', '123456789123456', '2029-12-01', '123', 'LE VAN A', '2024-05-21', 'null', 'Active', '2024-05-21 10:33:07', '2024-05-21 10:33:07');
 
 -- --------------------------------------------------------
 
@@ -116,7 +128,11 @@ INSERT INTO `blockchains` (`blockchain_id`, `timestamp`, `data`, `previous_hash`
 (1, '0', '01/01/2023', '0', 'd2960287ada5710e230713589663a20831a9c4209c834c5313868d2b926e6a49', '2024-05-19 09:32:04', '2024-05-19 09:32:04'),
 (2, '2024-05-19 16:32:04', '\"Customer with ID [2] Named Customer2 has won bidding on amount: [2000000] for Product named L\\u00c0NG VEN S\\u00d4NG and Product ID [7] with bidding starting from 100000 and ending on 2000000 \"', 'd2960287ada5710e230713589663a20831a9c4209c834c5313868d2b926e6a49', '44b9928ddbc51b3a2bf5b2cade385145ae85e8764026c6a9604bfcb78e14005d', '2024-05-19 09:32:04', '2024-05-19 09:32:04'),
 (3, '2024-05-21 14:15:03', '\"Customer with ID [2] Named Customer2 has won bidding on amount: [5000000] for Product named TH\\u1ea0P G\\u1ed0M HOA N\\u00c2U TH\\u1edcI TR\\u1ea6N and Product ID [12] with bidding starting from 1000000 and ending on 5000000 \"', '44b9928ddbc51b3a2bf5b2cade385145ae85e8764026c6a9604bfcb78e14005d', '8cfb1642f25bc66ec3378ecef2e792ae05d37f8b103578e68052ff8d9d52a472', '2024-05-21 07:15:03', '2024-05-21 07:15:03'),
-(4, '2024-05-21 14:20:01', '\"Customer with ID [1] Named Customer1 has won bidding on amount: [10000] for Product named Graff Diamonds Hallucination and Product ID [5] with bidding starting from 55000000 and ending on 10000 \"', '8cfb1642f25bc66ec3378ecef2e792ae05d37f8b103578e68052ff8d9d52a472', '9cb0374d28706fe44ce8b6e7a0efea59152e74b735540cbe39874ced9a420e30', '2024-05-21 07:20:01', '2024-05-21 07:20:01');
+(4, '2024-05-21 14:20:01', '\"Customer with ID [1] Named Customer1 has won bidding on amount: [10000] for Product named Graff Diamonds Hallucination and Product ID [5] with bidding starting from 55000000 and ending on 10000 \"', '8cfb1642f25bc66ec3378ecef2e792ae05d37f8b103578e68052ff8d9d52a472', '9cb0374d28706fe44ce8b6e7a0efea59152e74b735540cbe39874ced9a420e30', '2024-05-21 07:20:01', '2024-05-21 07:20:01'),
+(5, '2024-05-21 16:26:05', '\"Customer with ID [3] Named Customer3 has won bidding on amount: [4000000] for Product named Tranh Th\\u1ee7y M\\u1eb7c Th\\u1eddi Nam T\\u1ed1ng and Product ID [13] with bidding starting from 1000000 and ending on 4000000 \"', '9cb0374d28706fe44ce8b6e7a0efea59152e74b735540cbe39874ced9a420e30', '785acbd9050808786dab6a980c159ab1fd258926f677b10ff3e0b552a319e80b', '2024-05-21 09:26:05', '2024-05-21 09:26:05'),
+(6, '2024-05-21 17:31:03', '\"Customer with ID [8] Named New Customer has won bidding on amount: [7000] for Product named \\u0110\\u1ed3ng h\\u1ed3 demo and Product ID [14] with bidding starting from 1000 and ending on 7000 \"', '785acbd9050808786dab6a980c159ab1fd258926f677b10ff3e0b552a319e80b', '03c9bf306a21d3ee5c36b47bc7a76c5fc6740440c6bdd729ae0cea5f4c7c9d57', '2024-05-21 10:31:03', '2024-05-21 10:31:03'),
+(7, '2024-07-24 15:08:53', '\"Customer with ID [2] Named Customer2 has won bidding on amount: [4000000] for Product named Grand Complications 5207G-001 and Product ID [1] with bidding starting from 1000000 and ending on 4000000 \"', '03c9bf306a21d3ee5c36b47bc7a76c5fc6740440c6bdd729ae0cea5f4c7c9d57', 'dea4e3cfadaff909a7ecf6251ef96cb6f59e705d3c682aeb6eb64b07663e5782', '2024-07-24 08:08:53', '2024-07-24 08:08:53'),
+(8, '2024-07-24 15:08:53', '\"Customer with ID [1] Named Customer1 has won bidding on amount: [20000] for Product named \\u0110\\u1ed2 H\\u1ed2 CON L\\u1eaeC RHYTHM and Product ID [9] with bidding starting from 1000000 and ending on 20000 \"', 'dea4e3cfadaff909a7ecf6251ef96cb6f59e705d3c682aeb6eb64b07663e5782', '5cb7e2c87d4a179767d9a2862dc6f4d65fa215ece6f5f6e3170741813cd22e90', '2024-07-24 08:08:53', '2024-07-24 08:08:53');
 
 -- --------------------------------------------------------
 
@@ -203,7 +219,9 @@ INSERT INTO `customers` (`customer_id`, `customer_name`, `email_id`, `password`,
 (3, 'Customer3', 'customer3@gmail.com', '$2y$12$SVnYHMl2HiSnZSifEBitCewsoVtVyAyqrULylt5ejkf7uxwQXfsaK', 'Address 3', 'State 3', 'City 3', 'Landmark 3', '333333', '1122334455', 'Note 3', 'Active', '2024-05-18 17:20:14', '2024-05-18 17:20:14'),
 (4, 'Customer4', 'customer4@gmail.com', '$2y$12$B/NvN5uXk5LEZUJN8itIou6jJ6fw58F4Kpy/k.hLD6.FqTKGnIEYG', 'Address 4', 'State 4', 'City 4', 'Landmark 4', '444444', '2233445566', 'Note 4', 'Active', '2024-05-18 17:20:15', '2024-05-18 17:20:15'),
 (5, 'Customer5', 'customer5@gmail.com', '$2y$12$Y7OcBexSIo5nZaY1CoBY9.Zwt2Zb8aXFKUyVChrZsSzTcaiFjnptO', 'Address 5', 'State 5', 'City 5', 'Landmark 5', '555555', '3344556677', 'Note 5', 'Active', '2024-05-18 17:20:15', '2024-05-18 17:20:15'),
-(6, 'quang thanh', 'thanhaxt342@gmail.com', '$2y$12$0C5K/3ThwSi67IiS7m1HWusqCcxNWdzDajlNRuWimI550s4YPXCjy', NULL, NULL, NULL, 'Landmark 6', '456', '+8409444271', NULL, 'Active', '2024-05-19 11:58:03', '2024-05-19 11:58:03');
+(6, 'quang thanh', 'thanhaxt342@gmail.com', '$2y$12$0C5K/3ThwSi67IiS7m1HWusqCcxNWdzDajlNRuWimI550s4YPXCjy', NULL, NULL, NULL, 'Landmark 6', '456', '+8409444271', NULL, 'Active', '2024-05-19 11:58:03', '2024-05-19 11:58:03'),
+(7, 'test', 'test@gmail.com', '$2y$12$7Evmqh9K40YFqFwVkyn43eOkk.X1nSQ1OSeHyn1Aso99fr3gl0CKq', NULL, NULL, NULL, NULL, NULL, '+8412345678', NULL, 'Active', '2024-05-21 09:45:50', '2024-05-21 09:45:50'),
+(8, 'New Customer', 'newcus@gmail.com', '$2y$12$n9TKEpPOXXqzoauD87ceHuNaj5EUf5OL3Fs1egXtVQKMMREe/IZQu', 'f', '3', 'gf', '12', NULL, NULL, NULL, 'Active', '2024-05-21 10:23:35', '2024-05-21 10:33:07');
 
 -- --------------------------------------------------------
 
@@ -321,7 +339,11 @@ INSERT INTO `messages` (`message_id`, `sender_id`, `receiver_id`, `message_date_
 (4, 2, 1, '2024-05-19 04:19:09', 1, 'oki bạn ơi', 'Seller', '2024-05-18 21:19:09', '2024-05-18 21:19:09'),
 (5, 2, 1, '2024-05-19 14:46:50', 1, 'hello', 'Seller', '2024-05-19 07:46:50', '2024-05-19 07:46:50'),
 (6, 1, 2, '2024-05-19 14:46:58', 1, 'hiii', 'Customer', '2024-05-19 07:46:58', '2024-05-19 07:46:58'),
-(7, 2, 1, '2024-05-19 14:47:30', 1, 'edededede', 'Customer', '2024-05-19 07:47:30', '2024-05-19 07:47:30');
+(7, 2, 1, '2024-05-19 14:47:30', 1, 'edededede', 'Customer', '2024-05-19 07:47:30', '2024-05-19 07:47:30'),
+(8, 5, 2, '2024-05-21 16:18:20', 13, 'CHÀO SỐ 2', 'Seller', '2024-05-21 09:18:20', '2024-05-21 09:18:20'),
+(9, 2, 5, '2024-05-21 16:18:33', 13, 'SẢN PHẨM NÀY CÓ TỐT KHÔNG', 'Customer', '2024-05-21 09:18:33', '2024-05-21 09:18:33'),
+(10, 8, 2, '2024-05-21 17:27:11', 14, 'hỏi thêm thông tin', 'Seller', '2024-05-21 10:27:11', '2024-05-21 10:27:11'),
+(11, 2, 8, '2024-05-21 17:28:29', 14, 'đây là thông tin', 'Customer', '2024-05-21 10:28:29', '2024-05-21 10:28:29');
 
 -- --------------------------------------------------------
 
@@ -403,7 +425,16 @@ INSERT INTO `payments` (`payment_id`, `customer_id`, `payment_type`, `product_id
 (10, 1, 'Bid', 5, 10, 10000, '2024-05-21', 'Active', '2024-05-21 07:17:51', '2024-05-21 07:17:51'),
 (11, 1, 'Bid', 9, 11, 9000, '2024-05-21', 'Active', '2024-05-21 07:28:35', '2024-05-21 07:28:35'),
 (12, 3, 'Bid', 9, 12, 10000, '2024-05-21', 'Active', '2024-05-21 07:49:19', '2024-05-21 07:49:19'),
-(13, 1, 'Bid', 9, 13, 20000, '2024-05-21', 'Active', '2024-05-21 07:50:17', '2024-05-21 07:50:17');
+(13, 1, 'Bid', 9, 13, 20000, '2024-05-21', 'Active', '2024-05-21 07:50:17', '2024-05-21 07:50:17'),
+(14, 5, 'Bid', 13, 14, 1000000, '2024-05-21', 'Active', '2024-05-21 09:17:56', '2024-05-21 09:17:56'),
+(15, 3, 'Bid', 13, 15, 4000000, '2024-05-21', 'Active', '2024-05-21 09:21:55', '2024-05-21 09:21:55'),
+(16, 5, 'Refund', 13, 16, 1000000, '2024-05-21', 'Active', '2024-05-21 09:26:05', '2024-05-21 09:26:05'),
+(17, 8, 'Bid', 14, 17, 2000, '2024-05-21', 'Active', '2024-05-21 10:27:26', '2024-05-21 10:27:26'),
+(18, 5, 'Bid', 14, 18, 3000, '2024-05-21', 'Active', '2024-05-21 10:27:44', '2024-05-21 10:27:44'),
+(19, 8, 'Bid', 14, 19, 4000, '2024-05-21', 'Active', '2024-05-21 10:29:14', '2024-05-21 10:29:14'),
+(20, 8, 'Bid', 14, 20, 7000, '2024-05-21', 'Active', '2024-05-21 10:30:34', '2024-05-21 10:30:34'),
+(21, 5, 'Refund', 14, 21, 3000, '2024-05-21', 'Active', '2024-05-21 10:31:03', '2024-05-21 10:31:03'),
+(22, 3, 'Refund', 9, 22, 10000, '2024-07-24', 'Active', '2024-07-24 08:08:53', '2024-07-24 08:08:53');
 
 -- --------------------------------------------------------
 
@@ -437,8 +468,8 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`product_id`, `customer_id`, `product_name`, `category_id`, `product_description`, `starting_bid`, `ending_bid`, `start_date_time`, `end_date_time`, `product_cost`, `product_image`, `product_warranty`, `product_delivery`, `company_name`, `status`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Grand Complications 5207G-001', 1, 'Patek Philippe luôn là thương hiệu tiên phong trong việc sáng tạo ra những cỗ máy thời gian cao cấp được trang bị những tính năng phức tạp. Hãng còn sở hữu cả bộ sưu tập mang tên Grand Complications, bao gồm rất nhiều chiếc đồng hồ khiến giới mê đồng hồ phải khao khát và chiếc đồng hồ Patek Philippe Grand Complications White Gold Tourbillon 5207G-001 mà Gia Bảo Luxury muốn giới thiệu tới quý khách hàng dưới đây là một trong những chiếc đồng hồ như thế.', 1000000, 4000000, '2024-05-19 00:00:00', '2024-05-23 00:00:00', 2000000, '[\"1716066732_rolex2.jpg\",\"1716066732_rolex1.jpg\",\"1716066732_rolex3.jpg\"]', '100 years', '3-4 Days', 'Gia Bảo Luxury', 'Active', '2024-05-18 21:12:12', '2024-05-19 17:38:39'),
-(2, 2, 'Hoàng đế chi bảo', 3, '\"Hoàng đế chi bảo\" có nghĩa là ấn của hoàng đế, một trong những chiếc ấn có ý nghĩa quan trọng nhất của triều Nguyễn, chỉ được sử dụng cho các sắc phong và văn bản quan trọng nhất. Đây là chiếc kim bảo lớn và đẹp nhất của triều Nguyễn, được đúc vào năm thứ 4 đời vua Minh Mạng (năm 1823), chất liệu bằng vàng, nặng 10,78 kg. Ấn được truyền từ đời vua này đến đời vua cuối cùng nhà Nguyễn là Bảo Đại.\r\nCác nhà nghiên cứu cho biết \"Hoàng đế chi bảo\" có hình vuông, quai ấn là một con rồng uốn khúc (rồng đoanh), đầu ngẩng cao, mắt nhìn thẳng về phía trước. Đỉnh đầu rồng khắc hình chữ vương; kỳ (vây lưng) và đuôi dựng đứng, vây đuôi uốn cong về phía trước; 4 chân rồng đúc rõ 5 móng, tư thế chống chân xuống mặt ấn rất vững vàng. Mặt dưới của ấn khắc 4 chữ triện “Hoàng đế chi bảo”. Mặt trên của ấn, phía 2 bên quai khắc nổi 2 dòng chữ: “Minh Mạng tứ niên nhị nguyệt sơ tứ nhật cát thời chú tạo” (đúc vào giờ tốt ngày mồng 4 tháng 2 năm Minh Mạng thứ 4). “Thập thành hoàng kim, trọng nhị bách thập lạng cửu tiền nhị phân” - (Đúc bằng vàng, trọng lượng 280 lạng 9 chỉ 2 phân).', 7000000, 0, '2024-05-19 00:00:00', '2024-05-29 00:00:00', 8000000, '[\"1716105585_anh-00-1666251817535382110196.jpg\",\"1716105585_anh-000-1666251817429236097673.jpg\",\"1716105585_anh-0-16662518175901299578488.jpg\"]', '100 years', '10-14 days', 'VJCO GROUP', 'Active', '2024-05-19 07:59:45', '2024-05-21 08:30:46'),
-(3, 2, 'Đêm đầy sao', 6, 'Đêm đầy sao (tiếng Hà Lan: De sterrennacht) là một bức tranh của họa sĩ hậu ấn tượng người Hà Lan Vincent van Gogh. Được vẽ vào tháng 6 năm 1889, bức tranh miêu tả khung cảnh bên ngoài cửa sổ phòng bệnh của ông ở Saint-Rémy-de-Provence, miền Nam nước Pháp về đêm, mặc dù ông đã vẽ bức tranh vào ban ngày qua trí nhớ. Đêm đầy sao nằm trong bộ sưu tập của Bảo tàng Nghệ thuật Hiện đại ở thành phố New York, một phần trong Di vật của Lillie P. Bliss, từ năm 1941. Bức tranh Đêm đầy sao là một trong những tác phẩm nổi tiếng nhất của Van Gogh, đánh dấu bước ngoặt mang tính quyết định chuyển sang sự tự do sáng tạo to lớn hơn trong nghệ thuật của ông.', 9000000, 0, '2024-05-19 00:00:00', '2024-05-21 00:00:00', 10000000, '[\"1716106063_starry-night-1093721-960-720-7985.jpeg\",\"1716106063_van-gogh-5268.jpg\",\"1716106063_photo-1-15584089153861139507813.jpg\"]', '100 years', '7-10 days', 'QUAN HOANG', 'Active', '2024-05-19 08:07:43', '2024-05-21 08:08:04'),
+(2, 2, 'Hoàng đế chi bảo', 3, '\"Hoàng đế chi bảo\" có nghĩa là ấn của hoàng đế, một trong những chiếc ấn có ý nghĩa quan trọng nhất của triều Nguyễn, chỉ được sử dụng cho các sắc phong và văn bản quan trọng nhất. Đây là chiếc kim bảo lớn và đẹp nhất của triều Nguyễn, được đúc vào năm thứ 4 đời vua Minh Mạng (năm 1823), chất liệu bằng vàng, nặng 10,78 kg. Ấn được truyền từ đời vua này đến đời vua cuối cùng nhà Nguyễn là Bảo Đại.\r\nCác nhà nghiên cứu cho biết \"Hoàng đế chi bảo\" có hình vuông, quai ấn là một con rồng uốn khúc (rồng đoanh), đầu ngẩng cao, mắt nhìn thẳng về phía trước. Đỉnh đầu rồng khắc hình chữ vương; kỳ (vây lưng) và đuôi dựng đứng, vây đuôi uốn cong về phía trước; 4 chân rồng đúc rõ 5 móng, tư thế chống chân xuống mặt ấn rất vững vàng. Mặt dưới của ấn khắc 4 chữ triện “Hoàng đế chi bảo”. Mặt trên của ấn, phía 2 bên quai khắc nổi 2 dòng chữ: “Minh Mạng tứ niên nhị nguyệt sơ tứ nhật cát thời chú tạo” (đúc vào giờ tốt ngày mồng 4 tháng 2 năm Minh Mạng thứ 4). “Thập thành hoàng kim, trọng nhị bách thập lạng cửu tiền nhị phân” - (Đúc bằng vàng, trọng lượng 280 lạng 9 chỉ 2 phân).', 7000000, 0, '2024-05-19 00:00:00', '2024-05-02 00:00:00', 8000000, '[\"1716105585_anh-00-1666251817535382110196.jpg\",\"1716105585_anh-000-1666251817429236097673.jpg\",\"1716105585_anh-0-16662518175901299578488.jpg\"]', '100 years', '10-14 days', 'VJCO GROUP', 'Active', '2024-05-19 07:59:45', '2024-05-21 08:30:46'),
+(3, 2, 'Đêm đầy sao', 6, 'Đêm đầy sao (tiếng Hà Lan: De sterrennacht) là một bức tranh của họa sĩ hậu ấn tượng người Hà Lan Vincent van Gogh. Được vẽ vào tháng 6 năm 1889, bức tranh miêu tả khung cảnh bên ngoài cửa sổ phòng bệnh của ông ở Saint-Rémy-de-Provence, miền Nam nước Pháp về đêm, mặc dù ông đã vẽ bức tranh vào ban ngày qua trí nhớ. Đêm đầy sao nằm trong bộ sưu tập của Bảo tàng Nghệ thuật Hiện đại ở thành phố New York, một phần trong Di vật của Lillie P. Bliss, từ năm 1941. Bức tranh Đêm đầy sao là một trong những tác phẩm nổi tiếng nhất của Van Gogh, đánh dấu bước ngoặt mang tính quyết định chuyển sang sự tự do sáng tạo to lớn hơn trong nghệ thuật của ông.', 9000000, 0, '2024-05-18 00:00:00', '2024-05-20 19:00:00', 10000000, '[\"1716106063_starry-night-1093721-960-720-7985.jpeg\",\"1716106063_van-gogh-5268.jpg\",\"1716106063_photo-1-15584089153861139507813.jpg\"]', '100 years', '7-10 days', 'QUAN HOANG', 'Active', '2024-05-19 08:07:43', '2024-05-21 08:08:04'),
 (4, 1, 'TRANH MỘC THẠCH TÔ ĐÔNG PHA', 3, 'Mộc thạch\" là tranh duy nhất của văn hào thời Tống Tô Đông Pha\r\nTác phẩm còn có tên \"cây khô và đá lạ\", được vẽ trên giấy, dài 50 cm, ngang 26 cm. Họa sĩ khắc họa các sự vật đơn giản, bên phải là cây trụi lá, các cành tạo hình như sừng hươu. Dưới gốc là tảng đá hình thù kỳ lạ, gần giống ốc sên. Một vài nhành cây mọc sau hòn đá.', 1000000, 0, '2024-05-19 00:00:00', '2024-05-25 00:00:00', 100, '[\"1716106200_to-dong-pha-6769-1681978433.jpg\",\"1716106200_B\\u1ee9c-tranh-c\\u1ed5-Trung-Qu\\u1ed1c-G\\u1ed7-v.jpg\"]', '100 years', '4-5 days', 'CHINA', 'Pending', '2024-05-19 08:10:00', '2024-05-19 08:10:00'),
 (5, 2, 'Graff Diamonds Hallucination', 1, 'Những người lần đầu tiên chạm mắt vào chiếc đồng hồ đá quý Graff Diamonds Hallucination cũng sẽ phải trầm trồ trước vẻ đẹp tuyệt tác của nó, cũng như phải nhướng mày với cái giá 55 triệu đô, cho đến nay đây là giá niêm yết cao nhất trong lịch sử ngành đồng hồ. <br>Giá trị đáng kinh ngạc của nó có thể được hiểu ngay qua 110 carat kim cương đa dạng màu sắc, cực kỳ quý hiếm được đính trên lớp vỏ đồng hồ bằng bạch kim của nó. Các chuyên gia trang sức hàng đầu có thể liệt kê rất nhiều loại đá quý vang danh thế giới đã được đính trên nó như: ancy Vivid Yellow, Fancy Intense Pink, Fancy Intense Blue, Fancy Light Pink, Fancy Light Grey Blue, Fancy Intense Blue, Fancy Green và Fancy Orange.', 55000000, 10000, '2024-05-19 00:00:00', '2024-05-21 14:20:00', 50000000, '[\"1716106630_293bf0_1e1a47e9453a41709bb8f97fe0c2363a~mv2.jpg\",\"1716106630_293bf0_b3c2a847b50546d5a730d10b34353ef6~mv2.jpg\",\"1716106630_293bf0_5306a160a5d649bcaab8774ff4ebe47d~mv2.jpg\",\"1716106630_293bf0_25fac2d059d7455d82f11243bca79275~mv2.jpg\",\"1716106630_293bf0_1fc61b175d274af88e612a26dc6ab579~mv2.jpg\"]', '100 years', '7-10 days', 'QUAN HOANG', 'Active', '2024-05-19 08:17:10', '2024-05-21 07:17:51'),
 (6, 1, 'NGỌC TỶ CỦA VUA CÀN LONG', 3, 'Ngọc tỷ thuộc về Vua Càn Long (nhà Thanh, Trung Quốc), một trong những vị hoàng đế có thời gian trị vì lâu nhất lịch sử phong kiến Trung Hoa.', 10000000, 0, '2024-05-23 00:00:00', '2024-05-30 00:00:00', 1000, '[\"1716107327_03-1-image.jpg\",\"1716107327_cvth201610076ebfe085-df2c-470e-be4c-d4ec18d92f34.jpg\",\"1716107327_106d622t5677l0.jpg\"]', '100 years', '4-5 days', 'VJCO', 'Active', '2024-05-19 08:28:47', '2024-05-21 08:31:11'),
@@ -447,7 +478,9 @@ INSERT INTO `products` (`product_id`, `customer_id`, `product_name`, `category_i
 (9, 5, 'ĐỒ HỒ CON LẮC RHYTHM', 1, 'Đồng hồ Cuckoo treo tường hiệu Rhythm 4MJ415-R06, làm bằng vàng 9999. Kích thước đường kính mặt 8 cm, trọng lượng 1.5kg. Sử dụng động cơ từ Thụy Sỹ. Đồng hồ lại hiện thân cho sự sang trọng, quý phái,...', 1000000, 20000, '2024-05-20 00:00:00', '2024-05-27 00:00:00', 1000, '[\"1716225830_z5460295851761_791f3abb0590e958929c6b59cbde086b.jpg\"]', '100 years', '3-4 Days', 'NUKK', 'Active', '2024-05-20 17:23:50', '2024-05-21 07:50:17'),
 (10, 5, 'TRANH THỦY MẶC NÚI VÀ SÔNG', 6, 'Tô Đông Pha (1037-1101) - nhân vật lịch sử được hâm mộ bậc nhất ở Trung Quốc. Tài năng của ông thể hiện ở nhiều mặt như văn học, thư pháp, hội họa, âm nhạc, ẩm thực, giáo dục, y học, trị thủy. Ông tên Tô Thức, tự Tử Chiêm, hiệu Đông Pha cư sĩ nên thường được gọi là Tô Đông Pha. Với hình ảnh sông nước, núi non được vẽ một cách đầy nghệ thuật bức tranh có giá trị rất lớn về tất cả các giá trị.', 10000000, 0, '2024-05-26 00:00:00', '2024-05-29 00:00:00', 1000, '[\"1716226076_z5460295858679_d3eab6ff10e4e327c5b7144f0783f030.jpg\"]', '100 years', '5-7 days', 'VNUUET', 'Active', '2024-05-20 17:27:56', '2024-05-20 17:28:53'),
 (11, 5, 'ĐỒNG HỒ MONTBLACITC', 1, 'Dòng sản phẩm Montblanc Star Legacy lấy cảm hứng từ di sản của Minerva và những chiếc đồng hồ bỏ túi của công ty được sản xuất vào cuối thế kỷ 19 và đầu thế kỷ 20. Orbis Terrarum xuất phát từ tiếng Latin, có nghĩa là “quả cầu”, “trái đất” và “thế giới”, mang lại nguồn cảm hứng cho Montblanc Star Legacy Orbis Terrarum. Đồng hồ được cung cấp năng lượng bởi bộ chuyển động tự động được trang bị tính năng Sản xuất. Ý tưởng là đề xuất một chức năng giờ thế giới, dễ cài đặt và đọc, đồng thời dễ sử dụng theo cách trực quan kết hợp với tính thẩm mỹ trang nhã.', 1000000, 0, '2024-05-25 00:00:00', '2024-05-29 00:00:00', 1000000, '[\"1716226663_z5460310212447_6a59b8d6462823b30939313ecf34a75a.jpg\"]', '100 years', '3-4 Days', 'Gia Bao Luxury', 'Active', '2024-05-20 17:37:43', '2024-05-20 17:38:18'),
-(12, 5, 'THẠP GỐM HOA NÂU THỜI TRẦN', 3, 'Thạp hình ống, dáng thon cao, gờ miệng hơi loe, cổ lõm, thân vuốt thuôn đều về phía đế, đáy bằng, vai có hai quai nhỏ, cong, gắn đối xứng nhau, men trắng ngả vàng nhạt, bóng tráng đều khắp thân thạp. Trang trí trên thân thạp rất độc đáo. Toàn thân thạp chia làm ba băng trang trí và được ngăn cách bởi hai đường chỉ chìm chấm nâu.', 1000000, 5000000, '2024-05-21 00:00:00', '2024-05-21 14:15:00', 100000, '[\"1716227062_z5460313547561_2876cae6f38588fdeca90d26a6f08646.jpg\"]', '100 years', '3-4 Days', 'VJCO', 'Active', '2024-05-20 17:44:22', '2024-05-21 08:45:39');
+(12, 5, 'THẠP GỐM HOA NÂU THỜI TRẦN', 3, 'Thạp hình ống, dáng thon cao, gờ miệng hơi loe, cổ lõm, thân vuốt thuôn đều về phía đế, đáy bằng, vai có hai quai nhỏ, cong, gắn đối xứng nhau, men trắng ngả vàng nhạt, bóng tráng đều khắp thân thạp. Trang trí trên thân thạp rất độc đáo. Toàn thân thạp chia làm ba băng trang trí và được ngăn cách bởi hai đường chỉ chìm chấm nâu.', 1000000, 5000000, '2024-05-21 00:00:00', '2024-05-21 14:15:00', 100000, '[\"1716227062_z5460313547561_2876cae6f38588fdeca90d26a6f08646.jpg\"]', '100 years', '3-4 Days', 'VJCO', 'Active', '2024-05-20 17:44:22', '2024-05-21 08:45:39'),
+(13, 2, 'Tranh Thủy Mặc Thời Nam Tống', 6, 'Văn học Đông Á về mỹ thuật nhìn chung đều cho rằng, mục tiêu của tranh thủy mặc không chỉ đơn giản là minh họa, tái hiện lại vẻ bên ngoài của chủ thể mà mục đích chính là nắm bắt được cốt yếu tinh thần của chủ thể ở trong đó. Ví dụ, để vẽ một con ngựa, người ta phải hiểu tính khí của nó hơn cơ bắp, xương bên ngoài. Hay để vẽ một bông hoa, không nhất thiết phải kết hợp một cách hoàn hảo giữa các cánh hoa và màu sắc, điều cần thiết nhất là phải truyền tải được sự sống động và hương thơm của hoa.', 1000000, 4000000, '2024-05-21 00:00:00', '2024-05-21 16:26:00', 1000000, '[\"1716282904_testdemo.jpg\"]', '100 years', '10-14 days', 'Nam Tống Luxury', 'Active', '2024-05-21 09:15:04', '2024-05-21 09:21:55'),
+(14, 2, 'Đồng hồ demo', 1, 'Modern Skeleton của Orient Star đã trở thành sản phẩm được ưa chuộng trên toàn thế giới kể từ khi ra mắt vào năm 2014. Bộ sưu tập được ra đời vào dịp kỷ niệm 10 năm của hãng Orient, các mẫu trong bộ sưu tập nổi bật với màu sắc mặt số tinh tế, tôn lên vẻ đẹp của vỏ kim loại và các bộ phận khác của đồng hồ. Sự kết hợp này tạo nên sự hài hòa về thị giác, đặc biệt với thiết kế mở ở các vị trí 9, 2 và 6 giờ, cho phép người dùng chiêm ngưỡng chuyển động cơ học bên dưới.', 1000, 7000, '2024-05-21 00:00:00', '2024-05-21 17:31:00', 1000, '[\"1716286923_demo1.jpg\",\"1716286923_demo2.jpg\",\"1716286923_demo3.jpg\"]', '100 years', '7-10 days', 'VNU', 'Active', '2024-05-21 10:22:03', '2024-05-21 10:30:34');
 
 -- --------------------------------------------------------
 
@@ -469,13 +502,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('dmUtSZYCW7Sxoo5fM6WKY8MYj5OU526nUZtDRmcM', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiQkxrcUVHUk4wcjZJM01EeHdVSXB1Z0lvYWxFa2hNeW16NFhaM1hUUiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6MTE6ImN1c3RvbWVyX2lkIjtpOjU7czo1OiJhbGVydCI7YTowOnt9fQ==', 1716278623),
-('expiJv04TAcBCKZZHp1xuQsdDlFK0Vvrjl8U3sCs', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiYzJYVVlhdGlsN081NG1KV3NvUkFHa09ybVlxSEMzTVVaRkVWSkdncyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9tZXNzYWdlX2JveCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6MTE6ImN1c3RvbWVyX2lkIjtpOjQ7czo1OiJhbGVydCI7YTowOnt9fQ==', 1716277970),
-('hdiTZxR44FXupFYK1voAJpz9ZocXG0zL3OD95D0b', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoia1VzSG5SbnRXc1N6ZDJpRHBTenhhVGdmNnRDem05aUgySTJqMVFGeiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wcm9kdWN0LzkiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjExOiJjdXN0b21lcl9pZCI7aToxO3M6NToiYWxlcnQiO2E6MDp7fX0=', 1716277904),
-('j2jg3YcopPWgF3gMV219bMiq2i0alF8UfjADIWn3', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiT1FhYVpITURiM2VhWWFFODJ0ZFZ5b1NBM3p1QkdwSUhsUmZ4MUpiYyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wcm9kdWN0LzUiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjExOiJjdXN0b21lcl9pZCI7aToyO3M6NToiYWxlcnQiO2E6MDp7fX0=', 1716275880),
-('oCc5EgF8troTZd3Dzcf3eLRxFINhHfn008IxcFEs', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiREJhZkxrSmFXYkZtanpGSlJWdnBhamVJbXJUN0Jod3E5cXpxWXVNMCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9tZXNzYWdlX2JveCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6MTE6ImN1c3RvbWVyX2lkIjtpOjE7czo1OiJhbGVydCI7YTowOnt9fQ==', 1716277950),
-('Ql0cNGTNRPVi17iOWj1d8trLBrnT4V9ZMSkSE1Qz', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiakNBa0FtNFlDc2lVeDdkVllhSGtZaVptN3UzVHVRVDd6aDhPblhZUSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9tZXNzYWdlX2JveCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6MTE6ImN1c3RvbWVyX2lkIjtpOjM7czo1OiJhbGVydCI7YTowOnt9fQ==', 1716277910),
-('VrEo2VfueTkk8szWpJzccOTcqiHYB5kVpFZhWZrm', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiM21lc2I4MUNVNFY2bWo2YUtqYnJVNVFhQURiSFBIdWVBQjhpQnhnNCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wcm9kdWN0LzEiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjExOiJjdXN0b21lcl9pZCI7aToyO3M6NToiYWxlcnQiO2E6MDp7fX0=', 1716277927);
+('HSqwWp1dpXAl406cH59SWGYYkfRPB7vLVe9jleqi', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoidUh2cnJpcVNobFRYM245ZUFMa3I4NEJRY3hlNXJHTTlLZWYxbGk0SyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1721808832);
 
 -- --------------------------------------------------------
 
@@ -519,7 +546,11 @@ CREATE TABLE `winners` (
 INSERT INTO `winners` (`winner_id`, `product_id`, `customer_id`, `winners_image`, `winning_bid`, `end_date`, `status`, `created_at`, `updated_at`) VALUES
 (1, 7, 2, '1716111305.png', 2000000, '2024-05-19', 'Active', '2024-05-19 09:32:04', '2024-05-19 09:35:06'),
 (2, 12, 2, 'default_image.jpg', 5000000, '2024-05-21', 'Pending', '2024-05-21 07:15:03', '2024-05-21 07:15:03'),
-(3, 5, 1, 'default_image.jpg', 10000, '2024-05-21', 'Pending', '2024-05-21 07:20:01', '2024-05-21 07:20:01');
+(3, 5, 1, 'default_image.jpg', 10000, '2024-05-21', 'Pending', '2024-05-21 07:20:01', '2024-05-21 07:20:01'),
+(4, 13, 3, 'default_image.jpg', 4000000, '2024-05-21', 'Pending', '2024-05-21 09:26:05', '2024-05-21 09:26:05'),
+(5, 14, 8, '1716287587.png', 7000, '2024-05-21', 'Active', '2024-05-21 10:31:03', '2024-05-21 10:33:07'),
+(6, 1, 2, 'default_image.jpg', 4000000, '2024-05-23', 'Pending', '2024-07-24 08:08:53', '2024-07-24 08:08:53'),
+(7, 9, 1, 'default_image.jpg', 20000, '2024-05-27', 'Pending', '2024-07-24 08:08:53', '2024-07-24 08:08:53');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -671,19 +702,19 @@ ALTER TABLE `winners`
 -- AUTO_INCREMENT cho bảng `biddings`
 --
 ALTER TABLE `biddings`
-  MODIFY `bidding_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `bidding_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT cho bảng `billings`
 --
 ALTER TABLE `billings`
-  MODIFY `billing_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `billing_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `blockchains`
 --
 ALTER TABLE `blockchains`
-  MODIFY `blockchain_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `blockchain_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT cho bảng `categories`
@@ -695,7 +726,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT cho bảng `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `customer_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT cho bảng `employees`
@@ -725,7 +756,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT cho bảng `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `message_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `migrations`
@@ -737,13 +768,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT cho bảng `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `payment_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `product_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
@@ -755,7 +786,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `winners`
 --
 ALTER TABLE `winners`
-  MODIFY `winner_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `winner_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
