@@ -1,5 +1,5 @@
-APP_NAME=auction_online
-APP_ENV=product
+APP_NAME=Laravel
+APP_ENV=local
 APP_KEY=base64:FY9A+mByvFmnq4ZNs+LktfRb8Ru2K368JhIyHD2yYfc=
 APP_DEBUG=true
 APP_TIMEZONE=Asia/Ho_Chi_Minh
@@ -20,11 +20,11 @@ LOG_DEPRECATIONS_CHANNEL=null
 LOG_LEVEL=debug
 
 DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
+DB_HOST= 35.194.154.204
 DB_PORT=3306
 DB_DATABASE=auction_ooad
 DB_USERNAME=root
-DB_PASSWORD=140903  # Sử dụng mật khẩu root đã đặt trong GitHub Actions
+DB_PASSWORD=0`X:5ut7F"/O['+>
 
 SESSION_DRIVER=database
 SESSION_LIFETIME=120

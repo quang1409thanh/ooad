@@ -1,11 +1,5 @@
 FROM php:8.2-fpm
- 
-# Copy composer.lock and composer.json into the working directory
-COPY composer.lock composer.json /var/www/html/
- 
-# Set working directory
-WORKDIR /var/www/html/
- 
+
 # Install dependencies for the operating system software
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -20,27 +14,37 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     libonig-dev \
-    curl
- 
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
- 
-# Install extensions for php
-RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install gd
- 
-# Install composer (php package manager)
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
- 
-# Copy existing application directory contents to the working directory
-COPY . /var/www/html
- 
-# Assign permissions of the working directory to the www-data user
-RUN chown -R www-data:www-data \
-        /var/www/html/storage \
-        /var/www/html/bootstrap/cache
- 
-# Expose port 9000 and start php-fpm server (for FastCGI Process Manager)
-EXPOSE 9000
-CMD ["php-fpm"]
+    wget \
+    curl \
+    nginx \
+    netcat-openbsd  # Cài đặt netcat từ gói netcat-openbsd
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo pdo_mysql
+
+# Create necessary directories
+RUN mkdir -p /run/nginx /app
+
+# Copy nginx configuration
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+
+# Copy application files
+COPY . /app
+
+# Install Composer
+RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer"
+RUN cd /app && /usr/local/bin/composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+# Change ownership of /app to www-data
+RUN chown -R www-data: /app
+# Chuyển đến thư mục /app
+WORKDIR /app
+
+# Tạo file .env từ file env.example
+RUN cp database/migrations/.dfgge23rfgbv .env
+
+# Expose port 80
+EXPOSE 80
+
+# Use JSON array syntax for CMD to run multiple commands
+CMD ["sh", "-c", "sed -i 's,LISTEN_PORT,80,g' /etc/nginx/nginx.conf && php-fpm -D && while ! nc -w 1 -z 127.0.0.1 9000; do sleep 0.1; done && nginx -g 'daemon off;'"]
