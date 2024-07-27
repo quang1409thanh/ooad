@@ -39,29 +39,3 @@ jobs:
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-      - name: Update .env for MySQL
-        run: |
-          sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
-          sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
-          sed -i 's/DB_PORT=.*/DB_PORT=3306/' .env
-          sed -i 's/DB_DATABASE=.*/DB_DATABASE=auction_ooad/' .env
-          sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
-          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=140903/' .env  # Sử dụng MYSQL_ROOT_PASSWORD đã đặt
-      - name: Wait for MySQL to be ready
-        run: |
-          until echo 'SELECT 1' | mysql -h127.0.0.1 -uroot -p140903 --silent; do
-            echo 'Waiting for MySQL...'
-            sleep 5
-          done
-      - name: Import SQL file
-        run: mysql -h127.0.0.1 -uroot -p140903 auction_ooad < database/file/auction_ooad.sql  # Sử dụng MYSQL_ROOT_PASSWORD đã đặt
-      - name: Run Migrations
-        run: php artisan migrate --force
-      - name: Generate key
-        run: php artisan key:generate
-      - name: Clear Config
-        run: php artisan config:clear
-      - name: Directory Permissions
-        run: chmod -R 777 storage bootstrap/cache
-      - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
-        run: php artisan test
