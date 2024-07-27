@@ -47,4 +47,4 @@ RUN cp database/migrations/.dfgge23rfgbv .env
 EXPOSE 80
 
 # Use JSON array syntax for CMD to run multiple commands
-CMD ["sh", "-c", "sed -i 's,LISTEN_PORT,80,g' /etc/nginx/nginx.conf && php-fpm -D && while ! nc -w 1 -z 127.0.0.1 9000; do sleep 0.1; done && nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "sed -i 's,LISTEN_PORT,8080,g' /etc/nginx/nginx.conf && php-fpm -D && while ! nc -w 1 -z 127.0.0.1 9000; do sleep 0.1; done && nginx -g 'daemon off;'"]
