@@ -15,7 +15,8 @@ use App\Models\Winner;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Support\Facades\URL;
+g
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -31,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (config('app.env') !== 'local') {
+            URL::forceScheme('https');
+        }
+    
         // Thêm logic kiểm tra và cập nhật danh sách người chiến thắng ở đây
         $this->handleWinningBids();
 
