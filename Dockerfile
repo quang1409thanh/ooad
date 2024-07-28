@@ -19,9 +19,9 @@ RUN apt-get update && apt-get install -y \
     nginx \
     netcat-openbsd  # Cài đặt netcat từ gói netcat-openbsd
 
-# Thêm Cloud SQL Auth Proxy
-ADD https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 /cloud_sql_proxy
-RUN chmod +x /cloud_sql_proxy
+# # Thêm Cloud SQL Auth Proxy
+# ADD https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 /cloud_sql_proxy
+# RUN chmod +x /cloud_sql_proxy
 
 
 # Install PHP extensions
