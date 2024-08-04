@@ -26,10 +26,7 @@
             <div class="col-lg-6">
                 <div class="about-info-wrapper">
                     <h2>Our company</h2>
-                    <p>OnlineAuction gives an opportunity to those people who can't afford to purchase costly branded products, they can try our risk-free auctions to win their desired products like Cars, Bikes, Smartphones, Laptops, Tablets & branded watches.</p>
-                    <p>Welcome to OnlineAuction, one of the best online auction shopping venues on the Net! This website is owned and operated by OnlineAuction; successful business persons from the western region.</p>
-                    <p>OnlineAuction conducted its 1st online auction on 2024. Since then, we are proudly No-1 Online Auctioneer with 20k+ Registered Members</p>
-                    <p>OnlineAuction has introduced a completely new and funny way of online shopping. </p>
+                    <p> Demo Môn Học các vấn đề hiện đại trong công nghệ thông tin
                 </div>
             </div>
         </div>
