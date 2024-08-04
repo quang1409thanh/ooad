@@ -51,7 +51,7 @@ EXPOSE 80
 # Cập nhật cấu hình Nginx
 RUN sed -i 's,LISTEN_PORT,8080,g' /etc/nginx/nginx.conf
 
-# Khởi chạy Cloud SQL Auth Proxy và ứng dụng
+# Khởi chạy Cloud SQL Auth Proxy và ứng dụng update lại
 ENTRYPOINT ["/bin/bash", "-c", "/cloud_sql_proxy -dir=/cloudsql -instances=auction-430716:asia-east2:auction=tcp:3306 & \
                               php-fpm -D && \
                               while ! nc -w 1 -z 127.0.0.1 9000; do sleep 0.1; done && \
