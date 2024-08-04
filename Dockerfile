@@ -19,9 +19,9 @@ RUN apt-get update && apt-get install -y \
     nginx \
     netcat-openbsd  # Cài đặt netcat từ gói netcat-openbsd
 
-# # Thêm Cloud SQL Auth Proxy
-# ADD https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 /cloud_sql_proxy
-# RUN chmod +x /cloud_sql_proxy
+# Thêm Cloud SQL Auth Proxy
+ADD https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 /cloud_sql_proxy
+RUN chmod +x /cloud_sql_proxy
 
 
 # Install PHP extensions
@@ -45,8 +45,6 @@ RUN chown -R www-data: /app
 # Chuyển đến thư mục /app
 WORKDIR /app
 
-# Tạo file .env từ file env.example
-RUN cp database/migrations/.dfgge23rfgbv .env
 
 # Expose port 80
 EXPOSE 80
@@ -54,7 +52,7 @@ EXPOSE 80
 RUN sed -i 's,LISTEN_PORT,8080,g' /etc/nginx/nginx.conf
 
 # Khởi chạy Cloud SQL Auth Proxy và ứng dụng
-ENTRYPOINT ["/bin/bash", "-c", "/cloud_sql_proxy -dir=/cloudsql -instances=auction-430716:asia-east1:auctiondb=tcp:3306 & \
+ENTRYPOINT ["/bin/bash", "-c", "/cloud_sql_proxy -dir=/cloudsql -instances=auction-430716:asia-east2:auction=tcp:3306 & \
                               php-fpm -D && \
                               while ! nc -w 1 -z 127.0.0.1 9000; do sleep 0.1; done && \
                               nginx -g 'daemon off;'"]
